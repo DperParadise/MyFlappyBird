@@ -131,9 +131,11 @@
   <ItemGroup>
     <ClCompile Include="src\create_stb_image_imp.cpp" />
     <ClCompile Include="src\glad.c" />
-    <ClCompile Include="src\programm.cpp" />
+    <ClCompile Include="src\program.cpp" />
+    <ClCompile Include="src\shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\stb_image.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

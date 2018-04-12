@@ -2,6 +2,14 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+//beginTEST
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include "Shader.h"
+//endTEST
+
+
+
 //GLFW function declarations
 void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode);
 
@@ -34,16 +42,45 @@ int main()
 
 	//OpenGL configuration
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	
+
+	//beginTEST
+	glm::mat4 projection = glm::ortho(0.0f, (float)SCREEN_WIDTH, 0.0f, (float)SCREEN_HEIGHT);
+
+	float vertices[9] = {	0.0f, 0.0f, 0.0f,
+							(float)SCREEN_WIDTH * 0.5f, 0.0f, 0.0f,
+							(float)SCREEN_WIDTH * 0.5f, (float)SCREEN_HEIGHT * 0.5f, 0.0f };
+
+	GLuint VAO, VBO;
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	Shader shader("resources/shaders/test.vs", "resources/shaders/test.fs");
+	shader.Use();
+	shader.SetMatrix4("projection", projection);
+	shader.SetVector3f("color", 0.0f, 1.0f, 0.0f);
+	//endTEST
 
 	//Game Loop
 	while (!glfwWindowShouldClose(window))
 	{
-		glfwPollEvents();
+		glClear(GL_COLOR_BUFFER_BIT);
 
-
-
+		//beginTEST
+		glBindVertexArray(VAO);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//endTEST
 
 		glfwSwapBuffers(window);
+		glfwPollEvents();
 	}
 
 	glfwTerminate();

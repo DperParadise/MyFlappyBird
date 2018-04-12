@@ -15,12 +15,18 @@
     <ClCompile Include="src\glad.c">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\programm.cpp">
+    <ClCompile Include="src\shader.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\program.cpp">
       <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stb_image.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
