@@ -8,4 +8,20 @@
       <UniqueIdentifier>{37428049-072b-4336-90d3-14c0e49faf9c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\create_stb_image_imp.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\glad.c">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="programm.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\stb_image.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
