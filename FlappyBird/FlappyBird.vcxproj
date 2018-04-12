@@ -129,9 +129,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="programm.cpp" />
     <ClCompile Include="src\create_stb_image_imp.cpp" />
     <ClCompile Include="src\glad.c" />
+    <ClCompile Include="src\programm.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stb_image.h" />

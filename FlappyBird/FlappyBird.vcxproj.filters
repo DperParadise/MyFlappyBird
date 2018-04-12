@@ -15,7 +15,7 @@
     <ClCompile Include="src\glad.c">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="programm.cpp">
+    <ClCompile Include="src\programm.cpp">
       <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
