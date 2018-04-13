@@ -2,7 +2,8 @@
 #include <iostream>
 #include "stb_image.h"
 
-Texture2D::Texture2D(GLuint wrapS, GLuint wrapT, GLuint filterMin, GLuint filterMag, const char *filePath)
+
+Texture2D::Texture2D(const char *filePath) : mWrapS(GL_REPEAT), mWrapT(GL_REPEAT), mFilterMin(GL_LINEAR), mFilterMag(GL_LINEAR)
 {
 	if (filePath == nullptr)
 	{
@@ -14,10 +15,10 @@ Texture2D::Texture2D(GLuint wrapS, GLuint wrapT, GLuint filterMin, GLuint filter
 	glBindTexture(GL_TEXTURE_2D, id);
 	
 	//Texture settings
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filterMag);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filterMin);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mWrapS);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mWrapT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mFilterMag);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mFilterMin);
 
 	int nrChannels;
 	const unsigned char *data = stbi_load(filePath, &width, &height, &nrChannels, 0);

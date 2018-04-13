@@ -7,19 +7,13 @@ class Texture2D final
 {
 public:
 
-	/*Creates a texture2D
-	@param wrapS : wrapping mode in S axis : GL_REPEAT, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_BORDER
-	@param wrapT : wrapping mode in T axis : GL_REPEAT, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_BORDER
-	@param filterMin : minification filter (screen pixels < texture pixels) : GL_LINEAR, GL_NEAREST, etc
-	@param filterMag : magnification filter (screen pixels > texture pixels) : GL_LINEAR, GL_NEAREST
-	*/
-	Texture2D(	GLuint wrapS,
-				GLuint wrapT,
-				GLuint filterMin,
-				GLuint filterMag,
-				const char *filePath);
-
+	Texture2D(const char *filePath);
 	
+	GLuint mWrapS;
+	GLuint mWrapT;
+	GLuint mFilterMin;
+	GLuint mFilterMag;
+
 	void Bind() const;
 	GLuint GetId() const;
 	int GetWidth() const;
