@@ -8,9 +8,8 @@
 #include "Shader.h"
 #include "texture2D.h"
 #include "resource_manager.h"
+#include "sprite_renderer.h"
 //endTEST
-
-
 
 //GLFW function declarations
 void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode);
@@ -46,36 +45,18 @@ int main()
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	
-
 	//beginTEST
-	glm::mat4 projection = glm::ortho(0.0f, (float)SCREEN_WIDTH, 0.0f, (float)SCREEN_HEIGHT);
-
-	float vertices[15] = {	0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-							(float)SCREEN_WIDTH * 0.5f, 0.0f, 0.0f, 1.0f, 1.0f,
-							(float)SCREEN_WIDTH * 0.5f, (float)SCREEN_HEIGHT * 0.5f, 0.0f, 1.0f, 0.0f };
-
-	GLuint VAO, VBO;
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
 	
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
+	glm::mat4 projection;
+	projection = glm::ortho(0.0f, float(SCREEN_WIDTH), 0.0f, float(SCREEN_HEIGHT), -1.0f, 1.0f);
 	ResourceManager::LoadShader("testShader", "resources/shaders/test.vs", "resources/shaders/test.fs");
+	ResourceManager::GetShader("testShader").SetMatrix4("projection", projection);
+	ResourceManager::GetShader("testShader").SetVector3f("color", 1.0f, 0.0f, 0.0f);
+	ResourceManager::GetShader("testShader").SetInteger("textureSampler", 0);
 	ResourceManager::LoadTexture("awesomeface", "resources/textures/awesomeface.png");
-	ResourceManager::LoadTexture("awesomeface", "resources/textures/awesomeface.png");
-	Shader shader = ResourceManager::GetShader("testShader");
-	shader.Use();
-	shader.SetMatrix4("projection", projection);
-	shader.SetVector3f("color", 0.0f, 1.0f, 0.0f);
-	shader.SetInteger("texSampler", 0);
+
+	SpriteRenderer *renderer = new SpriteRenderer(ResourceManager::GetShader("testShader"));
+	
 	//endTEST
 
 	//Game Loop
@@ -84,9 +65,7 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		//beginTEST
-		glBindVertexArray(VAO);
-		ResourceManager::GetTexture("awesomeface").Bind();
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		renderer->DrawSprite(ResourceManager::GetTexture("awesomeface"), glm::vec2(SCREEN_WIDTH * 0.5f - 50.0f, SCREEN_HEIGHT * 0.5f - 50.0f), 45.0f, glm::vec2(100.0f));
 		//endTEST
 
 		glfwSwapBuffers(window);
@@ -94,6 +73,9 @@ int main()
 	}
 
 	glfwTerminate();
+
+	delete renderer;
+
 	return 0;
 }
 

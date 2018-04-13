@@ -27,6 +27,9 @@
     <ClCompile Include="src\resource_manager.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="src\sprite_renderer.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stb_image.h">
@@ -40,6 +43,9 @@
     </ClInclude>
     <ClInclude Include="src\resource_manager.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sprite_renderer.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
