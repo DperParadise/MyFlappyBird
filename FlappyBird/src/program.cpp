@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "Shader.h"
+#include "texture2D.h"
 //endTEST
 
 
@@ -48,25 +49,31 @@ int main()
 	//beginTEST
 	glm::mat4 projection = glm::ortho(0.0f, (float)SCREEN_WIDTH, 0.0f, (float)SCREEN_HEIGHT);
 
-	float vertices[9] = {	0.0f, 0.0f, 0.0f,
-							(float)SCREEN_WIDTH * 0.5f, 0.0f, 0.0f,
-							(float)SCREEN_WIDTH * 0.5f, (float)SCREEN_HEIGHT * 0.5f, 0.0f };
+	float vertices[15] = {	0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+							(float)SCREEN_WIDTH * 0.5f, 0.0f, 0.0f, 1.0f, 1.0f,
+							(float)SCREEN_WIDTH * 0.5f, (float)SCREEN_HEIGHT * 0.5f, 0.0f, 1.0f, 0.0f };
 
 	GLuint VAO, VBO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
-
+	
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 	Shader shader("resources/shaders/test.vs", "resources/shaders/test.fs");
 	shader.Use();
 	shader.SetMatrix4("projection", projection);
 	shader.SetVector3f("color", 0.0f, 1.0f, 0.0f);
+	shader.SetInteger("texSampler", 0);
+
+	Texture2D texture(GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR, "resources/textures/awesomeface.png");
 	//endTEST
 
 	//Game Loop
@@ -76,6 +83,7 @@ int main()
 
 		//beginTEST
 		glBindVertexArray(VAO);
+		texture.Bind();
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		//endTEST
 

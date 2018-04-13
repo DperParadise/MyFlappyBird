@@ -77,6 +77,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>D:\C++\FlappyBird\FlappyBird\thirdParty\include;$(IncludePath)</IncludePath>
     <LibraryPath>D:\C++\FlappyBird\FlappyBird\thirdParty\lib;$(LibraryPath)</LibraryPath>
+    <SourcePath>D:\C++\FlappyBird\FlappyBird\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -133,10 +134,12 @@
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\program.cpp" />
     <ClCompile Include="src\shader.cpp" />
+    <ClCompile Include="src\texture2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\stb_image.h" />
+    <ClInclude Include="src\texture2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

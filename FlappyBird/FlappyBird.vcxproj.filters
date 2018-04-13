@@ -21,12 +21,18 @@
     <ClCompile Include="src\program.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\texture2D.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stb_image.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\shader.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\texture2D.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
