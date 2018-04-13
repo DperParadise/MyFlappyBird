@@ -105,15 +105,15 @@ void Shader::CheckCompLinkErrors(GLuint object, const std::string &type) const
 {
 	GLint success;
 	const int logLength = 1024;
-	GLchar log[logLength];
+	
 	if (type == "SHADER")
 	{
 		glGetShaderiv(object, GL_COMPILE_STATUS, &success);
 		if (!success)
 		{
+			GLchar log[logLength];
 			glGetShaderInfoLog(object, logLength, NULL, log);
-			std::cout << "Error in shader:  " << log << std::endl;
-			memset(log, 0, logLength);
+			std::cout << "Error in shader:  " << log << std::endl;		
 		}
 	}
 	else //type will be PROGRAM
@@ -121,9 +121,9 @@ void Shader::CheckCompLinkErrors(GLuint object, const std::string &type) const
 		glGetProgramiv(object, GL_LINK_STATUS, &success);
 		if (!success)
 		{
+			GLchar log[logLength];
 			glGetProgramInfoLog(object, logLength, NULL, log);
-			std::cout << "Error linking program: " << log << std::endl;
-			memset(log, 0, logLength);
+			std::cout << "Error linking program: " << log << std::endl;	
 		}
 	}
 }
