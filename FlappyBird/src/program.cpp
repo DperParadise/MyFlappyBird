@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Shader.h"
 #include "texture2D.h"
+#include "resource_manager.h"
 //endTEST
 
 
@@ -67,13 +68,14 @@ int main()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	Shader shader("resources/shaders/test.vs", "resources/shaders/test.fs");
+	ResourceManager::LoadShader("testShader", "resources/shaders/test.vs", "resources/shaders/test.fs");
+	ResourceManager::LoadTexture("awesomeface", "resources/textures/awesomeface.png");
+	ResourceManager::LoadTexture("awesomeface", "resources/textures/awesomeface.png");
+	Shader shader = ResourceManager::GetShader("testShader");
 	shader.Use();
 	shader.SetMatrix4("projection", projection);
 	shader.SetVector3f("color", 0.0f, 1.0f, 0.0f);
 	shader.SetInteger("texSampler", 0);
-
-	Texture2D texture(GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR, "resources/textures/awesomeface.png");
 	//endTEST
 
 	//Game Loop
@@ -83,7 +85,7 @@ int main()
 
 		//beginTEST
 		glBindVertexArray(VAO);
-		texture.Bind();
+		ResourceManager::GetTexture("awesomeface").Bind();
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		//endTEST
 

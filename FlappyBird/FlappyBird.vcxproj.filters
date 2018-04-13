@@ -24,6 +24,9 @@
     <ClCompile Include="src\texture2D.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="src\resource_manager.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stb_image.h">
@@ -33,6 +36,9 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\texture2D.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resource_manager.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
