@@ -14,57 +14,57 @@ Shader::Shader(const std::string &vertexShaderFile, const std::string &fragmentS
 
 Shader::~Shader() {}
 
-void Shader::Use()
+void Shader::Use() const
 {
 	glUseProgram(this->id);
 }
 
-void Shader::SetFloat(const char *name, float value)
+void Shader::SetFloat(const char *name, float value) const
 {
 	glUniform1f(glGetUniformLocation(this->id, name), value);
 }
 
-void Shader::SetInteger(const char *name, int value)
+void Shader::SetInteger(const char *name, int value) const
 {
 	glUniform1i(glGetUniformLocation(this->id, name), value);
 }
 
-void Shader::SetVector2f(const char *name, float x, float y)
+void Shader::SetVector2f(const char *name, float x, float y) const
 {
 	glUniform2f(glGetUniformLocation(this->id, name), x, y);
 }
 
-void Shader::SetVector2fv(const char *name, const glm::vec2 &vec2)
+void Shader::SetVector2fv(const char *name, const glm::vec2 &vec2) const
 {
 	glUniform2f(glGetUniformLocation(this->id, name), vec2.x, vec2.y);
 }
 
-void Shader::SetVector3f(const char *name, float x, float y, float z)
+void Shader::SetVector3f(const char *name, float x, float y, float z) const
 {
 	glUniform3f(glGetUniformLocation(this->id, name), x, y, z);
 }
 
-void Shader::SetVector3fv(const char *name, const glm::vec3 &vec3)
+void Shader::SetVector3fv(const char *name, const glm::vec3 &vec3) const
 {
 	glUniform3f(glGetUniformLocation(this->id, name), vec3.x, vec3.y, vec3.z);
 }
 
-void Shader::SetVector4f(const char *name, float x, float y, float z, float w)
+void Shader::SetVector4f(const char *name, float x, float y, float z, float w) const
 {
 	glUniform4f(glGetUniformLocation(this->id, name), x, y, z, w);
 }
 
-void Shader::SetVector4fv(const char *name, const glm::vec4 &vec4)
+void Shader::SetVector4fv(const char *name, const glm::vec4 &vec4) const
 {
 	glUniform4f(glGetUniformLocation(this->id, name), vec4.x, vec4.y, vec4.z, vec4.w);
 }
 
-void Shader::SetMatrix4(const char *name, const glm::mat4 &mat4)
+void Shader::SetMatrix4(const char *name, const glm::mat4 &mat4) const
 {
 	glUniformMatrix4fv(glGetUniformLocation(this->id, name), 1, GL_FALSE, glm::value_ptr(mat4));
 }
 
-std::string Shader::ReadShaderFromFile(const std::string &filePath)
+std::string Shader::ReadShaderFromFile(const std::string &filePath) const
 {
 	std::string shader = "error";
 	std::ifstream ifs(filePath);
@@ -101,7 +101,7 @@ void Shader::Compile(const char *vertexShaderCode, const char * fragmentShaderCo
 	CheckCompLinkErrors(this->id, "PROGRAM");
 }
 
-void Shader::CheckCompLinkErrors(GLuint object, std::string type)
+void Shader::CheckCompLinkErrors(GLuint object, std::string type) const
 {
 	GLint success;
 	const int logLength = 1024;
