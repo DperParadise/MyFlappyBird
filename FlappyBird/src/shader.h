@@ -50,7 +50,7 @@ private:
 	 @param object: shader/program id
 	 @param type: object of type SHADER or PROGRAM
 	*/
-	void CheckCompLinkErrors(GLuint object, std::string type) const;
+	void CheckCompLinkErrors(GLuint object, const std::string &type) const;
 
 };
 

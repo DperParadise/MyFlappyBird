@@ -101,7 +101,7 @@ void Shader::Compile(const char *vertexShaderCode, const char * fragmentShaderCo
 	CheckCompLinkErrors(this->id, "PROGRAM");
 }
 
-void Shader::CheckCompLinkErrors(GLuint object, std::string type) const
+void Shader::CheckCompLinkErrors(GLuint object, const std::string &type) const
 {
 	GLint success;
 	const int logLength = 1024;
