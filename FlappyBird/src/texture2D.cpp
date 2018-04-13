@@ -21,7 +21,7 @@ Texture2D::Texture2D(const char *filePath) : mWrapS(GL_REPEAT), mWrapT(GL_REPEAT
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mFilterMin);
 
 	int nrChannels;
-	const unsigned char *data = stbi_load(filePath, &width, &height, &nrChannels, 0);
+	unsigned char *data = stbi_load(filePath, &width, &height, &nrChannels, 0);
 	if (data == NULL)
 	{
 		std::cout << "error loading the texture:" << filePath << std::endl;
@@ -45,6 +45,7 @@ Texture2D::Texture2D(const char *filePath) : mWrapS(GL_REPEAT), mWrapT(GL_REPEAT
 	}
 
 	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, imageFormat, GL_UNSIGNED_BYTE, data);
+	stbi_image_free(data);
 }
 
 void Texture2D::Bind() const
