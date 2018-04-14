@@ -15,9 +15,9 @@ public:
 	GLuint mFilterMag;
 
 	void Bind() const;
-	GLuint GetId() const;
 	int GetWidth() const;
 	int GetHeight() const;
+	void Clear();
 
 private:
 	GLuint id;

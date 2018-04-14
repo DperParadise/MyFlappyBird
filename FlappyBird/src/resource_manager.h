@@ -14,6 +14,7 @@ public:
 	static void LoadTexture(const std::string &textureName, const std::string &texturePath);
 	static const Shader& GetShader(const std::string &shaderName);
 	static const Texture2D& GetTexture(const std::string &textureName);
+	static void Clear();
 	
 private:
 	ResourceManager();

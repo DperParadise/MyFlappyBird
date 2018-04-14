@@ -40,6 +40,8 @@ public:
 	//Set a 4x4 matrix of floats as a uniform value to the shader
 	void SetMatrix4(const char *name, const glm::mat4 &mat4) const;
 
+	void Clear();
+
 private:
 	int id;
 	

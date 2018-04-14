@@ -1,9 +1,12 @@
 #include "resource_manager.h"
 #include <iostream>
+#include <glad/glad.h>
 
 //Instantiate static variables
 std::map<std::string, Shader> ResourceManager::shaders;
 std::map<std::string, Texture2D> ResourceManager::textures;
+
+ResourceManager::ResourceManager() {}
 
 void ResourceManager::LoadShader(const std::string &shaderName, const std::string &vertexShaderPath, const std::string &fragmentShaderPath)
 {
@@ -47,4 +50,16 @@ const Texture2D& ResourceManager::GetTexture(const std::string &textureName)
 	return (*it).second;
 }
 
-ResourceManager::ResourceManager() {}
+void ResourceManager::Clear()
+{
+	for (auto iter : shaders)
+	{
+		iter.second.Clear();
+	}
+
+	for (auto iter : textures)
+	{
+		iter.second.Clear();
+	}
+}
+

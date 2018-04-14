@@ -53,11 +53,6 @@ void Texture2D::Bind() const
 	glBindTexture(GL_TEXTURE_2D, id);
 }
 
-GLuint Texture2D::GetId() const
-{
-	return id;
-}
-
 int Texture2D::GetWidth() const
 {
 	return width;
@@ -66,6 +61,11 @@ int Texture2D::GetWidth() const
 int Texture2D::GetHeight() const
 {
 	return height;
+}
+
+void Texture2D::Clear()
+{
+	glDeleteTextures(1, &id);
 }
 
 

@@ -73,6 +73,11 @@ void Shader::SetMatrix4(const char *name, const glm::mat4 &mat4) const
 	glUniformMatrix4fv(glGetUniformLocation(this->id, name), 1, GL_FALSE, glm::value_ptr(mat4));
 }
 
+void Shader::Clear()
+{
+	glDeleteProgram(id);
+}
+
 std::string Shader::ReadShaderFromFile(const std::string &filePath) const
 {
 	std::string shader = "error";
