@@ -108,6 +108,10 @@ void Shader::Compile(const char *vertexShaderCode, const char * fragmentShaderCo
 	glAttachShader(this->id, fShader);
 	glLinkProgram(this->id);
 	CheckCompLinkErrors(this->id, "PROGRAM");
+
+	//Shaders are linked into the program, so we don't need them anymore.
+	glDeleteShader(vShader);
+	glDeleteShader(fShader);
 }
 
 void Shader::CheckCompLinkErrors(GLuint object, const std::string &type) const
