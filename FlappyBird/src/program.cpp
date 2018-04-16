@@ -9,6 +9,7 @@
 #include "texture2D.h"
 #include "resource_manager.h"
 #include "sprite_renderer.h"
+#include "animation.h"
 //endTEST
 
 //GLFW function declarations
@@ -46,17 +47,25 @@ int main()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	
 	//beginTEST
-	
 	glm::mat4 projection;
 	projection = glm::ortho(0.0f, float(SCREEN_WIDTH), 0.0f, float(SCREEN_HEIGHT), -1.0f, 1.0f);
 	ResourceManager::LoadShader("testShader", "resources/shaders/test.vs", "resources/shaders/test.fs");
 	ResourceManager::GetShader("testShader").SetMatrix4("projection", projection);
-	ResourceManager::GetShader("testShader").SetVector3f("color", 1.0f, 0.0f, 0.0f);
 	ResourceManager::GetShader("testShader").SetInteger("textureSampler", 0);
-	ResourceManager::LoadTexture("awesomeface", "resources/textures/awesomeface.png");
+	ResourceManager::LoadTexture("flappyBirdAtlas", "resources/textures/flappy_bird_sprite_sheet.png");
 
 	SpriteRenderer *renderer = new SpriteRenderer(ResourceManager::GetShader("testShader"));
+
+	std::vector<Sprite*> flySprites;
+	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdAtlas"), 3, 491, 17, 12));
+	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdAtlas"), 31, 491, 17, 12));
+	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdAtlas"), 59, 491, 17, 12));
+
+	Animation *flyAnimation = new Animation(&flySprites,4);
 	
+	float dt = 0.0f;
+	float currentTime = 0.0f;
+	float previousTime = 0.0f;
 	//endTEST
 
 	//Game Loop
@@ -65,16 +74,34 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		//beginTEST
-		renderer->DrawSprite(ResourceManager::GetTexture("awesomeface"), glm::vec2(SCREEN_WIDTH * 0.5f - 50.0f, SCREEN_HEIGHT * 0.5f - 50.0f), 45.0f, glm::vec2(100.0f));
+
+		currentTime = glfwGetTime();
+		dt = currentTime - previousTime;
+		previousTime = currentTime;
+
+		//std::cout << "dt = " << dt << std::endl;
+		renderer->DrawSprite(flyAnimation->GetSprite(dt), glm::vec2(SCREEN_WIDTH * 0.5f - 50.0f, SCREEN_HEIGHT * 0.5f - 50.0f), 0.0f, glm::vec2(100.0f), false);
+
 		//endTEST
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+
 	}
 
 	glfwTerminate();
 
+	//beginTEST
 	delete renderer;
+	
+	for (Sprite *sprite : flySprites)
+	{
+		delete sprite;
+	}
+	flySprites.clear();
+
+	delete flyAnimation;
+	//endTEST
 
 	return 0;
 }

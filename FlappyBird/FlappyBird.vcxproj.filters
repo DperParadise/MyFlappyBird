@@ -15,19 +15,25 @@
     <ClCompile Include="src\glad.c">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\shader.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="src\program.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\sprite_renderer.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
     <ClCompile Include="src\texture2D.cpp">
-      <Filter>Utils</Filter>
+      <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="src\resource_manager.cpp">
-      <Filter>Utils</Filter>
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\sprite_renderer.cpp">
+    <ClCompile Include="src\sprite.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\animation.cpp">
       <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,16 +41,22 @@
     <ClInclude Include="src\stb_image.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="src\sprite_renderer.h">
+      <Filter>Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\shader.h">
-      <Filter>Utils</Filter>
+      <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="src\texture2D.h">
-      <Filter>Utils</Filter>
+      <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="src\resource_manager.h">
-      <Filter>Utils</Filter>
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\sprite_renderer.h">
+    <ClInclude Include="src\sprite.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\animation.h">
       <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
