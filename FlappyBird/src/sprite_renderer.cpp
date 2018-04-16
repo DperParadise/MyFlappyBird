@@ -38,9 +38,6 @@ void SpriteRenderer::DrawSprite(const Sprite *sprite, const glm::vec2 &position,
 	{
 		glBindVertexArray(quadVAODynamicDraw);
 		glBindBuffer(GL_ARRAY_BUFFER, quadVBODynamic);
-		//void *ptr = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-		//memcpy(ptr + , sprite->texCoords, numVertices);
-		//glUnmapBuffer(GL_ARRAY_BUFFER);
 		glBufferSubData(GL_ARRAY_BUFFER, 2 * numTexCoords * sizeof(float), 2 * numTexCoords * sizeof(float), sprite->texCoords);
 	}
 
