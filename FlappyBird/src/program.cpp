@@ -10,6 +10,7 @@
 #include "resource_manager.h"
 #include "sprite_renderer.h"
 #include "animation.h"
+#include "game_object.h"
 //endTEST
 
 //GLFW function declarations
@@ -62,6 +63,8 @@ int main()
 	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdAtlas"), 59, 491, 17, 12));
 
 	Animation *flyAnimation = new Animation(&flySprites,4);
+
+	GameObject *go = new GameObject(glm::vec2(SCREEN_WIDTH * 0.5f - 50.0f, SCREEN_HEIGHT), 0.0f, glm::vec2(100.0f), glm::vec2(0.0f), -1000.0f, flyAnimation, false);
 	
 	float dt = 0.0f;
 	float currentTime = 0.0f;
@@ -79,8 +82,10 @@ int main()
 		dt = currentTime - previousTime;
 		previousTime = currentTime;
 
-		//std::cout << "dt = " << dt << std::endl;
-		renderer->DrawSprite(flyAnimation->GetSprite(dt), glm::vec2(SCREEN_WIDTH * 0.5f - 50.0f, SCREEN_HEIGHT * 0.5f - 50.0f), 0.0f, glm::vec2(100.0f), false);
+		go->UpdatePosition(dt);
+
+		go->Draw(renderer, dt);
+		//renderer->DrawSprite(flyAnimation->GetSprite(dt), glm::vec2(SCREEN_WIDTH * 0.5f - 50.0f, SCREEN_HEIGHT * 0.5f - 50.0f), 0.0f, glm::vec2(100.0f), false);
 
 		//endTEST
 
@@ -101,6 +106,9 @@ int main()
 	flySprites.clear();
 
 	delete flyAnimation;
+
+	delete go;
+
 	//endTEST
 
 	return 0;
