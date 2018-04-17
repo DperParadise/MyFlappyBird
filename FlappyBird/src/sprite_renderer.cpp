@@ -12,7 +12,7 @@ SpriteRenderer::~SpriteRenderer()
 	delete[] mTexCoords;
 }
 
-void SpriteRenderer::DrawSprite(const Sprite *sprite, const glm::vec2 &position, float rotInDegrees, const glm::vec2 &size, bool isStaticDraw)
+void SpriteRenderer::DrawSprite(const Sprite *sprite, const glm::vec2 &position, float rotInDegrees, const glm::vec2 &size, bool isStaticDraw) const
 {
 	glm::mat4 model;
 	model = glm::translate(model, glm::vec3(position, 0.0f));

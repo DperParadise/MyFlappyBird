@@ -12,7 +12,7 @@ class SpriteRenderer final
 public:
 	SpriteRenderer(const Shader &shader);
 	~SpriteRenderer();
-	void DrawSprite(const Sprite *sprite, const glm::vec2 &position, float rotInDegrees, const glm::vec2 &size, bool isStaticDraw);
+	void DrawSprite(const Sprite *sprite, const glm::vec2 &position, float rotInDegrees, const glm::vec2 &size, bool isStaticDraw) const;
 
 private:
 	Shader mShader;
