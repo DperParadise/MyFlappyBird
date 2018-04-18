@@ -28,14 +28,12 @@ GameLevel::~GameLevel()
 	ColumnPair &pair = columns.front();
 	if (pair.first->mAnimation != nullptr)
 	{
-		pair.first->mAnimation->Clear();
 		delete pair.first->mAnimation;
 		pair.first->mAnimation = nullptr;
 	}
 	
 	if (pair.second->mAnimation != nullptr)
 	{
-		pair.second->mAnimation->Clear();
 		delete pair.second->mAnimation;
 		pair.second->mAnimation = nullptr;
 	}

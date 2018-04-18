@@ -6,6 +6,11 @@ Animation::Animation(std::vector<Sprite*> &sprites, float animSpeed) : mSprites(
 	animTime = 1.0f / mAnimSpeed;
 }
 
+Animation::~Animation()
+{
+	Clear();
+}
+
 const Sprite* Animation::GetSprite(float dt)
 {
 	Sprite *sprite = mSprites[index];
