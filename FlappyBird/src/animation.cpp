@@ -1,9 +1,10 @@
 #include "animation.h"
 #include <iostream>
+#include "globals.h"
 
 Animation::Animation(std::vector<Sprite*> &sprites, float animSpeed) : mSprites(sprites), mAnimSpeed(animSpeed) 
 {
-	animTime = 1.0f / mAnimSpeed;
+	mAnimTime = 1.0f / mAnimSpeed;
 }
 
 Animation::~Animation()
@@ -13,15 +14,15 @@ Animation::~Animation()
 
 const Sprite* Animation::GetSprite(float dt)
 {
-	Sprite *sprite = mSprites[index];
-	count += dt;
-	if (count >= animTime)
+	Sprite *sprite = mSprites[mIndex];
+	mCount += dt;
+	if (mCount >= mAnimTime)
 	{
-		count = 0.0f;
-		index++;
-		if (index >= mSprites.size())
+		mCount = 0.0f;
+		mIndex++;
+		if (mIndex >= mSprites.size())
 		{
-			index = 0;
+			mIndex = 0;
 		}
 	}
 	return sprite;
@@ -34,20 +35,15 @@ void Animation::SetAnimSpeed(float animSpeed)
 
 void Animation::Reset()
 {
-	index = 0;
-	count = 0.0f;
+	mIndex = 0;
+	mCount = 0.0f;
 }
 
 void Animation::Clear()
 {
 	for (Sprite *sprite : mSprites)
 	{
-		if (sprite != nullptr)
-		{
-			delete sprite;
-			sprite = nullptr;
-		}
+		DELETE(sprite);
 	}
-
 	mSprites.clear();
 }

@@ -18,9 +18,9 @@ public:
 	void Clear();
 
 private:
-	GLuint id;
-	int width;
-	int height;
+	GLuint mId;
+	int mWidth;
+	int mHeight;
 };
 
 

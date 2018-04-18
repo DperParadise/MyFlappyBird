@@ -13,6 +13,7 @@ public:
 	glm::vec2 mVelocity;
 	float mAcceleration;
 	Animation *mAnimation = nullptr;
+	bool mJumpPressed = false;
 	
 	GameObject(glm::vec2 position, float rotInDegrees, glm::vec2 velocity, float acceleration, Animation* animation);
 	void UpdatePosition(float dt);

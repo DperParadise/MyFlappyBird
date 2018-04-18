@@ -7,8 +7,8 @@ SpriteRenderer::SpriteRenderer(const Shader &shader, float screenScaling) : mSha
 
 SpriteRenderer::~SpriteRenderer()
 {
-	glDeleteBuffers(1, &quadVBO);
-	glDeleteVertexArrays(1, &quadVAO);
+	glDeleteBuffers(1, &mQuadVBO);
+	glDeleteVertexArrays(1, &mQuadVAO);
 }
 
 void SpriteRenderer::DrawSprite(const Sprite *sprite, const glm::vec2 &position, float rotInDegrees) const
@@ -29,9 +29,9 @@ void SpriteRenderer::DrawSprite(const Sprite *sprite, const glm::vec2 &position,
 	glActiveTexture(GL_TEXTURE0);
 	sprite->mTexture.Bind();
 	
-	glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-	glBufferSubData(GL_ARRAY_BUFFER, 2 * numTexCoords * sizeof(float), 2 * numTexCoords * sizeof(float), sprite->texCoords);
-	glBindVertexArray(quadVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
+	glBufferSubData(GL_ARRAY_BUFFER, 2 * mNumTexCoords * sizeof(float), 2 * mNumTexCoords * sizeof(float), sprite->mTexCoords);
+	glBindVertexArray(mQuadVAO);
 	
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
@@ -57,14 +57,14 @@ void SpriteRenderer::Init()
 							0.0f, 0.0f
 	};
 	
-	glGenVertexArrays(1, &quadVAO);
-	glBindVertexArray(quadVAO);
-	glGenBuffers(1, &quadVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+	glGenVertexArrays(1, &mQuadVAO);
+	glBindVertexArray(mQuadVAO);
+	glGenBuffers(1, &mQuadVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) + 2 * numTexCoords * sizeof(float), NULL, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) + 2 * mNumTexCoords * sizeof(float), NULL, GL_DYNAMIC_DRAW);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), 2 * numTexCoords * sizeof(float), texCoords);
+	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), 2 * mNumTexCoords * sizeof(float), texCoords);
 
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);

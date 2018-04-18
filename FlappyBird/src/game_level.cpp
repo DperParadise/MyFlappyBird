@@ -8,6 +8,7 @@
 #include "game_object.h"
 #include "resource_manager.h"
 #include "sprite_renderer.h"
+#include "globals.h"
 
 GameLevel::GameLevel(int screenWidth, int screenHeight, float screenScaling, float minVerticalSeparation, float maxVerticalSeparation, float minVerticalPos, float maxVerticalPos, float shiftSpeedX, const SpriteRenderer *spriteRenderer) :
 	mScreenWidth(screenWidth),
@@ -25,28 +26,16 @@ GameLevel::GameLevel(int screenWidth, int screenHeight, float screenScaling, flo
 
 GameLevel::~GameLevel()
 {
-	ColumnPair &pair = columns.front();
-	if (pair.first->mAnimation != nullptr)
-	{
-		delete pair.first->mAnimation;
-		pair.first->mAnimation = nullptr;
-	}
-	
-	if (pair.second->mAnimation != nullptr)
-	{
-		delete pair.second->mAnimation;
-		pair.second->mAnimation = nullptr;
-	}
-	
+	Clear();
 }
 
 void GameLevel::Init()
 {
-	spriteWidth = 26;
-	spriteHeight = 160;
+	mSpriteWidth = 26;
+	mSpriteHeight = 160;
 
-	Sprite *lowerColumnSprite = new Sprite(ResourceManager::GetTexture("flappyBirdAtlas"), 84, 323, spriteWidth, spriteHeight);
-	Sprite *upperColumnSprite = new Sprite(ResourceManager::GetTexture("flappyBirdAtlas"), 56, 323, spriteWidth, spriteHeight);
+	Sprite *lowerColumnSprite = new Sprite(ResourceManager::GetTexture("flappyBirdAtlas"), 84, 323, mSpriteWidth, mSpriteHeight);
+	Sprite *upperColumnSprite = new Sprite(ResourceManager::GetTexture("flappyBirdAtlas"), 56, 323, mSpriteWidth, mSpriteHeight);
 	
 	std::vector<Sprite*> lowerColumnSpriteVector = { lowerColumnSprite };
 	std::vector<Sprite*> upperColumnSpriteVector = { upperColumnSprite };
@@ -63,7 +52,7 @@ void GameLevel::Init()
 
 	srand(time(NULL));
 
-	for (int i = 0; i < numColumns; i++)
+	for (int i = 0; i < mNumColumns; i++)
 	{
 		if (i == 0)
 		{
@@ -74,8 +63,8 @@ void GameLevel::Init()
 		}
 		else
 		{
-			ColumnPair &pair = columns.back();
-			posX = pair.first->mPosition.x + (rand() % 3 + 1) * spriteWidth * mScreenScaling;  
+			ColumnPair &pair = mColumns.back();
+			posX = pair.first->mPosition.x + (rand() % 3 + 1) * mSpriteWidth * mScreenScaling;  
 			
 			posYLower = mMinVerticalPos + (mMaxVerticalPos - mMinVerticalPos) * (float)rand() / (float)RAND_MAX;
 			posYLower *= mScreenScaling;
@@ -87,28 +76,28 @@ void GameLevel::Init()
 		posLowerCol.x = posX;
 		posLowerCol.y = posYLower;
 		posUpperCol.x = posX;
-		posUpperCol.y = posYLower + spriteHeight * mScreenScaling + separationDistanceY;
+		posUpperCol.y = posYLower + mSpriteHeight * mScreenScaling + separationDistanceY;
 
 		GameObject *lowerColumnGO = new GameObject(posLowerCol, 0.0f, glm::vec2(mShiftSpeedX, 0.0f), 0.0f, lowerColumnAnim);
 		GameObject *upperColumnGO = new GameObject(posUpperCol, 0.0f, glm::vec2(mShiftSpeedX, 0.0f), 0.0f, upperColumnAnim);
 
 		ColumnPair columnPair = std::make_pair(lowerColumnGO, upperColumnGO);
-		columns.push_back(columnPair);
+		mColumns.push_back(columnPair);
 	}
 }
 
 void GameLevel::UpdateColumnsPosition(float dt)
 {
-	for (ColumnPair &pair : columns)
+	for (ColumnPair &pair : mColumns)
 	{
 		pair.first->mPosition.x -= mShiftSpeedX * dt;
 		pair.second->mPosition.x -= mShiftSpeedX * dt;
 	}
 
-	ColumnPair &firstPair = columns.front();
+	ColumnPair &firstPair = mColumns.front();
 
 	//Sprite is out of the screen boundaries
-	if (firstPair.first->mPosition.x + spriteWidth * mScreenScaling < 0.0f)
+	if (firstPair.first->mPosition.x + mSpriteWidth * mScreenScaling < 0.0f)
 	{
 		ResetColumnPairPosition();
 	}
@@ -116,11 +105,11 @@ void GameLevel::UpdateColumnsPosition(float dt)
 
 void GameLevel::ResetColumnPairPosition()
 {
-	ColumnPair columnOut = columns.front();
-	columns.pop_front();
+	ColumnPair columnOut = mColumns.front();
+	mColumns.pop_front();
 
-	ColumnPair &lastPair = columns.back();
-	float posX = lastPair.first->mPosition.x + (rand() % 3 + 1) * spriteWidth * mScreenScaling;
+	ColumnPair &lastPair = mColumns.back();
+	float posX = lastPair.first->mPosition.x + (rand() % 3 + 1) * mSpriteWidth * mScreenScaling;
 
 	float posYLower = mMinVerticalPos + (mMaxVerticalPos - mMinVerticalPos) * (float)rand() / (float)RAND_MAX;
 	posYLower *= mScreenScaling;
@@ -129,17 +118,17 @@ void GameLevel::ResetColumnPairPosition()
 	separationDistanceY *= mScreenScaling;
 
 	glm::vec2 posLowerCol(posX, posYLower);
-	glm::vec2 posUpperCol(posX, posYLower + spriteHeight * mScreenScaling + separationDistanceY);
+	glm::vec2 posUpperCol(posX, posYLower + mSpriteHeight * mScreenScaling + separationDistanceY);
 
 	columnOut.first->mPosition = posLowerCol;
 	columnOut.second->mPosition = posUpperCol;
 
-	columns.push_back(columnOut);
+	mColumns.push_back(columnOut);
 }
 
 void GameLevel::DrawLevel(float dt) const
 {
-	for (const ColumnPair &pair : columns)
+	for (const ColumnPair &pair : mColumns)
 	{
 		
 		if (pair.first->mPosition.x > mScreenWidth)
@@ -150,6 +139,15 @@ void GameLevel::DrawLevel(float dt) const
 		pair.first->Draw(mSpriteRenderer, dt);
 		pair.second->Draw(mSpriteRenderer, dt);
 	}
+}
+
+void GameLevel::Clear()
+{
+	ColumnPair &pair = mColumns.front();
+	DELETE(pair.first->mAnimation);
+	DELETE(pair.second->mAnimation);
+
+	mColumns.clear();
 }
 
 

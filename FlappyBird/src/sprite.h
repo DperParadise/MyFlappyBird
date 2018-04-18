@@ -7,7 +7,7 @@ class Sprite final
 {
 public:
 	Texture2D mTexture;
-	float *texCoords;
+	float *mTexCoords;
 
 	Sprite(const Texture2D &texture, int originX, int originY, int width, int height);
 	~Sprite();
@@ -15,7 +15,7 @@ public:
 	int GetHeight() const;
 
 private:
-	 const int numVertices = 12;
+	 const int mNumVertices = 12;
 	 int mWidth;
 	 int mHeight;
 	 

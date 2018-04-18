@@ -16,11 +16,11 @@ public:
 
 private:
 	Shader mShader;
-	GLuint quadVAO;
-	GLuint quadVBO;
+	GLuint mQuadVAO;
+	GLuint mQuadVBO;
 	float mScreenScaling;
 
-	const int numTexCoords = 6;
+	const int mNumTexCoords = 6;
 	void Init();
 };
 

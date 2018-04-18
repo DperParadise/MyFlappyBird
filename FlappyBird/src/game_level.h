@@ -17,8 +17,8 @@ public:
 	void DrawLevel(float dt) const;
 	
 private:
-	std::deque<ColumnPair> columns;
-	int numColumns = 20;
+	std::deque<ColumnPair> mColumns;
+	int mNumColumns = 20;
 	int mScreenWidth;
 	int mScreenHeight;
 	float mScreenScaling;
@@ -28,10 +28,11 @@ private:
 	float mMaxVerticalPos;
 	float mShiftSpeedX;
 	const SpriteRenderer *mSpriteRenderer = nullptr;
-	float spriteHeight;
-	float spriteWidth;
+	float mSpriteHeight;
+	float mSpriteWidth;
 
 	void Init();
 	void ResetColumnPairPosition();
+	void Clear();
 };
 #endif

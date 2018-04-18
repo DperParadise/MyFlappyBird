@@ -11,8 +11,8 @@ Texture2D::Texture2D(const char *filePath) : mWrapS(GL_REPEAT), mWrapT(GL_REPEAT
 		return;
 	}
 	
-	glGenTextures(1, &id);
-	glBindTexture(GL_TEXTURE_2D, id);
+	glGenTextures(1, &mId);
+	glBindTexture(GL_TEXTURE_2D, mId);
 	
 	//Texture settings
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mWrapS);
@@ -21,7 +21,7 @@ Texture2D::Texture2D(const char *filePath) : mWrapS(GL_REPEAT), mWrapT(GL_REPEAT
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mFilterMin);
 
 	int nrChannels;
-	unsigned char *data = stbi_load(filePath, &width, &height, &nrChannels, 0);
+	unsigned char *data = stbi_load(filePath, &mWidth, &mHeight, &nrChannels, 0);
 	if (data == NULL)
 	{
 		std::cout << "error loading the texture:" << filePath << std::endl;
@@ -44,28 +44,28 @@ Texture2D::Texture2D(const char *filePath) : mWrapS(GL_REPEAT), mWrapT(GL_REPEAT
 		std::cout << "Wrong number of channels in image: " << nrChannels << std::endl;
 	}
 
-	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, imageFormat, GL_UNSIGNED_BYTE, data);
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, mWidth, mHeight, 0, imageFormat, GL_UNSIGNED_BYTE, data);
 	stbi_image_free(data);
 }
 
 void Texture2D::Bind() const
 {
-	glBindTexture(GL_TEXTURE_2D, id);
+	glBindTexture(GL_TEXTURE_2D, mId);
 }
 
 int Texture2D::GetWidth() const
 {
-	return width;
+	return mWidth;
 }
 
 int Texture2D::GetHeight() const
 {
-	return height;
+	return mHeight;
 }
 
 void Texture2D::Clear()
 {
-	glDeleteTextures(1, &id);
+	glDeleteTextures(1, &mId);
 }
 
 

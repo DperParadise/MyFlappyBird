@@ -17,14 +17,14 @@ public:
 
 private:
 	std::vector<Sprite*> mSprites;
-	float count = 0.0f;
-	int index = 0;
+	float mCount = 0.0f;
+	int mIndex = 0;
 
 	//sprites per second
 	float mAnimSpeed = 0.0f;
 
 	//time between sprites
-	float animTime;
+	float mAnimTime;
 };
 
 #endif

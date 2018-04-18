@@ -42,6 +42,9 @@
     <ClCompile Include="src\game_level.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\game.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stb_image.h">
@@ -70,6 +73,12 @@
     </ClInclude>
     <ClInclude Include="src\game_level.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\globals.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

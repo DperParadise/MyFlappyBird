@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="src\animation.cpp" />
     <ClCompile Include="src\create_stb_image_imp.cpp" />
+    <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\game_level.cpp" />
     <ClCompile Include="src\game_object.cpp" />
     <ClCompile Include="src\glad.c" />
@@ -144,8 +145,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation.h" />
+    <ClInclude Include="src\game.h" />
     <ClInclude Include="src\game_level.h" />
     <ClInclude Include="src\game_object.h" />
+    <ClInclude Include="src\globals.h" />
     <ClInclude Include="src\resource_manager.h" />
     <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\sprite.h" />
