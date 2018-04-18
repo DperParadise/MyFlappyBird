@@ -46,7 +46,9 @@ int main()
 
 	//OpenGL configuration
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glClearColor(0.5f, 0.5f, 1.0f, 1.0f);
 	
 	//beginTEST
 	glm::mat4 projection;
@@ -55,6 +57,7 @@ int main()
 	ResourceManager::GetShader("testShader").SetMatrix4("projection", projection);
 	ResourceManager::GetShader("testShader").SetInteger("textureSampler", 0);
 	ResourceManager::LoadTexture("flappyBirdAtlas", "resources/textures/flappy_bird_sprite_sheet.png");
+	ResourceManager::LoadTexture("awesomeface", "resources/textures/awesomeface.png");
 
 	SpriteRenderer *renderer = new SpriteRenderer(ResourceManager::GetShader("testShader"), 3.0f);
 
@@ -64,9 +67,7 @@ int main()
 	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdAtlas"), 3, 491, 17, 12));
 	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdAtlas"), 31, 491, 17, 12));
 	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdAtlas"), 59, 491, 17, 12));
-
 	Animation *flyAnimation = new Animation(flySprites,8.0);
-
 	GameObject *pollo = new GameObject(glm::vec2(0.0f, 0.0f), 0.0f, glm::vec2(0.0f, 200.0f), -80.0f, flyAnimation);
 
 	float dt = 0.0f;
@@ -91,7 +92,6 @@ int main()
 		gameLevel->DrawLevel(dt);
 		pollo->Draw(renderer, dt);
 	
-
 		//endTEST
 
 		glfwSwapBuffers(window);
@@ -103,15 +103,8 @@ int main()
 
 	//beginTEST
 	delete renderer;
-	
-	for (Sprite *sprite : flySprites)
-	{
-		delete sprite;
-	}
-	flySprites.clear();
 
 	delete flyAnimation;
-
 	delete pollo;
 
 	delete gameLevel;
