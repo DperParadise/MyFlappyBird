@@ -6,14 +6,12 @@
 class Texture2D final
 {
 public:
-
-	Texture2D(const char *filePath);
-	
 	GLuint mWrapS;
 	GLuint mWrapT;
 	GLuint mFilterMin;
 	GLuint mFilterMag;
 
+	Texture2D(const char *filePath);
 	void Bind() const;
 	int GetWidth() const;
 	int GetHeight() const;

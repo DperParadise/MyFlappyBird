@@ -6,11 +6,11 @@
 class Sprite final
 {
 public:
-	Sprite(const Texture2D &texture, int originX, int originY, int width, int height);
-	~Sprite();
-
 	Texture2D mTexture;
 	float *texCoords;
+
+	Sprite(const Texture2D &texture, int originX, int originY, int width, int height);
+	~Sprite();
 	int GetWidth() const;
 	int GetHeight() const;
 
