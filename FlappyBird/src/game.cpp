@@ -1,6 +1,6 @@
 #include "game.h"
 #include "resource_manager.h"
-#include "game_object.h"
+#include "bird_game_object.h"
 #include "game_level.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -8,6 +8,7 @@
 #include "sprite.h"
 #include "animation.h"
 #include <GLFW/glfw3.h>
+#include "globals.h"
 
 Game::Game(int screenWidth, int screenHeight, float screenScaling) : mScreenWidth(screenWidth), mScreenHeight(screenHeight), mScreenScaling(screenScaling) {}
 
@@ -34,7 +35,7 @@ void Game::Init()
 	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdSpriteAtlas"), 31, 491, 17, 12));
 	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdSpriteAtlas"), 59, 491, 17, 12));
 	Animation *flyAnimation = new Animation(flySprites, 8.0);
-	mFlappyBird = new GameObject(glm::vec2(0.0f, 0.0f), 0.0f, glm::vec2(0.0f, 200.0f), -80.0f, flyAnimation);
+	mFlappyBird = new BirdGameObject(glm::vec2(0.0f, 0.0f), 0.0f, glm::vec2(0.0f, 200.0f), -80.0f, flyAnimation);
 }
 
 void Game::ProcessInput()
@@ -64,16 +65,12 @@ void Game::DoCollissions()
 
 }
 
-void Game::CheckCollissions(GameObject *one, GameObject *two)
+void Game::CheckCollissions(BirdGameObject *one, ColumnGameObject *two)
 {
 
 }
 
 void Game::Clear()
 {
-	if (mRenderer != nullptr)
-	{
-		delete mRenderer;
-		mRenderer = nullptr;
-	}
+	DELETE(mRenderer);
 }

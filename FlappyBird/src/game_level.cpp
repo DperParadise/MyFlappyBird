@@ -5,7 +5,7 @@
 #include <vector>
 #include "sprite.h"
 #include "animation.h"
-#include "game_object.h"
+#include "column_game_object.h"
 #include "resource_manager.h"
 #include "sprite_renderer.h"
 #include "globals.h"
@@ -34,8 +34,8 @@ void GameLevel::Init()
 	mSpriteWidth = 26;
 	mSpriteHeight = 160;
 
-	Sprite *lowerColumnSprite = new Sprite(ResourceManager::GetTexture("flappyBirdAtlas"), 84, 323, mSpriteWidth, mSpriteHeight);
-	Sprite *upperColumnSprite = new Sprite(ResourceManager::GetTexture("flappyBirdAtlas"), 56, 323, mSpriteWidth, mSpriteHeight);
+	Sprite *lowerColumnSprite = new Sprite(ResourceManager::GetTexture("flappyBirdSpriteAtlas"), 84, 323, mSpriteWidth, mSpriteHeight);
+	Sprite *upperColumnSprite = new Sprite(ResourceManager::GetTexture("flappyBirdSpriteAtlas"), 56, 323, mSpriteWidth, mSpriteHeight);
 	
 	std::vector<Sprite*> lowerColumnSpriteVector = { lowerColumnSprite };
 	std::vector<Sprite*> upperColumnSpriteVector = { upperColumnSprite };
@@ -78,8 +78,8 @@ void GameLevel::Init()
 		posUpperCol.x = posX;
 		posUpperCol.y = posYLower + mSpriteHeight * mScreenScaling + separationDistanceY;
 
-		GameObject *lowerColumnGO = new GameObject(posLowerCol, 0.0f, glm::vec2(mShiftSpeedX, 0.0f), 0.0f, lowerColumnAnim);
-		GameObject *upperColumnGO = new GameObject(posUpperCol, 0.0f, glm::vec2(mShiftSpeedX, 0.0f), 0.0f, upperColumnAnim);
+		ColumnGameObject *lowerColumnGO = new ColumnGameObject(posLowerCol, 0.0f, glm::vec2(mShiftSpeedX, 0.0f), lowerColumnAnim);
+		ColumnGameObject *upperColumnGO = new ColumnGameObject(posUpperCol, 0.0f, glm::vec2(mShiftSpeedX, 0.0f), upperColumnAnim);
 
 		ColumnPair columnPair = std::make_pair(lowerColumnGO, upperColumnGO);
 		mColumns.push_back(columnPair);

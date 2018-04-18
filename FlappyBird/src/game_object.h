@@ -5,18 +5,17 @@
 #include "animation.h"
 #include "sprite_renderer.h"
 
-class GameObject final
+class GameObject
 {
 public:
 	glm::vec2 mPosition;
 	float mRotInDegrees;
 	glm::vec2 mVelocity;
-	float mAcceleration;
 	Animation *mAnimation = nullptr;
-	bool mJumpPressed = false;
 	
-	GameObject(glm::vec2 position, float rotInDegrees, glm::vec2 velocity, float acceleration, Animation* animation);
-	void UpdatePosition(float dt);
+	GameObject(glm::vec2 position, float rotInDegrees, glm::vec2 velocity, Animation* animation);
+	virtual ~GameObject();
+	virtual void UpdatePosition(float dt);
 	void Draw(const SpriteRenderer *spriteRenderer, float dt) const;
 };
 

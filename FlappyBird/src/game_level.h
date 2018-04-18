@@ -4,9 +4,9 @@
 #include <deque>
 #include <utility>
 
-class GameObject;
+class ColumnGameObject;
 class SpriteRenderer;
-typedef std::pair<GameObject*, GameObject*> ColumnPair;
+typedef std::pair<ColumnGameObject*, ColumnGameObject*> ColumnPair;
 
 class GameLevel final
 {

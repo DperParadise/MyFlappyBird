@@ -9,7 +9,8 @@ enum class GameState
 	ACTIVE,
 	DEAD,
 };
-class GameObject;
+class BirdGameObject;
+class ColumnGameObject;
 class GameLevel;
 class SpriteRenderer;
 class Game final
@@ -31,9 +32,9 @@ private:
 	float mScreenScaling;
 	GameLevel *mLevel = nullptr;
 	SpriteRenderer * mRenderer = nullptr;
-	GameObject *mFlappyBird = nullptr;
+	BirdGameObject *mFlappyBird = nullptr;
 	void DoCollissions();
-	void CheckCollissions(GameObject *one, GameObject *two);
+	void CheckCollissions(BirdGameObject *one, ColumnGameObject *two);
 	void Clear();
 };
 
