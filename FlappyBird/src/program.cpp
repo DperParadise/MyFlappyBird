@@ -11,6 +11,7 @@
 #include "sprite_renderer.h"
 #include "animation.h"
 #include "game_object.h"
+#include "game_level.h"
 //endTEST
 
 //GLFW function declarations
@@ -55,17 +56,19 @@ int main()
 	ResourceManager::GetShader("testShader").SetInteger("textureSampler", 0);
 	ResourceManager::LoadTexture("flappyBirdAtlas", "resources/textures/flappy_bird_sprite_sheet.png");
 
-	SpriteRenderer *renderer = new SpriteRenderer(ResourceManager::GetShader("testShader"));
+	SpriteRenderer *renderer = new SpriteRenderer(ResourceManager::GetShader("testShader"), 3.0f);
+
+	GameLevel *gameLevel = new GameLevel(SCREEN_WIDTH, SCREEN_HEIGHT, 3.0f, 64.0f, 64.0f, -150.0f, 150.0f, 100.f, renderer);
 
 	std::vector<Sprite*> flySprites;
 	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdAtlas"), 3, 491, 17, 12));
 	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdAtlas"), 31, 491, 17, 12));
 	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdAtlas"), 59, 491, 17, 12));
 
-	Animation *flyAnimation = new Animation(&flySprites,4);
+	Animation *flyAnimation = new Animation(flySprites,8.0);
 
-	GameObject *go = new GameObject(glm::vec2(SCREEN_WIDTH * 0.5f - 50.0f, SCREEN_HEIGHT), 0.0f, glm::vec2(100.0f), glm::vec2(0.0f), -1000.0f, flyAnimation, false);
-	
+	GameObject *pollo = new GameObject(glm::vec2(0.0f, 0.0f), 0.0f, glm::vec2(0.0f, 200.0f), -80.0f, flyAnimation);
+
 	float dt = 0.0f;
 	float currentTime = 0.0f;
 	float previousTime = 0.0f;
@@ -82,10 +85,12 @@ int main()
 		dt = currentTime - previousTime;
 		previousTime = currentTime;
 
-		go->UpdatePosition(dt);
+		gameLevel->UpdateColumnsPosition(dt);
+		pollo->UpdatePosition(dt);
 
-		go->Draw(renderer, dt);
-		//renderer->DrawSprite(flyAnimation->GetSprite(dt), glm::vec2(SCREEN_WIDTH * 0.5f - 50.0f, SCREEN_HEIGHT * 0.5f - 50.0f), 0.0f, glm::vec2(100.0f), false);
+		gameLevel->DrawLevel(dt);
+		pollo->Draw(renderer, dt);
+	
 
 		//endTEST
 
@@ -107,7 +112,9 @@ int main()
 
 	delete flyAnimation;
 
-	delete go;
+	delete pollo;
+
+	delete gameLevel;
 
 	//endTEST
 

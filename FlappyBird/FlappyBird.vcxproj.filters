@@ -39,6 +39,9 @@
     <ClCompile Include="src\game_object.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\game_level.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stb_image.h">
@@ -63,6 +66,9 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="src\game_object.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game_level.h">
       <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
