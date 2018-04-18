@@ -11,9 +11,13 @@ public:
 
 	Texture2D mTexture;
 	float *texCoords;
+	int GetWidth() const;
+	int GetHeight() const;
 
 private:
 	 const int numVertices = 12;
-
+	 int mWidth;
+	 int mHeight;
+	 
 };
 #endif

@@ -10,18 +10,17 @@
 class SpriteRenderer final
 {
 public:
-	SpriteRenderer(const Shader &shader);
+	SpriteRenderer(const Shader &shader, float screenScaling);
 	~SpriteRenderer();
-	void DrawSprite(const Sprite *sprite, const glm::vec2 &position, float rotInDegrees, const glm::vec2 &size, bool isStaticDraw) const;
+	void DrawSprite(const Sprite *sprite, const glm::vec2 &position, float rotInDegrees) const;
 
 private:
 	Shader mShader;
-	GLuint quadVAOStaticDraw;
-	GLuint quadVAODynamicDraw;
-	GLuint quadVBODynamic;
+	GLuint quadVAO;
+	GLuint quadVBO;
+	float mScreenScaling;
 
 	const int numTexCoords = 6;
-	float *mTexCoords;
 	void Init();
 };
 

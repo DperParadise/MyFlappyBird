@@ -2,7 +2,7 @@
 #include "texture2D.h"
 
 Sprite::Sprite(const Texture2D &texture, 
-	int originX, int originY, int width, int height) : mTexture(texture)
+	int originX, int originY, int width, int height) : mTexture(texture), mWidth(width), mHeight(height)
 {
 	texCoords = new float[numVertices]{	(float)(originX) / (float)mTexture.GetWidth(), (float)(originY + height) / (float)mTexture.GetHeight(),
 										(float)(originX + width) / (float)mTexture.GetWidth(), (float)(originY + height) / (float)mTexture.GetHeight(),
@@ -17,3 +17,14 @@ Sprite::~Sprite()
 {
 	delete[] texCoords;
 }
+
+int Sprite::GetWidth() const
+{
+	return mWidth;
+}
+
+int Sprite::GetHeight() const
+{
+	return mHeight;
+}
+
