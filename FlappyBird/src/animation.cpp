@@ -43,7 +43,7 @@ void Animation::Clear()
 {
 	for (Sprite *sprite : mSprites)
 	{
-		DELETE(sprite);
+		DELETE_PTR(sprite);
 	}
 	mSprites.clear();
 }

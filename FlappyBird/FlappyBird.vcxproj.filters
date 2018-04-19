@@ -45,6 +45,12 @@
     <ClCompile Include="src\game.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\bird_game_object.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\column_game_object.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stb_image.h">
@@ -79,6 +85,12 @@
     </ClInclude>
     <ClInclude Include="src\globals.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bird_game_object.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\column_game_object.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

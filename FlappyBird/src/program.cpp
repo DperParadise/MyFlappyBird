@@ -2,20 +2,12 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include "game.h"
+#include "globals.h"
 
 //GLFW function declarations
 void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode);
 
-//The screen scale factor
-constexpr float screenScaling = 3.0f;
-
-//The width of the screen
-constexpr int SCREEN_WIDTH = (int)screenScaling * 144;
-
-//The height of the screen
-constexpr int SCREEN_HEIGHT = (int)screenScaling * 256;
-
-Game FlappyBirdGame(SCREEN_WIDTH, SCREEN_HEIGHT, screenScaling);
+Game FlappyBirdGame(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_SCALING);
 
 int main()
 {
@@ -56,7 +48,7 @@ int main()
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		currentTime = glfwGetTime();
+		currentTime = (float)glfwGetTime();
 		dt = currentTime - previousTime;
 		previousTime = currentTime;
 

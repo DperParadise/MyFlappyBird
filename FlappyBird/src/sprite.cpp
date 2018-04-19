@@ -16,7 +16,7 @@ Sprite::Sprite(const Texture2D &texture,
 
 Sprite::~Sprite()
 {
-	DELETE_ARRAY(mTexCoords);
+	DELETE_PTR_ARRAY(mTexCoords);
 }
 
 int Sprite::GetWidth() const

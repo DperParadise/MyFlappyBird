@@ -144,8 +144,8 @@ void GameLevel::DrawLevel(float dt) const
 void GameLevel::Clear()
 {
 	ColumnPair &pair = mColumns.front();
-	DELETE(pair.first->mAnimation);
-	DELETE(pair.second->mAnimation);
+	DELETE_PTR(pair.first->mAnimation);
+	DELETE_PTR(pair.second->mAnimation);
 
 	mColumns.clear();
 }

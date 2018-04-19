@@ -37,8 +37,8 @@ void Game::Init()
 	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdSpriteAtlas"), 3, 491, 17, 12));
 	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdSpriteAtlas"), 31, 491, 17, 12));
 	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdSpriteAtlas"), 59, 491, 17, 12));
-	Animation *flyAnimation = new Animation(flySprites, 8.0);
-	mFlappyBird = new BirdGameObject(glm::vec2(0.0f, 0.0f), 0.0f, glm::vec2(0.0f, 200.0f), -80.0f, flyAnimation);
+	Animation *flyAnimation = new Animation(flySprites, 10.0);
+	mFlappyBird = new BirdGameObject(glm::vec2(0.0f, mScreenHeight), 0.0f, glm::vec2(0.0f, 0.0f), -333.0f * mScreenScaling, flyAnimation);
 }
 
 void Game::ProcessInput()
@@ -76,5 +76,5 @@ void Game::CheckCollissions(BirdGameObject *one, ColumnGameObject *two)
 
 void Game::Clear()
 {
-	DELETE(mRenderer);
+	DELETE_PTR(mRenderer);
 }
