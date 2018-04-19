@@ -19,6 +19,9 @@ Game::~Game()
 
 void Game::Init()
 {
+	memset(mKeys, 0, 1024 * sizeof(bool));
+	memset(mKeysProcessed, 0, 1024 * sizeof(bool));
+
 	ResourceManager::LoadTexture("flappyBirdSpriteAtlas", "resources/textures/flappy_bird_sprite_sheet.png");
 	ResourceManager::LoadShader("testShader", "resources/shaders/test.vs", "resources/shaders/test.fs");
 	glm::mat4 projection;
@@ -40,16 +43,17 @@ void Game::Init()
 
 void Game::ProcessInput()
 {
-	if (mKeys[GLFW_KEY_SPACE])
+	if (mKeys[GLFW_KEY_SPACE] && !mKeysProcessed[GLFW_KEY_SPACE])
 	{
 		mFlappyBird->mJumpPressed = true;
+		mKeysProcessed[GLFW_KEY_SPACE] = true;
 	}
 }
 
 void Game::Update(float dt)
 {
-	mLevel->UpdateColumnsPosition(dt);
 	mFlappyBird->UpdatePosition(dt);
+	mLevel->UpdateColumnsPosition(dt);
 
 	DoCollissions();
 }

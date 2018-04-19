@@ -1,27 +1,21 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-
-//beginTEST
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include "Shader.h"
-#include "texture2D.h"
-#include "resource_manager.h"
-#include "sprite_renderer.h"
-#include "animation.h"
-#include "game_object.h"
-#include "game_level.h"
-//endTEST
+#include "game.h"
 
 //GLFW function declarations
 void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode);
 
+//The screen scale factor
+constexpr float screenScaling = 3.0f;
+
 //The width of the screen
-constexpr int SCREEN_WIDTH = 3 * 144;
+constexpr int SCREEN_WIDTH = (int)screenScaling * 144;
 
 //The height of the screen
-constexpr int SCREEN_HEIGHT = 3 * 256;
+constexpr int SCREEN_HEIGHT = (int)screenScaling * 256;
+
+Game FlappyBirdGame(SCREEN_WIDTH, SCREEN_HEIGHT, screenScaling);
 
 int main()
 {
@@ -32,7 +26,7 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-	GLFWwindow *window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "MyFloppyBird", NULL, NULL);
+	GLFWwindow *window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "MyFlappyBird", NULL, NULL);
 	glfwMakeContextCurrent(window);
 
 	//Load OpenGL functions pointers
@@ -50,67 +44,31 @@ int main()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glClearColor(0.5f, 0.5f, 1.0f, 1.0f);
 	
-	//beginTEST
-	glm::mat4 projection;
-	projection = glm::ortho(0.0f, float(SCREEN_WIDTH), 0.0f, float(SCREEN_HEIGHT), -1.0f, 1.0f);
-	ResourceManager::LoadShader("testShader", "resources/shaders/test.vs", "resources/shaders/test.fs");
-	ResourceManager::GetShader("testShader").SetMatrix4("projection", projection);
-	ResourceManager::GetShader("testShader").SetInteger("textureSampler", 0);
-	ResourceManager::LoadTexture("flappyBirdAtlas", "resources/textures/flappy_bird_sprite_sheet.png");
-	ResourceManager::LoadTexture("awesomeface", "resources/textures/awesomeface.png");
-
-	SpriteRenderer *renderer = new SpriteRenderer(ResourceManager::GetShader("testShader"), 3.0f);
-
-	GameLevel *gameLevel = new GameLevel(SCREEN_WIDTH, SCREEN_HEIGHT, 3.0f, 64.0f, 64.0f, -150.0f, 150.0f, 100.f, renderer);
-
-	std::vector<Sprite*> flySprites;
-	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdAtlas"), 3, 491, 17, 12));
-	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdAtlas"), 31, 491, 17, 12));
-	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdAtlas"), 59, 491, 17, 12));
-	Animation *flyAnimation = new Animation(flySprites,8.0);
-	GameObject *pollo = new GameObject(glm::vec2(0.0f, 0.0f), 0.0f, glm::vec2(0.0f, 200.0f), -80.0f, flyAnimation);
-
+	
 	float dt = 0.0f;
 	float currentTime = 0.0f;
 	float previousTime = 0.0f;
-	//endTEST
+	
+	FlappyBirdGame.Init();
 
 	//Game Loop
 	while (!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		//beginTEST
-
 		currentTime = glfwGetTime();
 		dt = currentTime - previousTime;
 		previousTime = currentTime;
 
-		gameLevel->UpdateColumnsPosition(dt);
-		pollo->UpdatePosition(dt);
-
-		gameLevel->DrawLevel(dt);
-		pollo->Draw(renderer, dt);
-	
-		//endTEST
+		FlappyBirdGame.ProcessInput();
+		FlappyBirdGame.Update(dt);
+		FlappyBirdGame.Render(dt);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-
 	}
 
 	glfwTerminate();
-
-	//beginTEST
-	delete renderer;
-
-	delete flyAnimation;
-	delete pollo;
-
-	delete gameLevel;
-
-	//endTEST
-
 	return 0;
 }
 
@@ -120,7 +78,16 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 
-
+	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+	{
+		FlappyBirdGame.mKeys[GLFW_KEY_SPACE] = true;
+	}
+	else if (key == GLFW_KEY_SPACE && action == GLFW_RELEASE)
+	{
+		FlappyBirdGame.mKeys[GLFW_KEY_SPACE] = false;
+		FlappyBirdGame.mKeysProcessed[GLFW_KEY_SPACE] = false;
+	}
+		
 }
 
 
