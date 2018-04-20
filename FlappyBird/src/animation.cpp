@@ -28,11 +28,6 @@ const Sprite* Animation::GetSprite(float dt)
 	return sprite;
 }
 
-void Animation::SetAnimSpeed(float animSpeed)
-{
-	mAnimSpeed = animSpeed;
-}
-
 void Animation::Reset()
 {
 	mIndex = 0;

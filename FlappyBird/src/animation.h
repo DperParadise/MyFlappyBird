@@ -7,16 +7,15 @@
 class Animation final
 {
 public:
+	std::vector<Sprite*> mSprites;
 	Animation(std::vector<Sprite*> &sprites, float animSpeed);
 	~Animation();
 
 	const Sprite *GetSprite(float dt);
-	void SetAnimSpeed(float animSpeed);
 	void Reset();
 	void Clear();
 
 private:
-	std::vector<Sprite*> mSprites;
 	float mCount = 0.0f;
 	int mIndex = 0;
 
