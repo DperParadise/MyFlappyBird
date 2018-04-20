@@ -18,12 +18,12 @@ void BirdGameObject::UpdatePosition(float dt)
 
 	if (mJumpPressed)
 	{
-		mVelocity.y += 300.0f * SCREEN_SCALING;
+		mVelocity.y += 800.0f;
 		mJumpPressed = false;
 	}
 
-	mVelocity.y = glm::clamp(mVelocity.y, -166.0f * SCREEN_SCALING, 133.0f * SCREEN_SCALING);
-	mRotInDegrees = mVelocity.y * 90.0f / (166.0f * SCREEN_SCALING);
+	mVelocity.y = glm::clamp(mVelocity.y, -500.0f, 500.0f);
+	mRotInDegrees = mVelocity.y * 90.0f / (500.0f);
 	mRotInDegrees = glm::clamp(mRotInDegrees, -90.0f, 30.0f);
 
 }
