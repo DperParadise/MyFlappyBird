@@ -38,7 +38,8 @@ private:
 	Sprite *mForeground = nullptr;
 
 	void DoCollissions();
-	void CheckCollissions(BirdGameObject *one, ColumnGameObject *two);
+	void CheckCollissions(BirdGameObject *bird, ColumnGameObject *column);
+	void CheckCollissions(BirdGameObject *bird, int groundHeight);
 	void Clear();
 };
 

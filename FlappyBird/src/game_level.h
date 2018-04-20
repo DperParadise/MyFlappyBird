@@ -11,14 +11,16 @@ typedef std::pair<ColumnGameObject*, ColumnGameObject*> ColumnPair;
 class GameLevel final
 {
 public:
+	std::deque<ColumnPair> mColumns;
+	int mNumColumns = 20;
+
 	GameLevel(int screenWidth, int screenHeight, float screenScaling, float minVerticalSeparation, float maxVerticalSeparation, float minVerticalPos, float maxVerticalPos, float shiftSpeedX, const SpriteRenderer *spriteRenderer);
 	~GameLevel();
 	void UpdateColumnsPosition(float dt);
 	void DrawLevel(float dt) const;
 	
 private:
-	std::deque<ColumnPair> mColumns;
-	int mNumColumns = 20;
+	
 	int mScreenWidth;
 	int mScreenHeight;
 	float mScreenScaling;
