@@ -17,6 +17,9 @@ public:
 	virtual ~GameObject();
 	virtual void UpdatePosition(float dt);
 	void Draw(const SpriteRenderer *spriteRenderer, float dt) const;
+
+private:
+	void Clear();
 };
 
 
