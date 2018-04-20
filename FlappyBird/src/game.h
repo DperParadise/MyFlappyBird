@@ -13,6 +13,7 @@ class BirdGameObject;
 class ColumnGameObject;
 class GameLevel;
 class SpriteRenderer;
+class Sprite;
 class Game final
 {
 public:
@@ -33,6 +34,9 @@ private:
 	GameLevel *mLevel = nullptr;
 	SpriteRenderer * mRenderer = nullptr;
 	BirdGameObject *mFlappyBird = nullptr;
+	Sprite *mBackground = nullptr;
+	Sprite *mForeground = nullptr;
+
 	void DoCollissions();
 	void CheckCollissions(BirdGameObject *one, ColumnGameObject *two);
 	void Clear();

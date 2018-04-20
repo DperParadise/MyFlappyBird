@@ -37,10 +37,18 @@ void SpriteRenderer::DrawSprite(const Sprite *sprite, const glm::vec2 &position,
 
 }
 
+void SpriteRenderer::DrawSpriteShifted(const Sprite *sprite, const glm::vec2 &position, float rotInDegrees, float deltaShift) const
+{
+	for (int i = 0; i < 2 * mNumTexCoords; i += 2)
+	{
+		sprite->mTexCoords[i] += deltaShift / sprite->mTexture.GetWidth();
+	}
+	
+	DrawSprite(sprite, position, rotInDegrees);
+}
+
 void SpriteRenderer::Init()
 {
-	//Static data for sprites without animations
-		
 	float vertices[] = { 0.0f, 0.0f,
 						1.0f, 0.0f,
 						0.0f, 1.0f,

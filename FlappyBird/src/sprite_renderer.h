@@ -13,6 +13,7 @@ public:
 	SpriteRenderer(const Shader &shader, float screenScaling);
 	~SpriteRenderer();
 	void DrawSprite(const Sprite *sprite, const glm::vec2 &position, float rotInDegrees) const;
+	void DrawSpriteShifted(const Sprite *sprite, const glm::vec2 &position, float rotInDegrees, float deltaShift) const;
 
 private:
 	Shader mShader;
