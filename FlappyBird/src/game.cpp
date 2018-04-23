@@ -43,7 +43,7 @@ void Game::Init()
 	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdSpriteAtlas"), 31, 491, 17, 12));
 	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdSpriteAtlas"), 59, 491, 17, 12));
 	Animation *flyAnimation = new Animation(flySprites, 10.0);
-	mFlappyBird = new BirdGameObject(glm::vec2(0.0f, mScreenHeight), 0.0f, glm::vec2(0.0f, 0.0f), -333.0f * mScreenScaling, flyAnimation);
+	mFlappyBird = new BirdGameObject(glm::vec2(0.0f, mScreenHeight), 30.0f, glm::vec2(0.0f, 0.0f), -2000.0f, flyAnimation);
 
 	mBackground = new Sprite(ResourceManager::GetTexture("flappyBirdSpriteAtlas"), 0, 0, 144, 256);
 	

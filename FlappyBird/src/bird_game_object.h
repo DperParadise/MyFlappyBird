@@ -15,5 +15,8 @@ public:
 	~BirdGameObject();
 
 	virtual void UpdatePosition(float dt);
+private:
+	float mFallingTime = 0.0f;
+	bool mFalling = true;
 };
 #endif
