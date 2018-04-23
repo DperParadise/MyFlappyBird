@@ -35,8 +35,8 @@ void Game::Init()
 	ResourceManager::GetShader("testShader").SetInteger("textureSampler", 0);
 
 	mRenderer = new SpriteRenderer(ResourceManager::GetShader("testShader"), 3.0f);
-
-	mLevel = new GameLevel(mScreenWidth, mScreenHeight, 3.0f, 64.0f, 64.0f, -150.0f, 150.0f, 100.0f, mRenderer);
+																							//threshold
+	mLevel = new GameLevel(mScreenWidth, mScreenHeight, 3.0f, 64.0f, 64.0f, -104.0f, 24.0f, 3 * 12.0f, 100.0f, mRenderer);
 
 	std::vector<Sprite*> flySprites;
 	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdSpriteAtlas"), 3, 491, 17, 12));
@@ -79,7 +79,7 @@ void Game::DoCollissions()
 {
 	CheckCollissions(mFlappyBird, mForeground->GetHeight());
 
-	for (int i = 0; i < mLevel->mNumColumns; i++)
+	for (int i = 0; i < mLevel->mNumColumnPairs; i++)
 	{
 		if (mLevel->mColumns[i].first->mPosition.x > mScreenWidth * mScreenScaling)
 		{
@@ -106,7 +106,7 @@ void Game::CheckCollissions(BirdGameObject *bird, ColumnGameObject *column)
 	
 	if (glm::length(birdCentre - closestPoint) < birdSprite->GetHeight() * mScreenScaling)
 	{
-		std::cout << "Collision with column" << std::endl;
+		//std::cout << "Collision with column" << std::endl;
 	}
 }
 
@@ -114,7 +114,7 @@ void Game::CheckCollissions(BirdGameObject *bird, int groundHeight)
 {
 	if (bird->mPosition.y < groundHeight * mScreenScaling)
 	{
-		std::cout << "Collission with ground" << std::endl;
+		//std::cout << "Collission with ground" << std::endl;
 	}
 }
 

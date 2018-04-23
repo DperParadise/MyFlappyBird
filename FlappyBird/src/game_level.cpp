@@ -10,7 +10,7 @@
 #include "sprite_renderer.h"
 #include "globals.h"
 
-GameLevel::GameLevel(int screenWidth, int screenHeight, float screenScaling, float minVerticalSeparation, float maxVerticalSeparation, float minVerticalPos, float maxVerticalPos, float shiftSpeedX, const SpriteRenderer *spriteRenderer) :
+GameLevel::GameLevel(int screenWidth, int screenHeight, float screenScaling, float minVerticalSeparation, float maxVerticalSeparation, float minVerticalPos, float maxVerticalPos, float passThreshold, float shiftSpeedX, const SpriteRenderer *spriteRenderer) :
 	mScreenWidth(screenWidth),
 	mScreenHeight(screenHeight),
 	mScreenScaling(screenScaling),
@@ -18,6 +18,7 @@ GameLevel::GameLevel(int screenWidth, int screenHeight, float screenScaling, flo
 	mMaxVerticalSeparation(maxVerticalSeparation),
 	mMinVerticalPos(minVerticalPos), 
 	mMaxVerticalPos(maxVerticalPos),
+	mPassThreshold(passThreshold),
 	mShiftSpeedX(shiftSpeedX),
 	mSpriteRenderer(spriteRenderer)
 {	
@@ -52,25 +53,26 @@ void GameLevel::Init()
 
 	srand(time(NULL));
 
-	for (int i = 0; i < mNumColumns; i++)
+	for (int i = 0; i < mNumColumnPairs; i++)
 	{
 		if (i == 0)
 		{
 			posX = (float)mScreenWidth;
-			posYLower = 0.0f;
+			posYLower = 0.0f; 
 			separationDistanceY = mMaxVerticalSeparation;
 			separationDistanceY *= mScreenScaling;
 		}
 		else
 		{
 			ColumnPair &pair = mColumns.back();
-			posX = pair.first->mPosition.x + (rand() % 3 + 1) * mSpriteWidth * mScreenScaling;  
-			
+
 			posYLower = mMinVerticalPos + (mMaxVerticalPos - mMinVerticalPos) * (float)rand() / (float)RAND_MAX;
 			posYLower *= mScreenScaling;
 			
 			separationDistanceY = mMinVerticalSeparation + (mMaxVerticalSeparation - mMinVerticalSeparation) * (float)rand() / (float)RAND_MAX;
 			separationDistanceY *= mScreenScaling;
+
+			posX = ComputeXPos(pair.first->mPosition.x, pair.first->mPosition.y, pair.second->mPosition.y, posYLower, posYLower + mSpriteHeight * mScreenScaling + separationDistanceY);
 		}
 
 		posLowerCol.x = posX;
@@ -99,7 +101,7 @@ void GameLevel::UpdateColumnsPosition(float dt)
 	//Sprite is out of the screen boundaries
 	if (firstPair.first->mPosition.x + mSpriteWidth * mScreenScaling < 0.0f)
 	{
-		ResetColumnPairPosition();
+		ResetColumnPairPosition(); 
 	}
 }
 
@@ -108,15 +110,16 @@ void GameLevel::ResetColumnPairPosition()
 	ColumnPair columnOut = mColumns.front();
 	mColumns.pop_front();
 
-	ColumnPair &lastPair = mColumns.back();
-	float posX = lastPair.first->mPosition.x + (rand() % 3 + 1) * mSpriteWidth * mScreenScaling;
-
 	float posYLower = mMinVerticalPos + (mMaxVerticalPos - mMinVerticalPos) * (float)rand() / (float)RAND_MAX;
 	posYLower *= mScreenScaling;
 
 	float separationDistanceY = mMinVerticalSeparation + (mMaxVerticalSeparation - mMinVerticalSeparation) * (float)rand() / (float)RAND_MAX;
 	separationDistanceY *= mScreenScaling;
 
+	ColumnPair &lastPair = mColumns.back();
+
+	float posX = ComputeXPos(lastPair.first->mPosition.x, lastPair.first->mPosition.y, lastPair.second->mPosition.y, posYLower, posYLower + mSpriteHeight * mScreenScaling + separationDistanceY);
+	
 	glm::vec2 posLowerCol(posX, posYLower);
 	glm::vec2 posUpperCol(posX, posYLower + mSpriteHeight * mScreenScaling + separationDistanceY);
 
@@ -150,5 +153,29 @@ void GameLevel::Clear()
 	mColumns.clear();
 }
 
+float GameLevel::ComputeXPos(float posLowerLeftX, float posLowerLeftY, float posUpperLeftY, float posLowerRightY, float posUpperRightY) const
+{
+	float posLowerLeft =  posLowerLeftY + mSpriteHeight * mScreenScaling;
+	float posLowerRight = posLowerRightY + mSpriteHeight * mScreenScaling;
+
+	if (posLowerRight >= posLowerLeft)
+	{
+		if (posUpperLeftY - posLowerRight < mPassThreshold * mScreenScaling)
+		{
+			return posLowerLeftX + 3 * mSpriteWidth * mScreenScaling;
+		}
+		
+		return posLowerLeftX + (rand() % 3 + 1) * mSpriteWidth * mScreenScaling;
+	}
+	else
+	{
+		if (posUpperRightY - posLowerLeft < mPassThreshold * mScreenScaling)
+		{
+			return posLowerLeftX + 3 * mSpriteWidth * mScreenScaling;
+		}
+		
+		return posLowerLeftX + (rand() % 3 + 1) * mSpriteWidth * mScreenScaling;
+	}
+}
 
 
