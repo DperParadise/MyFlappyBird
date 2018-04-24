@@ -27,29 +27,30 @@ void Game::Init()
 	memset(mKeysProcessed, 0, 1024 * sizeof(bool));
 
 	ResourceManager::LoadProperties(PROPERTIES_PATH);
+	LoadProperties();
 
-	ResourceManager::LoadTexture("flappyBirdSpriteAtlas", "resources/textures/flappy_bird_sprite_sheet.png");
-	ResourceManager::LoadTexture("foreground", "resources/textures/foreground.png");
-	ResourceManager::LoadShader("testShader", "resources/shaders/test.vs", "resources/shaders/test.fs");
+	ResourceManager::LoadTexture(mFlappyBirdSpriteAtlasName, mFlappyBirdSpriteAtlasPath);
+	ResourceManager::LoadTexture(mForegroundTexName, mForegroundTexPath);
+	ResourceManager::LoadShader(mGameShaderName, mVertexShaderPath, mFragmentShaderPath);
 	glm::mat4 projection;
 	projection = glm::ortho(0.0f, float(mScreenWidth), 0.0f, float(mScreenHeight), -1.0f, 1.0f);
-	ResourceManager::GetShader("testShader").SetMatrix4("projection", projection);
-	ResourceManager::GetShader("testShader").SetInteger("textureSampler", 0);
+	ResourceManager::GetShader(mGameShaderName).SetMatrix4("projection", projection);
+	ResourceManager::GetShader(mGameShaderName).SetInteger("textureSampler", 0);
 
-	mRenderer = new SpriteRenderer(ResourceManager::GetShader("testShader"), 3.0f);
+	mRenderer = new SpriteRenderer(ResourceManager::GetShader(mGameShaderName), mScreenScaling);
 																							
-	std::vector<Sprite*> flySprites;
-	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdSpriteAtlas"), 3, 491, 17, 12));
-	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdSpriteAtlas"), 31, 491, 17, 12));
-	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdSpriteAtlas"), 59, 491, 17, 12));
-	Animation *flyAnimation = new Animation(flySprites, 10.0);
-	mFlappyBird = new BirdGameObject(glm::vec2(mScreenWidth * 0.33f, mScreenHeight), 30.0f, glm::vec2(0.0f, 0.0f), -2000.0f, flyAnimation);
+	std::vector<Sprite*> birdSprites;
+	birdSprites.push_back(new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mBirdSprite1X, mBirdSpriteY, mBirdSpriteWidth, mBirdSpriteHeight));
+	birdSprites.push_back(new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mBirdSprite2X, mBirdSpriteY, mBirdSpriteWidth, mBirdSpriteHeight));
+	birdSprites.push_back(new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mBirdSprite3X, mBirdSpriteY, mBirdSpriteWidth, mBirdSpriteHeight));
+	Animation *flyAnimation = new Animation(birdSprites, mBirdAnimSpeed);
+	mFlappyBird = new BirdGameObject(mStartPos, mStartRot, glm::vec2(0.0f, 0.0f), mWorldAcceleration, flyAnimation);
 		
-	mLevel = new GameLevel(mScreenWidth, mScreenHeight, 3.0f, 64.0f, 64.0f, -104.0f, 24.0f, 3 * 12.0f, -100.0f, mRenderer, this, mFlappyBird);
+	mLevel = new GameLevel(mScreenWidth, mScreenHeight, mScreenScaling, mColumnVerticalSeparation, mMinVerticalPos, mMaxVerticalPos, mPassThreshold, mShiftSpeed, mRenderer, mFlappyBirdSpriteAtlasName, this, mFlappyBird);
 
-	mBackground = new Sprite(ResourceManager::GetTexture("flappyBirdSpriteAtlas"), 0, 0, 144, 256);
+	mBackground = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mBGroundSpriteOrigin, mBGroundSpriteOrigin, mBGroundSpriteWidth, mBGroundSpriteHeight);
 	
-	mForeground = new Sprite(ResourceManager::GetTexture("foreground"), 0, 0, 168, 56);
+	mForeground = new Sprite(ResourceManager::GetTexture(mForegroundTexName), mFGroundSpriteOrigin, mFGroundSpriteOrigin, mFGroundSpriteWidth, mFGroundSpriteHeight);
 }
 
 void Game::ProcessInput()
@@ -74,7 +75,46 @@ void Game::Render(float dt)
 	mRenderer->DrawSprite(mBackground, glm::vec2(0.0f), 0.0f);
 	mLevel->DrawLevel(dt);
 	mFlappyBird->Draw(mRenderer, dt);
-	mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, 60.0f * dt);
+	mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, -mShiftSpeed * dt);
+}
+
+void Game::ComputeScore()
+{
+	mScore++;
+	std::cout << "score = " << mScore << std::endl;
+}
+
+void Game::LoadProperties()
+{
+	mFlappyBirdSpriteAtlasName = ResourceManager::GetPropString("Game.mFlappyBirdSpriteAtlasName");
+	mFlappyBirdSpriteAtlasPath = ResourceManager::GetPropString("Game.mFlappyBirdSpriteAtlasPath");
+	mForegroundTexName = ResourceManager::GetPropString("Game.mForegroundTexName");
+	mForegroundTexPath = ResourceManager::GetPropString("Game.mForegroundTexPath");
+	mGameShaderName = ResourceManager::GetPropString("Game.mGameShaderName");
+	mVertexShaderPath = ResourceManager::GetPropString("Game.mVertexShaderPath");
+	mFragmentShaderPath = ResourceManager::GetPropString("Game.mFragmentShaderPath");
+	mBirdSpriteWidth = ResourceManager::GetPropInt("Game.mBirdSpriteWidth");
+	mBirdSpriteHeight = ResourceManager::GetPropInt("Game.mBirdSpriteHeight");
+	mBirdSpriteY = ResourceManager::GetPropInt("Game.mBirdSpriteY");
+	mBirdSprite1X = ResourceManager::GetPropInt("Game.mBirdSprite1X");
+	mBirdSprite2X = ResourceManager::GetPropInt("Game.mBirdSprite2X");
+	mBirdSprite3X = ResourceManager::GetPropInt("Game.mBirdSprite3X");
+	mBirdAnimSpeed = ResourceManager::GetPropFloat("Game.mBirdAnimSpeed");
+	mStartPos.x = ResourceManager::GetPropFloat("Game.mStartPosX");
+	mStartPos.y = ResourceManager::GetPropFloat("Game.mStartPosY");
+	mStartRot = ResourceManager::GetPropFloat("Game.mStartRot");
+	mWorldAcceleration = ResourceManager::GetPropFloat("Game.mWorldAcceleration");
+	mColumnVerticalSeparation = ResourceManager::GetPropFloat("Game.mColumnVerticalSeparation");
+	mMinVerticalPos = ResourceManager::GetPropFloat("Game.mMinVerticalPos");
+	mMaxVerticalPos = ResourceManager::GetPropFloat("Game.mMaxVerticalPos");
+	mPassThreshold = ResourceManager::GetPropFloat("Game.mPassThreshold");
+	mShiftSpeed = ResourceManager::GetPropFloat("Game.mShiftSpeed");
+	mBGroundSpriteOrigin = ResourceManager::GetPropFloat("Game.mBGroundSpriteOrigin");
+	mBGroundSpriteWidth = ResourceManager::GetPropFloat("Game.mBGroundSpriteWidth");
+	mBGroundSpriteHeight = ResourceManager::GetPropFloat("Game.mBGroundSpriteHeight");
+	mFGroundSpriteOrigin = ResourceManager::GetPropFloat("Game.mFGroundSpriteOrigin");
+	mFGroundSpriteWidth = ResourceManager::GetPropFloat("Game.mFGroundSpriteWidth");
+	mFGroundSpriteHeight = ResourceManager::GetPropFloat("Game.mFGroundSpriteHeight");
 }
 
 void Game::DoCollissions()
@@ -118,12 +158,6 @@ void Game::CheckCollissions(BirdGameObject *bird, int groundHeight)
 	{
 		//std::cout << "Collission with ground" << std::endl;
 	}
-}
-
-void Game::ComputeScore()
-{
-	mScore++;
-	std::cout << "score = " << mScore << std::endl;
 }
 
 void Game::Clear()

@@ -3,6 +3,7 @@
 
 #include <deque>
 #include <utility>
+#include <string>
 
 class ColumnGameObject;
 class SpriteRenderer;
@@ -16,9 +17,10 @@ public:
 	std::deque<ColumnPair> mColumns;
 	int mNumColumnPairs = 20;
 
-	GameLevel(int screenWidth, int screenHeight, float screenScaling, float minVerticalSeparation, 
-		float maxVerticalSeparation, float minVerticalPos, float maxVerticalPos, float passThreshold, 
-		float shiftSpeedX, const SpriteRenderer *spriteRenderer, Game *game, const BirdGameObject *bird);
+	GameLevel(int screenWidth, int screenHeight, float screenScaling, int verticalSeparation, 
+		int minVerticalPos, int maxVerticalPos, int passThreshold, 
+		int shiftSpeedX, const SpriteRenderer *spriteRenderer, const std::string &flappyBirdSpriteAtlasName, 
+		Game *game, const BirdGameObject *bird);
 	~GameLevel();
 	void UpdateColumnsPosition(float dt);
 	void DrawLevel(float dt) const;
@@ -29,18 +31,18 @@ private:
 	int mScreenWidth;
 	int mScreenHeight;
 	float mScreenScaling;
-	float mMinVerticalSeparation;
-	float mMaxVerticalSeparation;
-	float mMinVerticalPos;
-	float mMaxVerticalPos;
-	float mPassThreshold;
+	int mVerticalSeparation;
+	int mMinVerticalPos;
+	int mMaxVerticalPos;
+	int mPassThreshold;
 	float mShiftSpeedX;
 	const SpriteRenderer *mSpriteRenderer = nullptr;
 	float mSpriteHeight;
 	float mSpriteWidth;
+	const std::string &mFlappyBirdSpriteAtlasName;
 	Game *mGame = nullptr;
 	const BirdGameObject *mBird = nullptr;
-
+	
 	void Init();
 	void ResetColumnPairPosition();
 	void Clear();
