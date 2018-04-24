@@ -2,8 +2,6 @@
 #include <glm/glm.hpp>
 #include "globals.h"
 
-#include <iostream>
-
 BirdGameObject::BirdGameObject(glm::vec2 position,
 	float rotInDegrees,
 	glm::vec2 velocity,
@@ -42,10 +40,20 @@ void BirdGameObject::UpdatePosition(float dt)
 			mRotInDegrees = 30.0f;
 			mFalling = true;
 		}
-	}
-	
-	
-	
-	
-	
+	}	
+}
+
+bool BirdGameObject::IsAlive() const
+{
+	return mAlive;
+}
+
+void BirdGameObject::Kill()
+{
+	mAlive = false;
+}
+
+void BirdGameObject::SetAlive()
+{
+	mAlive = true;
 }

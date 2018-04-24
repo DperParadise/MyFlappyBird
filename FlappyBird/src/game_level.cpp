@@ -10,7 +10,9 @@
 #include "sprite_renderer.h"
 #include "globals.h"
 
-GameLevel::GameLevel(int screenWidth, int screenHeight, float screenScaling, float minVerticalSeparation, float maxVerticalSeparation, float minVerticalPos, float maxVerticalPos, float passThreshold, float shiftSpeedX, const SpriteRenderer *spriteRenderer) :
+GameLevel::GameLevel(int screenWidth, int screenHeight, float screenScaling, float minVerticalSeparation, 
+	float maxVerticalSeparation, float minVerticalPos, float maxVerticalPos, float passThreshold, float shiftSpeedX, 
+	const SpriteRenderer *spriteRenderer, Game *game, const BirdGameObject *bird) :
 	mScreenWidth(screenWidth),
 	mScreenHeight(screenHeight),
 	mScreenScaling(screenScaling),
@@ -20,7 +22,9 @@ GameLevel::GameLevel(int screenWidth, int screenHeight, float screenScaling, flo
 	mMaxVerticalPos(maxVerticalPos),
 	mPassThreshold(passThreshold),
 	mShiftSpeedX(shiftSpeedX),
-	mSpriteRenderer(spriteRenderer)
+	mSpriteRenderer(spriteRenderer),
+	mGame(game),
+	mBird(bird)
 {	
 	Init();
 }
@@ -80,8 +84,8 @@ void GameLevel::Init()
 		posUpperCol.x = posX;
 		posUpperCol.y = posYLower + mSpriteHeight * mScreenScaling + separationDistanceY;
 
-		ColumnGameObject *lowerColumnGO = new ColumnGameObject(posLowerCol, 0.0f, glm::vec2(mShiftSpeedX, 0.0f), lowerColumnAnim);
-		ColumnGameObject *upperColumnGO = new ColumnGameObject(posUpperCol, 0.0f, glm::vec2(mShiftSpeedX, 0.0f), upperColumnAnim);
+		ColumnGameObject *lowerColumnGO = new ColumnGameObject(posLowerCol, 0.0f, glm::vec2(mShiftSpeedX, 0.0f), lowerColumnAnim, mBird, mGame, mScreenScaling, true);
+		ColumnGameObject *upperColumnGO = new ColumnGameObject(posUpperCol, 0.0f, glm::vec2(mShiftSpeedX, 0.0f), upperColumnAnim, mBird, mGame, mScreenScaling, false);
 
 		ColumnPair columnPair = std::make_pair(lowerColumnGO, upperColumnGO);
 		mColumns.push_back(columnPair);
@@ -92,8 +96,8 @@ void GameLevel::UpdateColumnsPosition(float dt)
 {
 	for (ColumnPair &pair : mColumns)
 	{
-		pair.first->mPosition.x -= mShiftSpeedX * dt;
-		pair.second->mPosition.x -= mShiftSpeedX * dt;
+		pair.first->UpdatePosition(dt);
+		pair.second->UpdatePosition(dt);
 	}
 
 	ColumnPair &firstPair = mColumns.front();
@@ -126,6 +130,8 @@ void GameLevel::ResetColumnPairPosition()
 	columnOut.first->mPosition = posLowerCol;
 	columnOut.second->mPosition = posUpperCol;
 
+	columnOut.first->ResetScoreComputed();
+	
 	mColumns.push_back(columnOut);
 }
 
@@ -142,6 +148,11 @@ void GameLevel::DrawLevel(float dt) const
 		pair.first->Draw(mSpriteRenderer, dt);
 		pair.second->Draw(mSpriteRenderer, dt);
 	}
+}
+
+float GameLevel::GetSpriteWidth() const
+{
+	return mSpriteWidth;
 }
 
 void GameLevel::Clear()

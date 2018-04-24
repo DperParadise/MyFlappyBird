@@ -35,15 +35,15 @@ void Game::Init()
 	ResourceManager::GetShader("testShader").SetInteger("textureSampler", 0);
 
 	mRenderer = new SpriteRenderer(ResourceManager::GetShader("testShader"), 3.0f);
-																							//threshold
-	mLevel = new GameLevel(mScreenWidth, mScreenHeight, 3.0f, 64.0f, 64.0f, -104.0f, 24.0f, 3 * 12.0f, 100.0f, mRenderer);
-
+																							
 	std::vector<Sprite*> flySprites;
 	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdSpriteAtlas"), 3, 491, 17, 12));
 	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdSpriteAtlas"), 31, 491, 17, 12));
 	flySprites.push_back(new Sprite(ResourceManager::GetTexture("flappyBirdSpriteAtlas"), 59, 491, 17, 12));
 	Animation *flyAnimation = new Animation(flySprites, 10.0);
-	mFlappyBird = new BirdGameObject(glm::vec2(0.0f, mScreenHeight), 30.0f, glm::vec2(0.0f, 0.0f), -2000.0f, flyAnimation);
+	mFlappyBird = new BirdGameObject(glm::vec2(mScreenWidth * 0.33f, mScreenHeight), 30.0f, glm::vec2(0.0f, 0.0f), -2000.0f, flyAnimation);
+		
+	mLevel = new GameLevel(mScreenWidth, mScreenHeight, 3.0f, 64.0f, 64.0f, -104.0f, 24.0f, 3 * 12.0f, -100.0f, mRenderer, this, mFlappyBird);
 
 	mBackground = new Sprite(ResourceManager::GetTexture("flappyBirdSpriteAtlas"), 0, 0, 144, 256);
 	
@@ -116,6 +116,12 @@ void Game::CheckCollissions(BirdGameObject *bird, int groundHeight)
 	{
 		//std::cout << "Collission with ground" << std::endl;
 	}
+}
+
+void Game::ComputeScore()
+{
+	mScore++;
+	std::cout << "score = " << mScore << std::endl;
 }
 
 void Game::Clear()

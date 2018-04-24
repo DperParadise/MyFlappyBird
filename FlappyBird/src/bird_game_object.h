@@ -15,8 +15,13 @@ public:
 	~BirdGameObject();
 
 	virtual void UpdatePosition(float dt);
+	bool IsAlive() const;
+	void Kill();
+	void SetAlive();
+
 private:
 	float mFallingTime = 0.0f;
 	bool mFalling = true;
+	bool mAlive = true;
 };
 #endif

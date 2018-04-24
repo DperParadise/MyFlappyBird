@@ -27,6 +27,7 @@ public:
 	void ProcessInput();
 	void Update(float dt);
 	void Render(float dt);
+	void ComputeScore();
 	
 private:
 	int mScreenWidth, mScreenHeight;
@@ -36,6 +37,8 @@ private:
 	BirdGameObject *mFlappyBird = nullptr;
 	Sprite *mBackground = nullptr;
 	Sprite *mForeground = nullptr;
+	int mScore = 0;
+	int mColumnIndex = 0;
 
 	void DoCollissions();
 	void CheckCollissions(BirdGameObject *bird, ColumnGameObject *column);
