@@ -33,6 +33,6 @@ private:
 	float mTimeToMinRotation = 0.3f;
 	float mRotSpeeedNotFalling = 1000.0f;
 
-	void LoadProperties(const std::string &path);
+	void LoadProperties();
 };
 #endif

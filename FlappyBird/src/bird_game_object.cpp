@@ -9,7 +9,7 @@ BirdGameObject::BirdGameObject(glm::vec2 position,
 	float acceleration,
 	Animation* animation) : mAcceleration(acceleration), GameObject(position, rotInDegrees, velocity, animation) 
 {
-	LoadProperties(PROPERTIES_PATH);
+	LoadProperties();
 }
 
 BirdGameObject::~BirdGameObject() {}
@@ -62,7 +62,7 @@ void BirdGameObject::SetAlive()
 	mAlive = true;
 }
 
-void BirdGameObject::LoadProperties(const std::string &path)
+void BirdGameObject::LoadProperties()
 {
 	mMinVelocity = ResourceManager::GetPropFloat("BirdGameObject.mMinVelocity");
 	mMaxVelocity = ResourceManager::GetPropFloat("BirdGameObject.mMaxVelocity");
