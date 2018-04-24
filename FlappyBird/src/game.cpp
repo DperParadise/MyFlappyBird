@@ -26,6 +26,8 @@ void Game::Init()
 	memset(mKeys, 0, 1024 * sizeof(bool));
 	memset(mKeysProcessed, 0, 1024 * sizeof(bool));
 
+	ResourceManager::LoadProperties(PROPERTIES_PATH);
+
 	ResourceManager::LoadTexture("flappyBirdSpriteAtlas", "resources/textures/flappy_bird_sprite_sheet.png");
 	ResourceManager::LoadTexture("foreground", "resources/textures/foreground.png");
 	ResourceManager::LoadShader("testShader", "resources/shaders/test.vs", "resources/shaders/test.fs");

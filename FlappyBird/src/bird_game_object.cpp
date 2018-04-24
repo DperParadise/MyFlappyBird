@@ -1,12 +1,16 @@
 #include "bird_game_object.h"
 #include <glm/glm.hpp>
 #include "globals.h"
+#include "resource_manager.h"
 
 BirdGameObject::BirdGameObject(glm::vec2 position,
 	float rotInDegrees,
 	glm::vec2 velocity,
 	float acceleration,
-	Animation* animation) : mAcceleration(acceleration), GameObject(position, rotInDegrees, velocity, animation) {}
+	Animation* animation) : mAcceleration(acceleration), GameObject(position, rotInDegrees, velocity, animation) 
+{
+	LoadProperties(PROPERTIES_PATH);
+}
 
 BirdGameObject::~BirdGameObject() {}
 
@@ -19,25 +23,25 @@ void BirdGameObject::UpdatePosition(float dt)
 
 	if (mJumpPressed)
 	{
-		mVelocity.y += 2.0f * -mAcceleration;
+		mVelocity.y += mJumpVelocityFactor * mAcceleration;
 		mJumpPressed = false;
 		mFallingTime = 0.0f;  
 		mFalling = false;
 	}
 
-	mVelocity.y = glm::clamp(mVelocity.y, -500.0f, 500.0f);
+	mVelocity.y = glm::clamp(mVelocity.y, mMinVelocity, mMaxVelocity);
 	
-	if (mFalling && mFallingTime >= 0.5f)
+	if (mFalling && mFallingTime >= mTimeToStartRotation)
 	{
-		mRotInDegrees =  -90.0f * (mFallingTime - 0.5f) / 0.3f;
-		mRotInDegrees = glm::clamp(mRotInDegrees, -90.0f, 30.0f);
+		mRotInDegrees =  mMinRotation * (mFallingTime - mTimeToStartRotation) / mTimeToMinRotation;
+		mRotInDegrees = glm::clamp(mRotInDegrees, mMinRotation, mMaxRotation);
 	}
 	else if(!mFalling)
 	{
-		mRotInDegrees += 1000.0f * dt;
-		if (mRotInDegrees >= 30.0f)
+		mRotInDegrees += mRotSpeeedNotFalling * dt;
+		if (mRotInDegrees >= mMaxRotation)
 		{
-			mRotInDegrees = 30.0f;
+			mRotInDegrees = mMaxRotation;
 			mFalling = true;
 		}
 	}	
@@ -56,4 +60,15 @@ void BirdGameObject::Kill()
 void BirdGameObject::SetAlive()
 {
 	mAlive = true;
+}
+
+void BirdGameObject::LoadProperties(const std::string &path)
+{
+	mMinVelocity = ResourceManager::GetPropFloat("BirdGameObject.mMinVelocity");
+	mMaxVelocity = ResourceManager::GetPropFloat("BirdGameObject.mMaxVelocity");
+	mMinRotation = ResourceManager::GetPropFloat("BirdGameObject.mMinRotation");
+	mMaxRotation = ResourceManager::GetPropFloat("BirdGameObject.mMaxRotation");
+	mTimeToStartRotation = ResourceManager::GetPropFloat("BirdGameObject.mTimeToStartRotation");
+	mTimeToMinRotation = ResourceManager::GetPropFloat("BirdGameObject.mTimeToMinRotation");
+	mRotSpeeedNotFalling = ResourceManager::GetPropFloat("BirdGameObject.mRotSpeeedNotFalling");
 }

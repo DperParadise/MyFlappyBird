@@ -1,2 +1,8 @@
-testProp1:testValue1
-testProp2:testValue2
+BirdGameObject.mJumpVelocityFactor:-2.0
+BirdGameObject.mMinVelocity:-500.0
+BirdGameObject.mMaxVelocity:500.0
+BirdGameObject.mMinRotation:-90.0
+BirdGameObject.mMaxRotation:30.0
+BirdGameObject.mTimeToStartRotation:0.5
+BirdGameObject.mTimeToMinRotation:0.3
+BirdGameObject.mRotSpeeedNotFalling:1000.0

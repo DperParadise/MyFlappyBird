@@ -7,10 +7,10 @@
 //The screen scale factor
 constexpr float SCREEN_SCALING = 3.0f;
 
-//The width of the screen
 constexpr int SCREEN_WIDTH = (int)SCREEN_SCALING * 144;
 
-//The height of the screen
 constexpr int SCREEN_HEIGHT = (int)SCREEN_SCALING * 256;
+
+#define PROPERTIES_PATH  "resources/properties/properties.data"
 
 #endif
