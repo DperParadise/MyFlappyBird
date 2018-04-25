@@ -16,6 +16,7 @@ class ColumnGameObject;
 class GameLevel;
 class SpriteRenderer;
 class Sprite;
+class GUIScore;
 class Game final
 {
 public:
@@ -39,7 +40,8 @@ private:
 	BirdGameObject *mFlappyBird = nullptr;
 	Sprite *mBackground = nullptr;
 	Sprite *mForeground = nullptr;
-	int mScore = 0;
+	int mScore = 99;
+	GUIScore *mGUIScore = nullptr;
 	int mColumnIndex = 0;
 	std::string mFlappyBirdSpriteAtlasName; //default: FlappyBirdSpriteAtlas
 	std::string mFlappyBirdSpriteAtlasPath; //default: resources/textures/flappy_bird_sprite_sheet.png

@@ -10,6 +10,7 @@
 #include <GLFW/glfw3.h>
 #include "globals.h"
 #include "column_game_object.h"
+#include "gui_score.h"
 
 //TEST
 #include <iostream>
@@ -51,6 +52,8 @@ void Game::Init()
 	mBackground = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mBGroundSpriteOrigin, mBGroundSpriteOrigin, mBGroundSpriteWidth, mBGroundSpriteHeight);
 	
 	mForeground = new Sprite(ResourceManager::GetTexture(mForegroundTexName), mFGroundSpriteOrigin, mFGroundSpriteOrigin, mFGroundSpriteWidth, mFGroundSpriteHeight);
+
+	mGUIScore = new GUIScore(mScreenWidth, mScreenHeight, mScreenScaling);
 }
 
 void Game::ProcessInput()
@@ -76,6 +79,7 @@ void Game::Render(float dt)
 	mLevel->DrawLevel(dt);
 	mFlappyBird->Draw(mRenderer, dt);
 	mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, -mShiftSpeed * dt);
+	mGUIScore->Draw(mScore, mRenderer);
 }
 
 void Game::ComputeScore()
@@ -166,4 +170,5 @@ void Game::Clear()
 	DELETE_PTR(mFlappyBird);
 	DELETE_PTR(mBackground);
 	DELETE_PTR(mForeground);
+	DELETE_PTR(mGUIScore);
 }

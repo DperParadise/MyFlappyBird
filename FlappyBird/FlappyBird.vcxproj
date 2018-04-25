@@ -138,6 +138,7 @@
     <ClCompile Include="src\game_level.cpp" />
     <ClCompile Include="src\game_object.cpp" />
     <ClCompile Include="src\glad.c" />
+    <ClCompile Include="src\gui_score.cpp" />
     <ClCompile Include="src\program.cpp" />
     <ClCompile Include="src\resource_manager.cpp" />
     <ClCompile Include="src\shader.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="src\game_level.h" />
     <ClInclude Include="src\game_object.h" />
     <ClInclude Include="src\globals.h" />
+    <ClInclude Include="src\gui_score.h" />
     <ClInclude Include="src\resource_manager.h" />
     <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\sprite.h" />

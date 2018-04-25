@@ -51,6 +51,9 @@
     <ClCompile Include="src\column_game_object.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\gui_score.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stb_image.h">
@@ -90,6 +93,9 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="src\column_game_object.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui_score.h">
       <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
