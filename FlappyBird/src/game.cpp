@@ -53,6 +53,8 @@ void Game::Init()
 	
 	mForeground = new Sprite(ResourceManager::GetTexture(mForegroundTexName), mFGroundSpriteOrigin, mFGroundSpriteOrigin, mFGroundSpriteWidth, mFGroundSpriteHeight);
 
+	mInstructions = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mInstructionsX, mInstructionsY, mInstructionsWidth, mInstructionsHeight);
+	
 	mGUIScore = new GUIScore(mScreenWidth, mScreenHeight, mScreenScaling);
 }
 
@@ -80,6 +82,9 @@ void Game::Render(float dt)
 	mFlappyBird->Draw(mRenderer, dt);
 	mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, -mShiftSpeed * dt);
 	mGUIScore->Draw(mScore, mRenderer);
+
+
+	mRenderer->DrawSprite(mInstructions, glm::vec2(mScreenWidth * 0.5f - mInstructions->GetWidth() * 0.5f * mScreenScaling, mScreenHeight * 0.5f), 0.0f);
 }
 
 void Game::ComputeScore()
@@ -119,6 +124,10 @@ void Game::LoadProperties()
 	mFGroundSpriteOrigin = ResourceManager::GetPropFloat("Game.mFGroundSpriteOrigin");
 	mFGroundSpriteWidth = ResourceManager::GetPropFloat("Game.mFGroundSpriteWidth");
 	mFGroundSpriteHeight = ResourceManager::GetPropFloat("Game.mFGroundSpriteHeight");
+	mInstructionsX = ResourceManager::GetPropInt("Game.mInstructionsX");
+	mInstructionsY = ResourceManager::GetPropInt("Game.mInstructionsY");
+	mInstructionsWidth = ResourceManager::GetPropInt("Game.mInstructionsWidth");
+	mInstructionsHeight = ResourceManager::GetPropInt("Game.mInstructionsHeight");
 }
 
 void Game::DoCollissions()
@@ -170,5 +179,6 @@ void Game::Clear()
 	DELETE_PTR(mFlappyBird);
 	DELETE_PTR(mBackground);
 	DELETE_PTR(mForeground);
+	DELETE_PTR(mInstructions);
 	DELETE_PTR(mGUIScore);
 }

@@ -35,6 +35,10 @@ Game.mBGroundSpriteHeight:256
 Game.mFGroundSpriteOrigin:0
 Game.mFGroundSpriteWidth:168
 Game.mFGroundSpriteHeight:56
+Game.mInstructionsX:292
+Game.mInstructionsY:91
+Game.mInstructionsWidth:57
+Game.mInstructionsHeight:49
 GUIScore.mFactorScreenWidth:0.5
 GUIScore.mFactorScreenHeight:0.25
 GUIScore.mNumWidth:12

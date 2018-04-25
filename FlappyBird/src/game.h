@@ -40,7 +40,8 @@ private:
 	BirdGameObject *mFlappyBird = nullptr;
 	Sprite *mBackground = nullptr;
 	Sprite *mForeground = nullptr;
-	int mScore = 99;
+	Sprite *mInstructions = nullptr;
+	int mScore = 0;
 	GUIScore *mGUIScore = nullptr;
 	int mColumnIndex = 0;
 	std::string mFlappyBirdSpriteAtlasName; //default: FlappyBirdSpriteAtlas
@@ -71,6 +72,10 @@ private:
 	int mFGroundSpriteOrigin = 0;
 	int mFGroundSpriteWidth = 168;
 	int mFGroundSpriteHeight = 56;
+	int mInstructionsX = 292;
+	int	mInstructionsY = 91;
+	int	mInstructionsWidth = 57;
+	int	mInstructionsHeight = 49;
 
 	void LoadProperties();
 	void DoCollissions();
