@@ -56,6 +56,7 @@ void Game::Init()
 	mTitle = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mTitleX, mTitleY, mTitleWidth, mTitleHeight);
 	mPlayButton = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mPlayButtonX, mPlayButtonY, mPlayButtonWidth, mPlayButtonHeight);
 	mScoreBoard = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mScoreBoardX, mScoreBoardY, mScoreBoardWidth, mScoreBoardHeight);
+	mGameOver = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mGameOverX, mGameOverY, mGameOverWidth, mGameOverHeight);
 
 	mGUIScore = new GUIScore(mScreenWidth, mScreenHeight, mScreenScaling);
 }
@@ -90,6 +91,7 @@ void Game::Render(float dt)
 	mRenderer->DrawSprite(mTitle, glm::vec2((mScreenWidth - mTitle->GetWidth() * mScreenScaling) * mTitleScreenFactorX, mScreenHeight * mTitleScreenFactorY), 0.0f);
 	mRenderer->DrawSprite(mPlayButton, glm::vec2((mScreenWidth - mPlayButton->GetWidth() * mScreenScaling) * mPlayBtnScreenFactorX, mScreenHeight * mPlayBtnScreenFactorY), 0.0f);
 	mRenderer->DrawSprite(mScoreBoard, glm::vec2((mScreenWidth - mScoreBoard->GetWidth() * mScreenScaling) * mScoreBrdScreenFactorX, mScreenHeight * mScoreBrdScreenFactorY), 0.0f);
+	mRenderer->DrawSprite(mGameOver, glm::vec2((mScreenWidth - mGameOver->GetWidth() * mScreenScaling) * mGameOverScreenFactorX, mScreenHeight * mGameOverScreenFactorY), 0.0f);
 }
 
 void Game::ComputeScore()
@@ -153,6 +155,12 @@ void Game::LoadProperties()
 	mScoreBoardHeight = ResourceManager::GetPropFloat("Game.mScoreBoardHeight");
 	mScoreBrdScreenFactorX = ResourceManager::GetPropFloat("Game.mScoreBrdScreenFactorX");
 	mScoreBrdScreenFactorY = ResourceManager::GetPropFloat("Game.mScoreBrdScreenFactorY");
+	mGameOverX = ResourceManager::GetPropFloat("Game.mGameOverX");
+	mGameOverY = ResourceManager::GetPropFloat("Game.mGameOverY");
+	mGameOverWidth = ResourceManager::GetPropFloat("Game.mGameOverWidth");
+	mGameOverHeight = ResourceManager::GetPropFloat("Game.mGameOverHeight");
+	mGameOverScreenFactorX = ResourceManager::GetPropFloat("Game.mGameOverScreenFactorX");
+	mGameOverScreenFactorY = ResourceManager::GetPropFloat("Game.mGameOverScreenFactorY");
 }
 
 void Game::DoCollissions()
@@ -209,5 +217,6 @@ void Game::Clear()
 	DELETE_PTR(mTitle);
 	DELETE_PTR(mPlayButton);
 	DELETE_PTR(mScoreBoard);
+	DELETE_PTR(mGameOver);
 	DELETE_PTR(mGUIScore);
 }
