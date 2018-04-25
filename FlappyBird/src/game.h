@@ -40,6 +40,7 @@ private:
 	BirdGameObject *mFlappyBird = nullptr;
 	Sprite *mBackground = nullptr;
 	Sprite *mForeground = nullptr;
+	Sprite *mGetReady = nullptr;
 	Sprite *mInstructions = nullptr;
 	int mScore = 0;
 	GUIScore *mGUIScore = nullptr;
@@ -72,10 +73,18 @@ private:
 	int mFGroundSpriteOrigin = 0;
 	int mFGroundSpriteWidth = 168;
 	int mFGroundSpriteHeight = 56;
+	int mGetReadyX = 295;
+	int	mGetReadyY = 59;
+	int	mGetReadyWidth = 92;
+	int	mGetReadyHeight = 25;
+	float mGetReadyScreenFactorX = 0.5f;
+	float mGetReadyScreenFactorY = 0.75f;
 	int mInstructionsX = 292;
 	int	mInstructionsY = 91;
 	int	mInstructionsWidth = 57;
 	int	mInstructionsHeight = 49;
+	float mInstrucScreenFactorX = 0.5;
+	float mInstrucScreenFactorY = 0.5f;
 
 	void LoadProperties();
 	void DoCollissions();
