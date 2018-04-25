@@ -50,13 +50,10 @@ void Game::Init()
 	mLevel = new GameLevel(mScreenWidth, mScreenHeight, mScreenScaling, mColumnVerticalSeparation, mMinVerticalPos, mMaxVerticalPos, mPassThreshold, mShiftSpeed, mRenderer, mFlappyBirdSpriteAtlasName, this, mFlappyBird);
 
 	mBackground = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mBGroundSpriteOrigin, mBGroundSpriteOrigin, mBGroundSpriteWidth, mBGroundSpriteHeight);
-	
 	mForeground = new Sprite(ResourceManager::GetTexture(mForegroundTexName), mFGroundSpriteOrigin, mFGroundSpriteOrigin, mFGroundSpriteWidth, mFGroundSpriteHeight);
-
 	mGetReady = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mGetReadyX, mGetReadyY, mGetReadyWidth, mGetReadyHeight);
-
 	mInstructions = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mInstructionsX, mInstructionsY, mInstructionsWidth, mInstructionsHeight);
-	
+	mTitle = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mTitleX, mTitleY, mTitleWidth, mTitleHeight);
 	mGUIScore = new GUIScore(mScreenWidth, mScreenHeight, mScreenScaling);
 }
 
@@ -86,7 +83,8 @@ void Game::Render(float dt)
 	mGUIScore->Draw(mScore, mRenderer);
 
 	mRenderer->DrawSprite(mGetReady, glm::vec2((mScreenWidth - mGetReady->GetWidth() * mScreenScaling) * mGetReadyScreenFactorX , mScreenHeight * mGetReadyScreenFactorY), 0.0f);
-	mRenderer->DrawSprite(mInstructions, glm::vec2((mScreenWidth - mInstructions->GetWidth() * mScreenScaling) * mInstrucScreenFactorX, mScreenHeight * mInstrucScreenFactorY), 0.0f);
+	//mRenderer->DrawSprite(mInstructions, glm::vec2((mScreenWidth - mInstructions->GetWidth() * mScreenScaling) * mInstrucScreenFactorX, mScreenHeight * mInstrucScreenFactorY), 0.0f);
+	mRenderer->DrawSprite(mTitle, glm::vec2((mScreenWidth - mTitle->GetWidth() * mScreenScaling) * mTitleScreenFactorX, mScreenHeight * mTitleScreenFactorY), 0.0f);
 }
 
 void Game::ComputeScore()
@@ -138,6 +136,10 @@ void Game::LoadProperties()
 	mInstructionsHeight = ResourceManager::GetPropInt("Game.mInstructionsHeight");
 	mInstrucScreenFactorX = ResourceManager::GetPropFloat("Game.mInstrucScreenFactorX");
 	mInstrucScreenFactorY = ResourceManager::GetPropFloat("Game.mInstrucScreenFactorY");
+	mTitleX = ResourceManager::GetPropInt("Game.mTitleX");
+	mTitleY = ResourceManager::GetPropInt("Game.mTitleY");
+	mTitleWidth = ResourceManager::GetPropInt("Game.mTitleWidth");
+	mTitleHeight = ResourceManager::GetPropInt("Game.mTitleHeight");
 }
 
 void Game::DoCollissions()
@@ -191,5 +193,6 @@ void Game::Clear()
 	DELETE_PTR(mForeground);
 	DELETE_PTR(mGetReady);
 	DELETE_PTR(mInstructions);
+	DELETE_PTR(mTitle);
 	DELETE_PTR(mGUIScore);
 }

@@ -42,6 +42,7 @@ private:
 	Sprite *mForeground = nullptr;
 	Sprite *mGetReady = nullptr;
 	Sprite *mInstructions = nullptr;
+	Sprite *mTitle = nullptr;
 	int mScore = 0;
 	GUIScore *mGUIScore = nullptr;
 	int mColumnIndex = 0;
@@ -85,6 +86,12 @@ private:
 	int	mInstructionsHeight = 49;
 	float mInstrucScreenFactorX = 0.5;
 	float mInstrucScreenFactorY = 0.5f;
+	int mTitleX = 350;
+	int	mTitleY = 91;
+	int mTitleWidth = 90;
+	int mTitleHeight = 24;
+	float mTitleScreenFactorX = 0.5f;
+	float mTitleScreenFactorY = 0.75f;
 
 	void LoadProperties();
 	void DoCollissions();

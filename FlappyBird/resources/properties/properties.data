@@ -47,6 +47,12 @@ Game.mInstructionsWidth:57
 Game.mInstructionsHeight:49
 Game.mInstrucScreenFactorX:0.5
 Game.mInstrucScreenFactorY:0.5
+Game.mTitleX:350
+Game.mTitleY:91
+Game.mTitleWidth:90
+Game.mTitleHeight:24
+Game.mTitleScreenFactorX:0.5
+Game.mTitleScreenFactorY:0.75
 GUIScore.mFactorScreenWidth:0.5
 GUIScore.mFactorScreenHeight:0.25
 GUIScore.mNumWidth:12
