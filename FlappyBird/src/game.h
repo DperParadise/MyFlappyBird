@@ -44,6 +44,7 @@ private:
 	Sprite *mInstructions = nullptr;
 	Sprite *mTitle = nullptr;
 	Sprite *mPlayButton = nullptr;
+	Sprite *mScoreBoard = nullptr;
 	int mScore = 0;
 	GUIScore *mGUIScore = nullptr;
 	int mColumnIndex = 0;
@@ -99,6 +100,12 @@ private:
 	int mPlayButtonHeight = 29;
 	float mPlayBtnScreenFactorX = 0.5f;
 	float mPlayBtnScreenFactorY = 0.25f;
+	int mScoreBoardX = 3;
+	int mScoreBoardY = 259;
+	int	mScoreBoardWidth = 113;
+	int	mScoreBoardHeight = 57;
+	float mScoreBrdScreenFactorX = 0.5f;
+	float mScoreBrdScreenFactorY = 0.5f;
 
 	void LoadProperties();
 	void DoCollissions();

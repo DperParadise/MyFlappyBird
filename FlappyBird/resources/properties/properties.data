@@ -59,6 +59,12 @@ Game.mPlayButtonWidth:52
 Game.mPlayButtonHeight:29
 Game.mPlayBtnScreenFactorX:0.5
 Game.mPlayBtnScreenFactorY:0.25
+Game.mScoreBoardX:3
+Game.mScoreBoardY:259
+Game.mScoreBoardWidth:113
+Game.mScoreBoardHeight:57
+Game.mScoreBrdScreenFactorX:0.5
+Game.mScoreBrdScreenFactorY:0.5
 GUIScore.mFactorScreenWidth:0.5
 GUIScore.mFactorScreenHeight:0.25
 GUIScore.mNumWidth:12
