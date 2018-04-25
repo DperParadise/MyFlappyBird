@@ -54,6 +54,8 @@ void Game::Init()
 	mGetReady = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mGetReadyX, mGetReadyY, mGetReadyWidth, mGetReadyHeight);
 	mInstructions = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mInstructionsX, mInstructionsY, mInstructionsWidth, mInstructionsHeight);
 	mTitle = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mTitleX, mTitleY, mTitleWidth, mTitleHeight);
+	mPlayButton = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mPlayButtonX, mPlayButtonY, mPlayButtonWidth, mPlayButtonHeight);
+	
 	mGUIScore = new GUIScore(mScreenWidth, mScreenHeight, mScreenScaling);
 }
 
@@ -85,6 +87,7 @@ void Game::Render(float dt)
 	mRenderer->DrawSprite(mGetReady, glm::vec2((mScreenWidth - mGetReady->GetWidth() * mScreenScaling) * mGetReadyScreenFactorX , mScreenHeight * mGetReadyScreenFactorY), 0.0f);
 	//mRenderer->DrawSprite(mInstructions, glm::vec2((mScreenWidth - mInstructions->GetWidth() * mScreenScaling) * mInstrucScreenFactorX, mScreenHeight * mInstrucScreenFactorY), 0.0f);
 	mRenderer->DrawSprite(mTitle, glm::vec2((mScreenWidth - mTitle->GetWidth() * mScreenScaling) * mTitleScreenFactorX, mScreenHeight * mTitleScreenFactorY), 0.0f);
+	mRenderer->DrawSprite(mPlayButton, glm::vec2((mScreenWidth - mPlayButton->GetWidth() * mScreenScaling) * mPlayBtnScreenFactorX, mScreenHeight * mPlayBtnScreenFactorY), 0.0f);
 }
 
 void Game::ComputeScore()
@@ -140,6 +143,8 @@ void Game::LoadProperties()
 	mTitleY = ResourceManager::GetPropInt("Game.mTitleY");
 	mTitleWidth = ResourceManager::GetPropInt("Game.mTitleWidth");
 	mTitleHeight = ResourceManager::GetPropInt("Game.mTitleHeight");
+	mPlayBtnScreenFactorX = ResourceManager::GetPropFloat("Game.mPlayBtnScreenFactorX");
+	mPlayBtnScreenFactorY = ResourceManager::GetPropFloat("Game.mPlayBtnScreenFactorY");
 }
 
 void Game::DoCollissions()
@@ -194,5 +199,6 @@ void Game::Clear()
 	DELETE_PTR(mGetReady);
 	DELETE_PTR(mInstructions);
 	DELETE_PTR(mTitle);
+	DELETE_PTR(mPlayButton);
 	DELETE_PTR(mGUIScore);
 }

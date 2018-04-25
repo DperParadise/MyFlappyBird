@@ -53,6 +53,12 @@ Game.mTitleWidth:90
 Game.mTitleHeight:24
 Game.mTitleScreenFactorX:0.5
 Game.mTitleScreenFactorY:0.75
+Game.mPlayButtonX:354
+Game.mPlayButtonY:118
+Game.mPlayButtonWidth:52
+Game.mPlayButtonHeight:29
+Game.mPlayBtnScreenFactorX:0.5
+Game.mPlayBtnScreenFactorY:0.25
 GUIScore.mFactorScreenWidth:0.5
 GUIScore.mFactorScreenHeight:0.25
 GUIScore.mNumWidth:12
