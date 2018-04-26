@@ -25,7 +25,7 @@ Game.BirdSprite3X:59
 Game.BirdAnimSpeed:10.0
 Game.FactorInitScreenPosX:0.5
 Game.FactorInitiScreenPosY:0.5
-Game.FactorStartPosX:0.33
+Game.FactorStartPosX:0.25
 Game.FactorStartPosY:0.5
 Game.StartRot:0.0
 Game.WorldGravity:-2000
@@ -45,13 +45,13 @@ Game.GetReadyY:59
 Game.GetReadyWidth:92
 Game.GetReadyHeight:25
 Game.FactorGetReadyScreenX:0.5
-Game.FactorGetReadyScreenY:0.75
+Game.FactorGetReadyScreenY:0.65
 Game.InstructionsX:292
 Game.InstructionsY:91
 Game.InstructionsWidth:57
 Game.InstructionsHeight:49
 Game.FactorInstrucScreenX:0.5
-Game.FactorInstrucScreenY:0.5
+Game.FactorInstrucScreenY:0.35
 Game.TitleX:350
 Game.TitleY:91
 Game.TitleWidth:90
@@ -72,7 +72,7 @@ Game.FactorGameOverScreenX:0.5
 Game.FactorGameOverScreenY:0.75
 GUIScore.FlappyBirdSpriteAtlasName:FlappyBirdSpriteAtlas
 GUIScore.FactorScreenWidthBig:0.5
-GUIScore.FactorScreenHeightBig:0.25
+GUIScore.FactorScreenHeightBig:0.20
 GUIScore.WidthBig:12
 GUIScore.HeightBig:18
 GUIScore.Num1WidthBig:8

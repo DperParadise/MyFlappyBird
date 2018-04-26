@@ -74,14 +74,14 @@ void Game::Init()
 	int passThreshold = ResourceManager::GetPropInt("Game.PassThreshold");
 	mLevel = new GameLevel(mScreenWidth, mScreenHeight, mScreenScaling, columnVerticalSeparation, minVerticalPos, maxVerticalPos, passThreshold, mShiftSpeed, mRenderer, flappyBirdSpriteAtlasName, this, mFlappyBird);
 
-	int bgroundSpriteOrigin = ResourceManager::GetPropFloat("Game.BGroundSpriteOrigin");
-	int bgroundSpriteWidth = ResourceManager::GetPropFloat("Game.BGroundSpriteWidth");
-	int bgroundSpriteHeight = ResourceManager::GetPropFloat("Game.BGroundSpriteHeight");
+	int bgroundSpriteOrigin = ResourceManager::GetPropInt("Game.BGroundSpriteOrigin");
+	int bgroundSpriteWidth = ResourceManager::GetPropInt("Game.BGroundSpriteWidth");
+	int bgroundSpriteHeight = ResourceManager::GetPropInt("Game.BGroundSpriteHeight");
 	mBackground = new Sprite(ResourceManager::GetTexture(flappyBirdSpriteAtlasName), bgroundSpriteOrigin, bgroundSpriteOrigin, bgroundSpriteWidth, bgroundSpriteHeight);
 	
-	int fgroundSpriteOrigin = ResourceManager::GetPropFloat("Game.FGroundSpriteOrigin");
-	int fgroundSpriteWidth = ResourceManager::GetPropFloat("Game.FGroundSpriteWidth");
-	int fgroundSpriteHeight = ResourceManager::GetPropFloat("Game.FGroundSpriteHeight");
+	int fgroundSpriteOrigin = ResourceManager::GetPropInt("Game.FGroundSpriteOrigin");
+	int fgroundSpriteWidth = ResourceManager::GetPropInt("Game.FGroundSpriteWidth");
+	int fgroundSpriteHeight = ResourceManager::GetPropInt("Game.FGroundSpriteHeight");
 	mForeground = new Sprite(ResourceManager::GetTexture(foregroundTexName), fgroundSpriteOrigin, fgroundSpriteOrigin, fgroundSpriteWidth, fgroundSpriteHeight);
 	
 	int getReadyX = ResourceManager::GetPropInt("Game.GetReadyX");
@@ -108,10 +108,10 @@ void Game::Init()
 	int playButtonHeight = ResourceManager::GetPropInt("Game.PlayButtonHeight");
 	mPlayButton = new Sprite(ResourceManager::GetTexture(flappyBirdSpriteAtlasName), playButtonX, playButtonY, playButtonWidth, playButtonHeight);
 	
-	int gameOverX = ResourceManager::GetPropFloat("Game.GameOverX");
-	int gameOverY = ResourceManager::GetPropFloat("Game.GameOverY");
-	int gameOverWidth = ResourceManager::GetPropFloat("Game.GameOverWidth");
-	int gameOverHeight = ResourceManager::GetPropFloat("Game.GameOverHeight");
+	int gameOverX = ResourceManager::GetPropInt("Game.GameOverX");
+	int gameOverY = ResourceManager::GetPropInt("Game.GameOverY");
+	int gameOverWidth = ResourceManager::GetPropInt("Game.GameOverWidth");
+	int gameOverHeight = ResourceManager::GetPropInt("Game.GameOverHeight");
 	mGameOver = new Sprite(ResourceManager::GetTexture(flappyBirdSpriteAtlasName), gameOverX, gameOverY, gameOverWidth, gameOverHeight);
 
 	mGUIScore = new GUIScore(mScreenWidth, mScreenHeight, mScreenScaling);
@@ -182,25 +182,42 @@ void Game::Update(float dt)
 
 void Game::Render(float dt)
 {
+	mRenderer->DrawSprite(mBackground, glm::vec2(0.0f), 0.0f);
+
 	switch (mGameState)
 	{
-	case GameState::INITIAL_SCREEN:
-		mRenderer->DrawSprite(mBackground, glm::vec2(0.0f), 0.0f);
-		
-		mFlappyBird->Draw(mRenderer, dt);
+		case GameState::INITIAL_SCREEN:
+		{
+			mFlappyBird->Draw(mRenderer, dt);
 
-		float titlePosX = (mScreenWidth - mTitle->GetWidth() * mScreenScaling) * mFactorTitleScreenX;
-		float titlePosY = mScreenHeight * mFactorTitleScreenY;
-		mRenderer->DrawSprite(mTitle, glm::vec2(titlePosX, titlePosY), 0.0f);
+			float titlePosX = (mScreenWidth - mTitle->GetWidth() * mScreenScaling) * mFactorTitleScreenX;
+			float titlePosY = mScreenHeight * mFactorTitleScreenY;
+			mRenderer->DrawSprite(mTitle, glm::vec2(titlePosX, titlePosY), 0.0f);
 
-		float playBtnPosX = (mScreenWidth - mPlayButton->GetWidth() * mScreenScaling) * mFactorPlayBtnScreenX;
-		float playBtnPosY = mScreenHeight * mFactorPlayBtnScreenY;
-		mRenderer->DrawSprite(mPlayButton, glm::vec2(playBtnPosX, playBtnPosY), 0.0f);
+			float playBtnPosX = (mScreenWidth - mPlayButton->GetWidth() * mScreenScaling) * mFactorPlayBtnScreenX;
+			float playBtnPosY = mScreenHeight * mFactorPlayBtnScreenY;
+			mRenderer->DrawSprite(mPlayButton, glm::vec2(playBtnPosX, playBtnPosY), 0.0f);
+			mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, -mShiftSpeed * dt);
+			break;
+		}
+		case GameState::INSTRUCTIONS:
+		{
+			mFlappyBird->Draw(mRenderer, dt);
 
-		mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, -mShiftSpeed * dt);
+			mGUIScore->DrawBigScoreNumbers(mScore, mRenderer);
 
-		break;
+			float getReadyPosX = (mScreenWidth - mGetReady->GetWidth() * mScreenScaling) * mFactorGetReadyScreenX;
+			float getReadyPosY = mScreenHeight * mFactorGetReadyScreenY;
+			mRenderer->DrawSprite(mGetReady, glm::vec2( getReadyPosX, getReadyPosY), 0.0f);
+
+			float instrucPosX = (mScreenWidth - mInstructions->GetWidth() * mScreenScaling) * mFactorInstrucScreenX;
+			float instrucPosY = mScreenHeight * mFactorInstrucScreenY;
+			mRenderer->DrawSprite(mInstructions, glm::vec2(instrucPosX, instrucPosY), 0.0f);
+			break;
+		}
 	}
+
+	mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, -mShiftSpeed * dt);
 
 /*
 	mRenderer->DrawSprite(mBackground, glm::vec2(0.0f), 0.0f);

@@ -49,13 +49,13 @@ private:
 	int mScore = 0;
 	GUIScore *mGUIScore = nullptr;
 	int mColumnIndex = 0;
-	float mFactorStartPosX = 0.33f;
+	float mFactorStartPosX = 0.25f;
 	float mFactorStartPosY = 0.5f;
 	int mShiftSpeed = -100;
 	float mFactorGetReadyScreenX = 0.5f;
-	float mFactorGetReadyScreenY = 0.75f;
+	float mFactorGetReadyScreenY = 0.65f;
 	float mFactorInstrucScreenX = 0.5;
-	float mFactorInstrucScreenY = 0.5f;
+	float mFactorInstrucScreenY = 0.35f;
 	float mFactorTitleScreenX = 0.5f;
 	float mFactorTitleScreenY = 0.75f;
 	float mFactorPlayBtnScreenX = 0.5f;
