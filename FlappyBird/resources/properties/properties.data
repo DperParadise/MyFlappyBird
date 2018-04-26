@@ -9,6 +9,10 @@ BirdGameObject.RotSpeeedNotFalling:1000.0
 BirdGameObject.HoverSpeed:8.0f
 BirdGameObject.MaxHoverAmp:20
 BirdGameObject.MaxTimerCount:60.0
+Game.PressSpaceTexName:PressSpaceTex
+Game.PressSpaceTexPath:resources/textures/press_space.png
+Game.FactorPressSpaceX:0.5
+Game.FactorPressSpaceY:0.1
 Game.FlappyBirdSpriteAtlasName:FlappyBirdSpriteAtlas
 Game.FlappyBirdSpriteAtlasPath:resources/textures/flappy_bird_sprite_sheet.png
 Game.ForegroundTexName:Foreground
@@ -66,6 +70,10 @@ Game.FactorPlayBtnScreenX:0.5
 Game.FactorPlayBtnScreenY:0.25
 Game.GameOverX:395
 Game.GameOverY:59
+Game.PressSpaceX:0
+Game.PressSpaceY:0
+Game.PressSpaceWidth:110
+Game.PressSpaceHeight:17
 Game.GameOverWidth:96
 Game.GameOverHeight:21
 Game.FactorGameOverScreenX:0.5

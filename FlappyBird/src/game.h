@@ -47,12 +47,15 @@ private:
 	Sprite *mPlayButton = nullptr;
 	Sprite *mScoreBoard = nullptr;
 	Sprite *mGameOver = nullptr;
+	Sprite *mPressSpace = nullptr;
 	int mScore = 0;
 	GUIScore *mGUIScore = nullptr;
 	int mColumnIndex = 0;
 	float mFactorStartPosX = 0.25f;
 	float mFactorStartPosY = 0.5f;
 	int mShiftSpeed = -150;
+	float mFactorPressSpaceX = 0.5f;
+	float mFactorPressSpaceY = 0.1;
 	float mFactorGetReadyScreenX = 0.5f;
 	float mFactorGetReadyScreenY = 0.65f;
 	float mFactorInstrucScreenX = 0.5;
