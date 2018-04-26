@@ -13,6 +13,8 @@
 #include "gui_score.h"
 #include <string>
 
+#include <iostream>
+
 Game::Game(int screenWidth, int screenHeight, float screenScaling) : mScreenWidth(screenWidth), mScreenHeight(screenHeight), mScreenScaling(screenScaling) {}
 
 Game::~Game()
@@ -115,6 +117,8 @@ void Game::Init()
 	mGameOver = new Sprite(ResourceManager::GetTexture(flappyBirdSpriteAtlasName), gameOverX, gameOverY, gameOverWidth, gameOverHeight);
 
 	mGUIScore = new GUIScore(mScreenWidth, mScreenHeight, mScreenScaling);
+
+	mMaxDeadTimer = ResourceManager::GetPropFloat("Game.MaxDeadTimer");
 }
 
 void Game::ProcessInput()
@@ -151,10 +155,18 @@ void Game::ProcessInput()
 		}
 		break;
 	case GameState::DEAD:
-		if (mKeys[GLFW_KEY_SPACE] && !mKeysProcessed[GLFW_KEY_SPACE])
+		if (mHasDeadTimerExpired && mKeys[GLFW_KEY_SPACE] && !mKeysProcessed[GLFW_KEY_SPACE])
 		{
+			mHasDeadTimerExpired = false;
 			mKeysProcessed[GLFW_KEY_SPACE] = true;
-			mFlappyBird->mJumpPressed = true;
+			mGameState = GameState::SHOW_SCORE;
+		}
+		break;
+	case GameState::SHOW_SCORE:
+		if (mHasScoreTimerExpired && mKeys[GLFW_KEY_SPACE] && !mKeysProcessed[GLFW_KEY_SPACE])
+		{
+			mHasScoreTimerExpired = false;
+			mKeysProcessed[GLFW_KEY_SPACE] = true;
 			mGameState = GameState::INSTRUCTIONS;
 		}
 		break;
@@ -178,6 +190,21 @@ void Game::Update(float dt)
 		mLevel->UpdateColumnsPosition(dt);
 		DoCollissions();
 		break;
+
+	case GameState::DEAD:
+		mDeadTimer += dt;
+		if (mDeadTimer > mMaxDeadTimer)
+		{
+			mDeadTimer = 0.0f;
+			mHasDeadTimerExpired = true;
+		}
+	case GameState::SHOW_SCORE:
+		mShowScoreTimer += dt;
+		if (mShowScoreTimer > mMaxScoreTimer)
+		{
+			mShowScoreTimer = 0.0f;
+			mHasScoreTimerExpired = true;
+		}
 	}
 }
 
@@ -199,6 +226,7 @@ void Game::Render(float dt)
 			float playBtnPosY = mScreenHeight * mFactorPlayBtnScreenY;
 			mRenderer->DrawSprite(mPlayButton, glm::vec2(playBtnPosX, playBtnPosY), 0.0f);
 			mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, -mShiftSpeed * dt);
+			mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, -mShiftSpeed * dt);
 			break;
 		}
 		case GameState::INSTRUCTIONS:
@@ -214,6 +242,7 @@ void Game::Render(float dt)
 			float instrucPosX = (mScreenWidth - mInstructions->GetWidth() * mScreenScaling) * mFactorInstrucScreenX;
 			float instrucPosY = mScreenHeight * mFactorInstrucScreenY;
 			mRenderer->DrawSprite(mInstructions, glm::vec2(instrucPosX, instrucPosY), 0.0f);
+			mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, -mShiftSpeed * dt);
 			break;
 		}
 		case GameState::ACTIVE:
@@ -221,11 +250,20 @@ void Game::Render(float dt)
 			mLevel->DrawLevel(dt);
 			mFlappyBird->Draw(mRenderer, dt);
 			mGUIScore->DrawBigScoreNumbers(mScore, mRenderer);
+			mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, -mShiftSpeed * dt);
 			break;
 		}
+		case GameState::DEAD:
+		{
+			mLevel->DrawLevel(0.0f);
+			mFlappyBird->Draw(mRenderer, 0.0f);
+			mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, 0.0f);
+			break;
+		}
+		
 	}
 
-	mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, -mShiftSpeed * dt);
+	
 
 /*
 	mRenderer->DrawSprite(mBackground, glm::vec2(0.0f), 0.0f);
@@ -292,9 +330,9 @@ void Game::CheckCollissions(BirdGameObject *bird, ColumnGameObject *column)
 	glm::vec2 maxHalfExtents(colSprite->GetWidth() * 0.5f * mScreenScaling, colSprite->GetHeight() * 0.5f * mScreenScaling);
 	glm::vec2 closestPoint = colCentre + glm::clamp(colToBirdVector, minHalfExtents, maxHalfExtents);
 	
-	if (glm::length(birdCentre - closestPoint) < birdSprite->GetHeight() * mScreenScaling)
+	if (glm::length(birdCentre - closestPoint) < birdSprite->GetHeight() * 0.5f * mScreenScaling)
 	{
-		//std::cout << "Collision with column" << std::endl;
+		mGameState = GameState::DEAD;
 	}
 }
 
@@ -302,7 +340,7 @@ void Game::CheckCollissions(BirdGameObject *bird, int groundHeight)
 {
 	if (bird->mPosition.y < groundHeight * mScreenScaling)
 	{
-		//std::cout << "Collission with ground" << std::endl;
+		mGameState = GameState::DEAD;
 	}
 }
 

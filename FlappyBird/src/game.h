@@ -10,6 +10,7 @@ enum class GameState
 	INSTRUCTIONS,
 	ACTIVE,
 	DEAD,
+	SHOW_SCORE
 };
 class BirdGameObject;
 class ColumnGameObject;
@@ -61,7 +62,13 @@ private:
 	float mFactorPlayBtnScreenX = 0.5f;
 	float mFactorPlayBtnScreenY = 0.25f;
 	float mFactorGameOverScreenX = 0.5f;
-	float mFactorGameOverScreenY = 0.75f;
+	float mFactorGameOverScreenY = 0.65f;
+	float mDeadTimer = 0.0f;
+	float mMaxDeadTimer = 3.0f;
+	bool mHasDeadTimerExpired = false;
+	float mShowScoreTimer = 0.0f;
+	float mMaxScoreTimer = 4.0f;
+	bool mHasScoreTimerExpired = false;
 
 	void LoadProperties();
 	void DoCollissions();
