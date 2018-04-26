@@ -59,13 +59,14 @@ void Game::Init()
 	birdSprites.push_back(new Sprite(ResourceManager::GetTexture(flappyBirdSpriteAtlasName), birdSprite2X, birdSpriteY, birdSpriteWidth, birdSpriteHeight));
 	birdSprites.push_back(new Sprite(ResourceManager::GetTexture(flappyBirdSpriteAtlasName), birdSprite3X, birdSpriteY, birdSpriteWidth, birdSpriteHeight));
 	
-	float startPosX = ResourceManager::GetPropFloat("Game.StartPosX");
-	float startPosY = ResourceManager::GetPropFloat("Game.StartPosY");
+	float factorInitScreenPosX = ResourceManager::GetPropFloat("Game.FactorInitScreenPosX");
+	float factorInitScreenPosY = ResourceManager::GetPropFloat("Game.FactorInitiScreenPosY");
 	float startRot = ResourceManager::GetPropFloat("Game.StartRot");
-	float worldGravity = ResourceManager::GetPropFloat("Game.WorldGravity");
+	int worldGravity = ResourceManager::GetPropInt("Game.WorldGravity");
 	float birdAnimSpeed = ResourceManager::GetPropFloat("Game.BirdAnimSpeed");
 	Animation *flyAnimation = new Animation(birdSprites, birdAnimSpeed);
-	mFlappyBird = new BirdGameObject(glm::vec2(startPosX, startPosY), startRot, glm::vec2(0.0f, 0.0f), worldGravity, flyAnimation);
+	glm::vec2 initPos(mScreenWidth * factorInitScreenPosX - birdSpriteWidth * mScreenScaling * factorInitScreenPosX , mScreenHeight * factorInitScreenPosY);
+	mFlappyBird = new BirdGameObject(initPos, startRot, glm::vec2(0.0f, 0.0f), worldGravity, flyAnimation, mScreenScaling);
 		
 	int columnVerticalSeparation = ResourceManager::GetPropInt("Game.ColumnVerticalSeparation");
 	int minVerticalPos = ResourceManager::GetPropInt("Game.MinVerticalPos");
@@ -118,35 +119,103 @@ void Game::Init()
 
 void Game::ProcessInput()
 {
-	if (mKeys[GLFW_KEY_SPACE] && !mKeysProcessed[GLFW_KEY_SPACE])
+	switch (mGameState)
 	{
-		mFlappyBird->mJumpPressed = true;
-		mKeysProcessed[GLFW_KEY_SPACE] = true;
+	case GameState::INITIAL_SCREEN:
+		if (mKeys[GLFW_KEY_SPACE] && !mKeysProcessed[GLFW_KEY_SPACE])
+		{
+			mKeysProcessed[GLFW_KEY_SPACE] = true;
+			mGameState = GameState::INSTRUCTIONS;
+			mFlappyBird->mPosition.x = mScreenWidth * mFactorStartPosX;
+			mFlappyBird->mPosition.y = mScreenHeight * mFactorStartPosY;
+		}
+		break;
+	case GameState::INSTRUCTIONS:
+		if (mKeys[GLFW_KEY_SPACE] && !mKeysProcessed[GLFW_KEY_SPACE])
+		{
+			mKeysProcessed[GLFW_KEY_SPACE] = true;
+			mGameState = GameState::ACTIVE;
+		}
+		break;
+	case GameState::ACTIVE:
+		if (!mFlappyBird->IsAlive())
+		{
+			mGameState = GameState::DEAD;
+			break;
+		}
+		if (mKeys[GLFW_KEY_SPACE] && !mKeysProcessed[GLFW_KEY_SPACE])
+		{
+			mKeysProcessed[GLFW_KEY_SPACE] = true;
+			mFlappyBird->mJumpPressed = true;
+		}
+		break;
+	case GameState::DEAD:
+		if (mKeys[GLFW_KEY_SPACE] && !mKeysProcessed[GLFW_KEY_SPACE])
+		{
+			mKeysProcessed[GLFW_KEY_SPACE] = true;
+			mFlappyBird->mJumpPressed = true;
+			mGameState = GameState::INSTRUCTIONS;
+		}
+		break;
 	}
 }
 
 void Game::Update(float dt)
 {
-	mFlappyBird->UpdatePosition(dt);
-	mLevel->UpdateColumnsPosition(dt);
+	switch (mGameState)
+	{
+	case GameState::INITIAL_SCREEN:
+		mFlappyBird->Hover(dt);
+		break;
 
-	DoCollissions();
+	case GameState::INSTRUCTIONS:
+		mFlappyBird->Hover(dt);
+		break;
+
+	case GameState::ACTIVE:
+		mFlappyBird->UpdatePosition(dt);
+		mLevel->UpdateColumnsPosition(dt);
+		DoCollissions();
+		break;
+	}
 }
 
 void Game::Render(float dt)
 {
+	switch (mGameState)
+	{
+	case GameState::INITIAL_SCREEN:
+		mRenderer->DrawSprite(mBackground, glm::vec2(0.0f), 0.0f);
+		
+		mFlappyBird->Draw(mRenderer, dt);
+
+		float titlePosX = (mScreenWidth - mTitle->GetWidth() * mScreenScaling) * mFactorTitleScreenX;
+		float titlePosY = mScreenHeight * mFactorTitleScreenY;
+		mRenderer->DrawSprite(mTitle, glm::vec2(titlePosX, titlePosY), 0.0f);
+
+		float playBtnPosX = (mScreenWidth - mPlayButton->GetWidth() * mScreenScaling) * mFactorPlayBtnScreenX;
+		float playBtnPosY = mScreenHeight * mFactorPlayBtnScreenY;
+		mRenderer->DrawSprite(mPlayButton, glm::vec2(playBtnPosX, playBtnPosY), 0.0f);
+
+		mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, -mShiftSpeed * dt);
+
+		break;
+	}
+
+/*
 	mRenderer->DrawSprite(mBackground, glm::vec2(0.0f), 0.0f);
 	mLevel->DrawLevel(dt);
 	mFlappyBird->Draw(mRenderer, dt);
 	mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, -mShiftSpeed * dt);
 	mGUIScore->DrawBigScoreNumbers(mScore, mRenderer);
 
-	mRenderer->DrawSprite(mGetReady, glm::vec2((mScreenWidth - mGetReady->GetWidth() * mScreenScaling) * mGetReadyScreenFactorX , mScreenHeight * mGetReadyScreenFactorY), 0.0f);
-	mRenderer->DrawSprite(mInstructions, glm::vec2((mScreenWidth - mInstructions->GetWidth() * mScreenScaling) * mInstrucScreenFactorX, mScreenHeight * mInstrucScreenFactorY), 0.0f);
-	mRenderer->DrawSprite(mTitle, glm::vec2((mScreenWidth - mTitle->GetWidth() * mScreenScaling) * mTitleScreenFactorX, mScreenHeight * mTitleScreenFactorY), 0.0f);
-	mRenderer->DrawSprite(mPlayButton, glm::vec2((mScreenWidth - mPlayButton->GetWidth() * mScreenScaling) * mPlayBtnScreenFactorX, mScreenHeight * mPlayBtnScreenFactorY), 0.0f);
-	mRenderer->DrawSprite(mGameOver, glm::vec2((mScreenWidth - mGameOver->GetWidth() * mScreenScaling) * mGameOverScreenFactorX, mScreenHeight * mGameOverScreenFactorY), 0.0f);
+	mRenderer->DrawSprite(mGetReady, glm::vec2((mScreenWidth - mGetReady->GetWidth() * mScreenScaling) * mFactorGetReadyScreenX , mScreenHeight * mFactorGetReadyScreenY), 0.0f);
+	mRenderer->DrawSprite(mInstructions, glm::vec2((mScreenWidth - mInstructions->GetWidth() * mScreenScaling) * mFactorInstrucScreenX, mScreenHeight * mFactorInstrucScreenY), 0.0f);
+	mRenderer->DrawSprite(mTitle, glm::vec2((mScreenWidth - mTitle->GetWidth() * mScreenScaling) * mFactorTitleScreenX, mScreenHeight * mFactorTitleScreenY), 0.0f);
+	mRenderer->DrawSprite(mPlayButton, glm::vec2((mScreenWidth - mPlayButton->GetWidth() * mScreenScaling) * mFactorPlayBtnScreenX, mScreenHeight * mFactorPlayBtnScreenY), 0.0f);
+	mRenderer->DrawSprite(mGameOver, glm::vec2((mScreenWidth - mGameOver->GetWidth() * mScreenScaling) * mFactorGameOverScreenX, mScreenHeight * mFactorGameOverScreenY), 0.0f);
 	mGUIScore->DrawScoreBoard(mScore, mRenderer);
+	*/
 }
 
 void Game::ComputeScore()
@@ -156,15 +225,17 @@ void Game::ComputeScore()
 
 void Game::LoadProperties()
 {
+	mFactorStartPosX = ResourceManager::GetPropFloat("Game.FactorStartPosX");
+	mFactorStartPosY = ResourceManager::GetPropFloat("Game.FactorStartPosY");
 	mShiftSpeed = ResourceManager::GetPropFloat("Game.ShiftSpeed");
-	mGetReadyScreenFactorX = ResourceManager::GetPropFloat("Game.GetReadyScreenFactorX");
-	mGetReadyScreenFactorY = ResourceManager::GetPropFloat("Game.GetReadyScreenFactorY");
-	mInstrucScreenFactorX = ResourceManager::GetPropFloat("Game.InstrucScreenFactorX");
-	mInstrucScreenFactorY = ResourceManager::GetPropFloat("Game.InstrucScreenFactorY");
-	mPlayBtnScreenFactorX = ResourceManager::GetPropFloat("Game.PlayBtnScreenFactorX");
-	mPlayBtnScreenFactorY = ResourceManager::GetPropFloat("Game.PlayBtnScreenFactorY");
-	mGameOverScreenFactorX = ResourceManager::GetPropFloat("Game.GameOverScreenFactorX");
-	mGameOverScreenFactorY = ResourceManager::GetPropFloat("Game.GameOverScreenFactorY");
+	mFactorGetReadyScreenX = ResourceManager::GetPropFloat("Game.FactorGetReadyScreenX");
+	mFactorGetReadyScreenY = ResourceManager::GetPropFloat("Game.FactorGetReadyScreenY");
+	mFactorInstrucScreenX = ResourceManager::GetPropFloat("Game.FactorInstrucScreenX");
+	mFactorInstrucScreenY = ResourceManager::GetPropFloat("Game.FactorInstrucScreenY");
+	mFactorPlayBtnScreenX = ResourceManager::GetPropFloat("Game.FactorPlayBtnScreenX");
+	mFactorPlayBtnScreenY = ResourceManager::GetPropFloat("Game.FactorPlayBtnScreenY");
+	mFactorGameOverScreenX = ResourceManager::GetPropFloat("Game.FactorGameOverScreenX");
+	mFactorGameOverScreenY = ResourceManager::GetPropFloat("Game.FactorGameOverScreenY");
 }
 
 void Game::DoCollissions()

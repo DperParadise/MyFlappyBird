@@ -2,12 +2,14 @@
 #include <glm/glm.hpp>
 #include "globals.h"
 #include "resource_manager.h"
+#include <GLFW/glfw3.h>
 
 BirdGameObject::BirdGameObject(glm::vec2 position,
 	float rotInDegrees,
 	glm::vec2 velocity,
-	float acceleration,
-	Animation* animation) : mAcceleration(acceleration), GameObject(position, rotInDegrees, velocity, animation) 
+	int worldGravity,
+	Animation* animation,
+	float screenScaling) : mWorldGravity(worldGravity), mScreenScaling(screenScaling), GameObject(position, rotInDegrees, velocity, animation)
 {
 	LoadProperties();
 }
@@ -16,14 +18,14 @@ BirdGameObject::~BirdGameObject() {}
 
 void BirdGameObject::UpdatePosition(float dt)
 {
-	mVelocity.y += mAcceleration * dt;
+	mVelocity.y += mWorldGravity * dt;
 	mPosition.x += mVelocity.x * dt;
 	mPosition.y += mVelocity.y * dt;
 	mFallingTime += dt;
 
 	if (mJumpPressed)
 	{
-		mVelocity.y += mJumpVelocityFactor * mAcceleration;
+		mVelocity.y += mJumpVelocityFactor * mWorldGravity;
 		mJumpPressed = false;
 		mFallingTime = 0.0f;  
 		mFalling = false;
@@ -45,6 +47,16 @@ void BirdGameObject::UpdatePosition(float dt)
 			mFalling = true;
 		}
 	}	
+}
+
+void BirdGameObject::Hover(float dt)
+{
+	mTimer += dt;
+	if (mTimer > 60.0f)
+	{
+		mTimer = 0.0f;
+	}
+	mPosition.y += mMaxHoverAmp * mScreenScaling * glm::sin(mHoverSpeed * mTimer) * dt;
 }
 
 bool BirdGameObject::IsAlive() const
@@ -71,4 +83,7 @@ void BirdGameObject::LoadProperties()
 	mTimeToStartRotation = ResourceManager::GetPropFloat("BirdGameObject.TimeToStartRotation");
 	mTimeToMinRotation = ResourceManager::GetPropFloat("BirdGameObject.TimeToMinRotation");
 	mRotSpeeedNotFalling = ResourceManager::GetPropFloat("BirdGameObject.RotSpeeedNotFalling");
+	mHoverSpeed = ResourceManager::GetPropFloat("BirdGameObject.HoverSpeed");
+	mMaxHoverAmp = ResourceManager::GetPropFloat("BirdGameObject.MaxHoverAmp");
+	mMaxTimerCount = ResourceManager::GetPropFloat("BirdGameObject.MaxTimerCount");
 }

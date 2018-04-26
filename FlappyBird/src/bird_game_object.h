@@ -9,13 +9,14 @@
 class BirdGameObject final : public GameObject
 {
 public:
-	float mAcceleration;
+	float mWorldGravity;
 	bool mJumpPressed = false;
 
-	BirdGameObject(glm::vec2 position, float rotInDegrees, glm::vec2 velocity, float acceleration, Animation* animation);
+	BirdGameObject(glm::vec2 position, float rotInDegrees, glm::vec2 velocity, int worldGravity, Animation* animation, float screenScaling);
 	~BirdGameObject();
 
 	virtual void UpdatePosition(float dt);
+	void Hover(float dt);
 	bool IsAlive() const;
 	void Kill();
 	void SetAlive();
@@ -32,7 +33,11 @@ private:
 	float mTimeToStartRotation = 0.5f;
 	float mTimeToMinRotation = 0.3f;
 	float mRotSpeeedNotFalling = 1000.0f;
-
+	float mHoverSpeed = 8.0f;
+	int mMaxHoverAmp = 20;
+	float mTimer = 0.0f;
+	float mMaxTimerCount = 60.0f;
+	float mScreenScaling;
 	void LoadProperties();
 };
 #endif

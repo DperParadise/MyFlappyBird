@@ -6,7 +6,8 @@
 
 enum class GameState
 {
-	MENU,
+	INITIAL_SCREEN,
+	INSTRUCTIONS,
 	ACTIVE,
 	DEAD,
 };
@@ -19,7 +20,7 @@ class GUIScore;
 class Game final
 {
 public:
-	GameState mGameState;
+	GameState mGameState = GameState::INITIAL_SCREEN;
 	bool mKeys[1024];
 	bool mKeysProcessed[1024];
 
@@ -48,17 +49,19 @@ private:
 	int mScore = 0;
 	GUIScore *mGUIScore = nullptr;
 	int mColumnIndex = 0;
+	float mFactorStartPosX = 0.33f;
+	float mFactorStartPosY = 0.5f;
 	int mShiftSpeed = -100;
-	float mGetReadyScreenFactorX = 0.5f;
-	float mGetReadyScreenFactorY = 0.75f;
-	float mInstrucScreenFactorX = 0.5;
-	float mInstrucScreenFactorY = 0.5f;
-	float mTitleScreenFactorX = 0.5f;
-	float mTitleScreenFactorY = 0.75f;
-	float mPlayBtnScreenFactorX = 0.5f;
-	float mPlayBtnScreenFactorY = 0.25f;
-	float mGameOverScreenFactorX = 0.5f;
-	float mGameOverScreenFactorY = 0.75f;
+	float mFactorGetReadyScreenX = 0.5f;
+	float mFactorGetReadyScreenY = 0.75f;
+	float mFactorInstrucScreenX = 0.5;
+	float mFactorInstrucScreenY = 0.5f;
+	float mFactorTitleScreenX = 0.5f;
+	float mFactorTitleScreenY = 0.75f;
+	float mFactorPlayBtnScreenX = 0.5f;
+	float mFactorPlayBtnScreenY = 0.25f;
+	float mFactorGameOverScreenX = 0.5f;
+	float mFactorGameOverScreenY = 0.75f;
 
 	void LoadProperties();
 	void DoCollissions();
