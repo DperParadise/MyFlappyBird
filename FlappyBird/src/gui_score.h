@@ -15,6 +15,8 @@ public:
 	~GUIScore();
 	void DrawBigScoreNumbers(unsigned int score, const SpriteRenderer *renderer) const;
 	void DrawScoreBoard(unsigned int score, const SpriteRenderer *renderer) const;
+	void SaveMaxScore(unsigned int maxScore);
+	unsigned int GetBestScore() const;
 
 private:
 	unsigned int mBestScore;
@@ -29,15 +31,19 @@ private:
 	//offsets in the score board to position score numbers
 	int mSBEdgeOffsetWidth = 11; 
 	int mSBEdgeOffsetHeight = 23;
+	int mBestEdgeOffsetWidth = 11;
+	int mBestEdgeOffsetHeight = 44;
 
 	//score board multiplicative factors
 	float mSBFactorScreenWidth;
 	float mSBFactorScreenHeight;
-	
+
 	Sprite *mScoreBoard = nullptr;
 
 	void Init();
-	void DrawSmallScoreNumbers(const Sprite *scoreBoard, const glm::vec2 &scoreBoardPos, int score, const SpriteRenderer *renderer) const;
+	void DrawSmallScoreNumbers(const Sprite *scoreBoard, const glm::vec2 &scoreBoardPos, int score, const SpriteRenderer *renderer, bool isBestScore) const;
+	void LoadBestScore();
+	
 	void Clear();
 };
 

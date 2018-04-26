@@ -52,7 +52,7 @@ private:
 	int mColumnIndex = 0;
 	float mFactorStartPosX = 0.25f;
 	float mFactorStartPosY = 0.5f;
-	int mShiftSpeed = -100;
+	int mShiftSpeed = -150;
 	float mFactorGetReadyScreenX = 0.5f;
 	float mFactorGetReadyScreenY = 0.65f;
 	float mFactorInstrucScreenX = 0.5;
@@ -64,10 +64,10 @@ private:
 	float mFactorGameOverScreenX = 0.5f;
 	float mFactorGameOverScreenY = 0.7f;
 	float mDeadTimer = 0.0f;
-	float mMaxDeadTimer = 2.0f;
+	float mMaxDeadTimer = 1.0f;
 	bool mHasDeadTimerExpired = false;
 	float mShowScoreTimer = 0.0f;
-	float mMaxScoreTimer = 3.0f;
+	float mMaxScoreTimer = 2.0f;
 	bool mHasScoreTimerExpired = false;
 
 	void LoadProperties();

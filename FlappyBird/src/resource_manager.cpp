@@ -39,7 +39,7 @@ void ResourceManager::LoadProperties(const std::string &propertiesFilePath)
 	{
 		char buffer[100];
 		strerror_s(buffer, 100, errno);
-		std::cout << "Error opening properties file: " << buffer << std::endl;
+		std::cout << "Error opening " << propertiesFilePath << ":" << buffer << std::endl;
 		return;
 	}
 	
@@ -51,6 +51,7 @@ void ResourceManager::LoadProperties(const std::string &propertiesFilePath)
 		std::getline(inputFileStream, value);
 		mProperties.insert(std::map<std::string, std::string>::value_type(key, value));
 	}
+	inputFileStream.close();
 }
 
 const Shader& ResourceManager::GetShader(const std::string &shaderName)

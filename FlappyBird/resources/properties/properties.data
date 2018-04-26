@@ -33,7 +33,7 @@ Game.ColumnVerticalSeparation:64
 Game.MinVerticalPos:-104
 Game.MaxVerticalPos:24
 Game.PassThreshold:36
-Game.ShiftSpeed:-100
+Game.ShiftSpeed:-150
 Game.BGroundSpriteOrigin:0
 Game.BGroundSpriteWidth:144
 Game.BGroundSpriteHeight:256
@@ -70,8 +70,8 @@ Game.GameOverWidth:96
 Game.GameOverHeight:21
 Game.FactorGameOverScreenX:0.5
 Game.FactorGameOverScreenY:0.66
-Game.MaxDeadTimer: 2.0
-Game.MaxScoreTimer: 3.0
+Game.MaxDeadTimer: 1.0
+Game.MaxScoreTimer: 2.0
 GameLevel.FactorHorizSeparation:3
 GameLevel.SpriteWidth:26
 GameLevel.SpriteHeight:160
@@ -98,6 +98,8 @@ GUIScore.Num8XBig:414
 GUIScore.Num9XBig:428
 GUIScore.SBEdgeOffsetWidth:11
 GUIScore.SBEdgeOffsetHeight:23
+GUIScore.BestEdgeOffsetWidth:11
+GUIScore.BestEdgeOffsetHeight:44
 GUIScore.WidthSmall:6
 GUIScore.HeightSmall:7
 GUIScore.Num1WidthSmall:3
@@ -118,3 +120,4 @@ GUIScore.ScoreBoardWidth:113
 GUIScore.ScoreBoardHeight:57
 GUIScore.SBFactorScreenWidth:0.5
 GUIScore.SBFactorScreenHeight:0.6
+GUIScore.DataPath:resources/data/data.data

@@ -2,7 +2,8 @@
 #include "resource_manager.h"
 #include "globals.h"
 #include "sprite_renderer.h"
-
+#include <fstream>
+#include <iostream>
 
 GUIScore::GUIScore(int screenWidth, int screenHeight, float screenScaling) : mScreenWidth(screenWidth), mScreenHeight(screenHeight), mScreenScaling(screenScaling)
 {
@@ -40,11 +41,15 @@ void GUIScore::DrawScoreBoard(unsigned int score, const SpriteRenderer *renderer
 	float posY = mScreenHeight - mSBFactorScreenHeight * mScreenHeight;
 	renderer->DrawSprite(mScoreBoard, glm::vec2(posX, posY), 0.0f);
 
-	DrawSmallScoreNumbers(mScoreBoard, glm::vec2(posX, posY), score, renderer);
+	DrawSmallScoreNumbers(mScoreBoard, glm::vec2(posX, posY), score, renderer, false);
+	DrawSmallScoreNumbers(mScoreBoard, glm::vec2(posX, posY), mBestScore, renderer, true);
+
 }
 
 void GUIScore::Init()
 {
+	LoadBestScore();
+
 	std::string textureName = ResourceManager::GetPropString("GUIScore.FlappyBirdSpriteAtlasName");
 	const Texture2D &texture = ResourceManager::GetTexture(textureName);
 
@@ -66,6 +71,9 @@ void GUIScore::Init()
 
 	mSBEdgeOffsetWidth = ResourceManager::GetPropFloat("GUIScore.SBEdgeOffsetWidth");
 	mSBEdgeOffsetHeight = ResourceManager::GetPropFloat("GUIScore.SBEdgeOffsetHeight");
+
+	mBestEdgeOffsetWidth = ResourceManager::GetPropFloat("GUIScore.BestEdgeOffsetWidth");
+	mBestEdgeOffsetHeight = ResourceManager::GetPropFloat("GUIScore.BestEdgeOffsetHeight");
 
 	//width and height of the sprites 0, 2 to 9 for small size sprites
 	int widthSmall = ResourceManager::GetPropInt("GUIScore.WidthSmall");
@@ -106,7 +114,7 @@ void GUIScore::Init()
 	mScoreBoard = new Sprite(texture, scoreBoardOriginX, scoreBoardOriginY, scoreBoardWidth, scoreBoardHeight);
 }
 
-void GUIScore::DrawSmallScoreNumbers(const Sprite *scoreBoard, const glm::vec2 &scoreBoardPos, int score, const SpriteRenderer *renderer) const
+void GUIScore::DrawSmallScoreNumbers(const Sprite *scoreBoard, const glm::vec2 &scoreBoardPos, int score, const SpriteRenderer *renderer, bool isBestScore) const
 {
 	std::string scoreString = std::to_string(score);
 	int totalLength = 0;
@@ -115,8 +123,19 @@ void GUIScore::DrawSmallScoreNumbers(const Sprite *scoreBoard, const glm::vec2 &
 		totalLength += mSmallNumbers.find(scoreString[i])->second->GetWidth();
 	}
 
-	float posX = scoreBoardPos.x + scoreBoard->GetWidth() * mScreenScaling - mSBEdgeOffsetWidth * mScreenScaling - totalLength * mScreenScaling;
-	float posY = scoreBoardPos.y + scoreBoard->GetHeight() * mScreenScaling - mSBEdgeOffsetHeight * mScreenScaling;
+	float posX;
+	float posY;
+	if (!isBestScore)
+	{
+		posX = scoreBoardPos.x + scoreBoard->GetWidth() * mScreenScaling - mSBEdgeOffsetWidth * mScreenScaling - totalLength * mScreenScaling;
+		posY = scoreBoardPos.y + scoreBoard->GetHeight() * mScreenScaling - mSBEdgeOffsetHeight * mScreenScaling;
+	}
+	else
+	{
+		posX = scoreBoardPos.x + scoreBoard->GetWidth() * mScreenScaling - mBestEdgeOffsetWidth * mScreenScaling - totalLength * mScreenScaling;
+		posY = scoreBoardPos.y + scoreBoard->GetHeight() * mScreenScaling - mBestEdgeOffsetHeight * mScreenScaling;
+	}
+
 	for (int i = 0; i < scoreString.size(); i++)
 	{
 		Sprite *sprite = mSmallNumbers.find(scoreString[i])->second;
@@ -124,6 +143,45 @@ void GUIScore::DrawSmallScoreNumbers(const Sprite *scoreBoard, const glm::vec2 &
 		renderer->DrawSprite(sprite, glm::vec2(posX, posY), 0.0f);
 		posX += offset * mScreenScaling;
 	}
+}
+
+void GUIScore::LoadBestScore()
+{
+	std::string dataPath = ResourceManager::GetPropString("GUIScore.DataPath");
+	std::ifstream ifs(dataPath);
+	if (!ifs.is_open())
+	{
+		char buffer[100];
+		strerror_s(buffer, 100, errno);
+		std::cout << "Error opening " << dataPath << ":" << buffer << std::endl;
+		return;
+	}
+	std::string bestScore;
+	std::string dumb;
+	std::getline(ifs, dumb, ':');
+	std::getline(ifs, bestScore);
+	mBestScore = atoi(bestScore.c_str());
+	ifs.close();
+}
+
+void GUIScore::SaveMaxScore(unsigned int maxScore)
+{
+	mBestScore = maxScore;
+	std::string dataPath = ResourceManager::GetPropString("GUIScore.DataPath");
+	std::ofstream ofs(dataPath, std::ios::trunc);
+	if (!ofs.is_open())
+	{
+		char buffer[100];
+		strerror_s(buffer, 100, errno);
+		std::cout << "Error opening " << dataPath << ":" << buffer << std::endl;
+		return;
+	}
+	ofs << "BestScore:" << mBestScore << std::endl;
+}
+
+unsigned int GUIScore::GetBestScore() const
+{
+	return mBestScore;
 }
 
 void GUIScore::Clear()

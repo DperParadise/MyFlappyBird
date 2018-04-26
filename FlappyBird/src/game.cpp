@@ -189,6 +189,12 @@ void Game::Update(float dt)
 		{
 			mDeadTimer = 0.0f;
 			mHasDeadTimerExpired = true;
+
+			if (mScore > mGUIScore->GetBestScore())
+			{
+				mGUIScore->SaveMaxScore(mScore);
+			}
+
 			mGameState = GameState::SHOW_SCORE;
 			break;
 		}
@@ -220,7 +226,6 @@ void Game::Render(float dt)
 			float playBtnPosX = (mScreenWidth - mPlayButton->GetWidth() * mScreenScaling) * mFactorPlayBtnScreenX;
 			float playBtnPosY = mScreenHeight * mFactorPlayBtnScreenY;
 			mRenderer->DrawSprite(mPlayButton, glm::vec2(playBtnPosX, playBtnPosY), 0.0f);
-			mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, -mShiftSpeed * dt);
 			mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, -mShiftSpeed * dt);
 			break;
 		}
