@@ -150,6 +150,42 @@ float GameLevel::GetSpriteWidth() const
 	return mSpriteWidth;
 }
 
+void GameLevel::Reset()
+{
+	float posX;
+	float posYLower;
+	float separationDistanceY = mVerticalSeparation * mScreenScaling;
+
+	glm::vec2 posLowerCol;
+	glm::vec2 posUpperCol;
+
+	for (int i = 0; i < mNumColumnPairs; i++)
+	{
+		if (i == 0)
+		{
+			//Reset first column pair
+			posX = (float)mScreenWidth;
+			posYLower = 0.0f;
+		}
+		else
+		{
+			ColumnPair &previousPair = mColumns[i-1];
+
+			posYLower = mMinVerticalPos + (mMaxVerticalPos - mMinVerticalPos) * (float)rand() / (float)RAND_MAX;
+			posYLower *= mScreenScaling;
+
+			posX = ComputeXPos(previousPair.first->mPosition.x, previousPair.first->mPosition.y, previousPair.second->mPosition.y, posYLower, posYLower + mSpriteHeight * mScreenScaling + separationDistanceY);
+		}
+
+		//Lower column
+		mColumns[i].first->mPosition.x = posX;
+		mColumns[i].first->mPosition.y = posYLower;
+		//Upper column
+		mColumns[i].second->mPosition.x = posX;
+		mColumns[i].second->mPosition.y = posYLower + mSpriteHeight * mScreenScaling + separationDistanceY;
+	}
+}
+
 void GameLevel::Clear()
 {
 	ColumnPair &pair = mColumns.front();

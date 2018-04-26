@@ -69,8 +69,9 @@ Game.GameOverY:59
 Game.GameOverWidth:96
 Game.GameOverHeight:21
 Game.FactorGameOverScreenX:0.5
-Game.FactorGameOverScreenY:0.65
-Game.MaxDeadTimer: 3.0
+Game.FactorGameOverScreenY:0.66
+Game.MaxDeadTimer: 2.0
+Game.MaxScoreTimer: 3.0
 GUIScore.FlappyBirdSpriteAtlasName:FlappyBirdSpriteAtlas
 GUIScore.FactorScreenWidthBig:0.5
 GUIScore.FactorScreenHeightBig:0.20
@@ -109,4 +110,4 @@ GUIScore.ScoreBoardY:259
 GUIScore.ScoreBoardWidth:113
 GUIScore.ScoreBoardHeight:57
 GUIScore.SBFactorScreenWidth:0.5
-GUIScore.SBFactorScreenHeight:0.5
+GUIScore.SBFactorScreenHeight:0.6

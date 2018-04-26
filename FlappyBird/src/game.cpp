@@ -129,9 +129,9 @@ void Game::ProcessInput()
 		if (mKeys[GLFW_KEY_SPACE] && !mKeysProcessed[GLFW_KEY_SPACE])
 		{
 			mKeysProcessed[GLFW_KEY_SPACE] = true;
-			mGameState = GameState::INSTRUCTIONS;
 			mFlappyBird->mPosition.x = mScreenWidth * mFactorStartPosX;
 			mFlappyBird->mPosition.y = mScreenHeight * mFactorStartPosY;
+			mGameState = GameState::INSTRUCTIONS;
 		}
 		break;
 	case GameState::INSTRUCTIONS:
@@ -143,23 +143,10 @@ void Game::ProcessInput()
 		}
 		break;
 	case GameState::ACTIVE:
-		if (!mFlappyBird->IsAlive())
-		{
-			mGameState = GameState::DEAD;
-			break;
-		}
 		if (mKeys[GLFW_KEY_SPACE] && !mKeysProcessed[GLFW_KEY_SPACE])
 		{
 			mKeysProcessed[GLFW_KEY_SPACE] = true;
 			mFlappyBird->mJumpPressed = true;
-		}
-		break;
-	case GameState::DEAD:
-		if (mHasDeadTimerExpired && mKeys[GLFW_KEY_SPACE] && !mKeysProcessed[GLFW_KEY_SPACE])
-		{
-			mHasDeadTimerExpired = false;
-			mKeysProcessed[GLFW_KEY_SPACE] = true;
-			mGameState = GameState::SHOW_SCORE;
 		}
 		break;
 	case GameState::SHOW_SCORE:
@@ -167,6 +154,11 @@ void Game::ProcessInput()
 		{
 			mHasScoreTimerExpired = false;
 			mKeysProcessed[GLFW_KEY_SPACE] = true;
+			mScore = 0;
+			mFlappyBird->mPosition.x = mScreenWidth * mFactorStartPosX;
+			mFlappyBird->mPosition.y = mScreenHeight * mFactorStartPosY;
+			mFlappyBird->mRotInDegrees = 0.0f;
+			mLevel->Reset();
 			mGameState = GameState::INSTRUCTIONS;
 		}
 		break;
@@ -197,6 +189,8 @@ void Game::Update(float dt)
 		{
 			mDeadTimer = 0.0f;
 			mHasDeadTimerExpired = true;
+			mGameState = GameState::SHOW_SCORE;
+			break;
 		}
 	case GameState::SHOW_SCORE:
 		mShowScoreTimer += dt;
@@ -204,6 +198,7 @@ void Game::Update(float dt)
 		{
 			mShowScoreTimer = 0.0f;
 			mHasScoreTimerExpired = true;
+			break;
 		}
 	}
 }
@@ -260,6 +255,24 @@ void Game::Render(float dt)
 			mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, 0.0f);
 			break;
 		}
+		case GameState::SHOW_SCORE:
+		{
+			mLevel->DrawLevel(0.0f);
+
+			float gameOverPosX = (mScreenWidth - mGameOver->GetWidth() * mScreenScaling) * mFactorGameOverScreenX;
+			float gameOverPosY = mScreenHeight * mFactorGameOverScreenY;
+			mRenderer->DrawSprite(mGameOver, glm::vec2(gameOverPosX, gameOverPosY), 0.0f);
+			
+			mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, 0.0f);
+			
+			mGUIScore->DrawScoreBoard(mScore, mRenderer);
+
+			float playBtnPosX = (mScreenWidth - mPlayButton->GetWidth() * mScreenScaling) * mFactorPlayBtnScreenX;
+			float playBtnPosY = mScreenHeight * mFactorPlayBtnScreenY;
+			mRenderer->DrawSprite(mPlayButton, glm::vec2(playBtnPosX, playBtnPosY), 0.0f);
+
+			break;
+		}
 		
 	}
 
@@ -299,6 +312,8 @@ void Game::LoadProperties()
 	mFactorPlayBtnScreenY = ResourceManager::GetPropFloat("Game.FactorPlayBtnScreenY");
 	mFactorGameOverScreenX = ResourceManager::GetPropFloat("Game.FactorGameOverScreenX");
 	mFactorGameOverScreenY = ResourceManager::GetPropFloat("Game.FactorGameOverScreenY");
+	mMaxDeadTimer = ResourceManager::GetPropFloat("Game.MaxDeadTimer");
+	mMaxScoreTimer = ResourceManager::GetPropFloat("Game.MaxScoreTimer");
 }
 
 void Game::DoCollissions()

@@ -62,12 +62,12 @@ private:
 	float mFactorPlayBtnScreenX = 0.5f;
 	float mFactorPlayBtnScreenY = 0.25f;
 	float mFactorGameOverScreenX = 0.5f;
-	float mFactorGameOverScreenY = 0.65f;
+	float mFactorGameOverScreenY = 0.7f;
 	float mDeadTimer = 0.0f;
-	float mMaxDeadTimer = 3.0f;
+	float mMaxDeadTimer = 2.0f;
 	bool mHasDeadTimerExpired = false;
 	float mShowScoreTimer = 0.0f;
-	float mMaxScoreTimer = 4.0f;
+	float mMaxScoreTimer = 3.0f;
 	bool mHasScoreTimerExpired = false;
 
 	void LoadProperties();

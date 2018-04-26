@@ -25,6 +25,7 @@ public:
 	void UpdateColumnsPosition(float dt);
 	void DrawLevel(float dt) const;
 	float GetSpriteWidth() const;
+	void Reset();
 
 private:
 	
