@@ -64,11 +64,11 @@ void BirdGameObject::SetAlive()
 
 void BirdGameObject::LoadProperties()
 {
-	mMinVelocity = ResourceManager::GetPropFloat("BirdGameObject.mMinVelocity");
-	mMaxVelocity = ResourceManager::GetPropFloat("BirdGameObject.mMaxVelocity");
-	mMinRotation = ResourceManager::GetPropFloat("BirdGameObject.mMinRotation");
-	mMaxRotation = ResourceManager::GetPropFloat("BirdGameObject.mMaxRotation");
-	mTimeToStartRotation = ResourceManager::GetPropFloat("BirdGameObject.mTimeToStartRotation");
-	mTimeToMinRotation = ResourceManager::GetPropFloat("BirdGameObject.mTimeToMinRotation");
-	mRotSpeeedNotFalling = ResourceManager::GetPropFloat("BirdGameObject.mRotSpeeedNotFalling");
+	mMinVelocity = ResourceManager::GetPropFloat("BirdGameObject.MinVelocity");
+	mMaxVelocity = ResourceManager::GetPropFloat("BirdGameObject.MaxVelocity");
+	mMinRotation = ResourceManager::GetPropFloat("BirdGameObject.MinRotation");
+	mMaxRotation = ResourceManager::GetPropFloat("BirdGameObject.MaxRotation");
+	mTimeToStartRotation = ResourceManager::GetPropFloat("BirdGameObject.TimeToStartRotation");
+	mTimeToMinRotation = ResourceManager::GetPropFloat("BirdGameObject.TimeToMinRotation");
+	mRotSpeeedNotFalling = ResourceManager::GetPropFloat("BirdGameObject.RotSpeeedNotFalling");
 }
