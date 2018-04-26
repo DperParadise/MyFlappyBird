@@ -72,6 +72,13 @@ Game.FactorGameOverScreenX:0.5
 Game.FactorGameOverScreenY:0.66
 Game.MaxDeadTimer: 2.0
 Game.MaxScoreTimer: 3.0
+GameLevel.FactorHorizSeparation:3
+GameLevel.SpriteWidth:26
+GameLevel.SpriteHeight:160
+GameLevel.LowerColX:84
+GameLevel.LowerColY:323
+GameLevel.UpperColX:56
+GameLevel.UpperColY:323
 GUIScore.FlappyBirdSpriteAtlasName:FlappyBirdSpriteAtlas
 GUIScore.FactorScreenWidthBig:0.5
 GUIScore.FactorScreenHeightBig:0.20

@@ -36,11 +36,18 @@ GameLevel::~GameLevel()
 
 void GameLevel::Init()
 {
-	mSpriteWidth = 26;
-	mSpriteHeight = 160;
+	mFactorHorizSeparation = ResourceManager::GetPropInt("GameLevel.FactorHorizSeparation");
 
-	Sprite *lowerColumnSprite = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), 84, 323, mSpriteWidth, mSpriteHeight);
-	Sprite *upperColumnSprite = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), 56, 323, mSpriteWidth, mSpriteHeight);
+	mSpriteWidth = ResourceManager::GetPropInt("GameLevel.SpriteWidth");// 26;
+	mSpriteHeight = ResourceManager::GetPropInt("GameLevel.SpriteHeight");//160;
+
+	int lowerColX = ResourceManager::GetPropInt("GameLevel.LowerColX"); //84
+	int lowerColY = ResourceManager::GetPropInt("GameLevel.LowerColY"); //323
+	Sprite *lowerColumnSprite = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), lowerColX, lowerColY, mSpriteWidth, mSpriteHeight);
+
+	int upperColX = ResourceManager::GetPropInt("GameLevel.UpperColX"); //56
+	int upperColY = ResourceManager::GetPropInt("GameLevel.UpperColY"); //323
+	Sprite *upperColumnSprite = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), upperColX, upperColY, mSpriteWidth, mSpriteHeight);
 	
 	std::vector<Sprite*> lowerColumnSpriteVector = { lowerColumnSprite };
 	std::vector<Sprite*> upperColumnSpriteVector = { upperColumnSprite };
@@ -204,19 +211,19 @@ float GameLevel::ComputeXPos(float posLowerLeftX, float posLowerLeftY, float pos
 	{
 		if (posUpperLeftY - posLowerRight < mPassThreshold * mScreenScaling)
 		{
-			return posLowerLeftX + 3 * mSpriteWidth * mScreenScaling;
+			return posLowerLeftX + mFactorHorizSeparation * mSpriteWidth * mScreenScaling;
 		}
 		
-		return posLowerLeftX + (rand() % 3 + 1) * mSpriteWidth * mScreenScaling;
+		return posLowerLeftX + (rand() % mFactorHorizSeparation + 1) * mSpriteWidth * mScreenScaling;
 	}
 	else
 	{
 		if (posUpperRightY - posLowerLeft < mPassThreshold * mScreenScaling)
 		{
-			return posLowerLeftX + 3 * mSpriteWidth * mScreenScaling;
+			return posLowerLeftX + mFactorHorizSeparation * mSpriteWidth * mScreenScaling;
 		}
 		
-		return posLowerLeftX + (rand() % 3 + 1) * mSpriteWidth * mScreenScaling;
+		return posLowerLeftX + (rand() % mFactorHorizSeparation + 1) * mSpriteWidth * mScreenScaling;
 	}
 }
 

@@ -40,9 +40,12 @@ private:
 	const SpriteRenderer *mSpriteRenderer = nullptr;
 	float mSpriteHeight;
 	float mSpriteWidth;
+
 	const std::string &mFlappyBirdSpriteAtlasName;
 	Game *mGame = nullptr;
 	const BirdGameObject *mBird = nullptr;
+	int mFactorHorizSeparation = 3;
+
 	
 	void Init();
 	void ResetColumnPairPosition();
