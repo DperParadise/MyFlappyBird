@@ -56,15 +56,16 @@ void SpriteRenderer::Init()
 						1.0f, 1.0f,
 						0.0f, 1.0
 	};
-
-	float texCoords[] = {	0.0f, 1.0f,
-							1.0f, 1.0f,
-							0.0f, 0.0f,
-							1.0f, 1.0f,
-							1.0f, 0.0f,
-							0.0f, 0.0f
-	};
 	
+	
+	float texCoords[] = { 0.0f, 0.0f,
+		1.0f, 0.0f,
+		0.0f, 1.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0
+	};
+
 	glGenVertexArrays(1, &mQuadVAO);
 	glBindVertexArray(mQuadVAO);
 	glGenBuffers(1, &mQuadVBO);

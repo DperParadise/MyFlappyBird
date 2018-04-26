@@ -5,12 +5,14 @@
 Sprite::Sprite(const Texture2D &texture, 
 	int originX, int originY, int width, int height) : mTexture(texture), mWidth(width), mHeight(height)
 {
-	mTexCoords = new float[mNumVertices]{	(float)(originX) / (float)mTexture.GetWidth(), (float)(originY + height) / (float)mTexture.GetHeight(),
-										(float)(originX + width) / (float)mTexture.GetWidth(), (float)(originY + height) / (float)mTexture.GetHeight(),
-										(float)(originX) / (float) mTexture.GetWidth(), (float)originY / (float) mTexture.GetHeight(),
-										(float)(originX + width) / (float)mTexture.GetWidth(), (float)(originY + height) / mTexture.GetHeight(),
-										(float)(originX + width) / mTexture.GetWidth(), (float)(originY) / mTexture.GetHeight(),
-										(float)(originX) / mTexture.GetWidth(), (float)(originY) / mTexture.GetHeight()
+	//Adptation from origin at the top left (image coord system) to origin at the bottom left (OpenGL coord system)
+	mTexCoords = new float[mNumVertices] {	
+		(float)(originX) / mTexture.GetWidth(),	(float)(mTexture.GetHeight() - (originY + height)) / mTexture.GetHeight(),
+		(float)(originX + width) / mTexture.GetWidth(),	(float)(mTexture.GetHeight() - (originY + height)) / mTexture.GetHeight(),
+		(float)(originX) / mTexture.GetWidth(),	(float)(mTexture.GetHeight() - originY)/ mTexture.GetHeight(),
+		(float)(originX + width) / mTexture.GetWidth(), (float)(mTexture.GetHeight() - (originY + height)) / mTexture.GetHeight(),
+		(float)(originX + width) / mTexture.GetWidth(), (float)(mTexture.GetHeight() - originY) / mTexture.GetHeight(),
+		(float)(originX) / mTexture.GetWidth(), (float)(mTexture.GetHeight() - originY) / mTexture.GetHeight()
 	};
 }
 
