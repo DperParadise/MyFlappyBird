@@ -134,6 +134,7 @@ void Game::ProcessInput()
 		if (mKeys[GLFW_KEY_SPACE] && !mKeysProcessed[GLFW_KEY_SPACE])
 		{
 			mKeysProcessed[GLFW_KEY_SPACE] = true;
+			mFlappyBird->mJumpPressed = true;
 			mGameState = GameState::ACTIVE;
 		}
 		break;
@@ -213,6 +214,13 @@ void Game::Render(float dt)
 			float instrucPosX = (mScreenWidth - mInstructions->GetWidth() * mScreenScaling) * mFactorInstrucScreenX;
 			float instrucPosY = mScreenHeight * mFactorInstrucScreenY;
 			mRenderer->DrawSprite(mInstructions, glm::vec2(instrucPosX, instrucPosY), 0.0f);
+			break;
+		}
+		case GameState::ACTIVE:
+		{
+			mLevel->DrawLevel(dt);
+			mFlappyBird->Draw(mRenderer, dt);
+			mGUIScore->DrawBigScoreNumbers(mScore, mRenderer);
 			break;
 		}
 	}
