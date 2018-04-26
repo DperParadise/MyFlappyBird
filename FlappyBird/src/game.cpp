@@ -55,7 +55,6 @@ void Game::Init()
 	mInstructions = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mInstructionsX, mInstructionsY, mInstructionsWidth, mInstructionsHeight);
 	mTitle = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mTitleX, mTitleY, mTitleWidth, mTitleHeight);
 	mPlayButton = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mPlayButtonX, mPlayButtonY, mPlayButtonWidth, mPlayButtonHeight);
-	mScoreBoard = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mScoreBoardX, mScoreBoardY, mScoreBoardWidth, mScoreBoardHeight);
 	mGameOver = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), mGameOverX, mGameOverY, mGameOverWidth, mGameOverHeight);
 
 	mGUIScore = new GUIScore(mScreenWidth, mScreenHeight, mScreenScaling);
@@ -84,14 +83,14 @@ void Game::Render(float dt)
 	mLevel->DrawLevel(dt);
 	mFlappyBird->Draw(mRenderer, dt);
 	mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, -mShiftSpeed * dt);
-	mGUIScore->Draw(mScore, mRenderer);
+	mGUIScore->DrawBigScoreNumbers(mScore, mRenderer);
 
-	mRenderer->DrawSprite(mGetReady, glm::vec2((mScreenWidth - mGetReady->GetWidth() * mScreenScaling) * mGetReadyScreenFactorX , mScreenHeight * mGetReadyScreenFactorY), 0.0f);
+	//mRenderer->DrawSprite(mGetReady, glm::vec2((mScreenWidth - mGetReady->GetWidth() * mScreenScaling) * mGetReadyScreenFactorX , mScreenHeight * mGetReadyScreenFactorY), 0.0f);
 	//mRenderer->DrawSprite(mInstructions, glm::vec2((mScreenWidth - mInstructions->GetWidth() * mScreenScaling) * mInstrucScreenFactorX, mScreenHeight * mInstrucScreenFactorY), 0.0f);
-	mRenderer->DrawSprite(mTitle, glm::vec2((mScreenWidth - mTitle->GetWidth() * mScreenScaling) * mTitleScreenFactorX, mScreenHeight * mTitleScreenFactorY), 0.0f);
-	mRenderer->DrawSprite(mPlayButton, glm::vec2((mScreenWidth - mPlayButton->GetWidth() * mScreenScaling) * mPlayBtnScreenFactorX, mScreenHeight * mPlayBtnScreenFactorY), 0.0f);
-	mRenderer->DrawSprite(mScoreBoard, glm::vec2((mScreenWidth - mScoreBoard->GetWidth() * mScreenScaling) * mScoreBrdScreenFactorX, mScreenHeight * mScoreBrdScreenFactorY), 0.0f);
-	mRenderer->DrawSprite(mGameOver, glm::vec2((mScreenWidth - mGameOver->GetWidth() * mScreenScaling) * mGameOverScreenFactorX, mScreenHeight * mGameOverScreenFactorY), 0.0f);
+	//mRenderer->DrawSprite(mTitle, glm::vec2((mScreenWidth - mTitle->GetWidth() * mScreenScaling) * mTitleScreenFactorX, mScreenHeight * mTitleScreenFactorY), 0.0f);
+	//mRenderer->DrawSprite(mPlayButton, glm::vec2((mScreenWidth - mPlayButton->GetWidth() * mScreenScaling) * mPlayBtnScreenFactorX, mScreenHeight * mPlayBtnScreenFactorY), 0.0f);
+	//mRenderer->DrawSprite(mGameOver, glm::vec2((mScreenWidth - mGameOver->GetWidth() * mScreenScaling) * mGameOverScreenFactorX, mScreenHeight * mGameOverScreenFactorY), 0.0f);
+	mGUIScore->DrawScoreBoard(mScore, mRenderer);
 }
 
 void Game::ComputeScore()
@@ -149,12 +148,6 @@ void Game::LoadProperties()
 	mTitleHeight = ResourceManager::GetPropInt("Game.mTitleHeight");
 	mPlayBtnScreenFactorX = ResourceManager::GetPropFloat("Game.mPlayBtnScreenFactorX");
 	mPlayBtnScreenFactorY = ResourceManager::GetPropFloat("Game.mPlayBtnScreenFactorY");
-	mScoreBoardX = ResourceManager::GetPropFloat("Game.mScoreBoardX");
-	mScoreBoardY = ResourceManager::GetPropFloat("Game.mScoreBoardY");
-	mScoreBoardWidth = ResourceManager::GetPropFloat("Game.mScoreBoardWidth");
-	mScoreBoardHeight = ResourceManager::GetPropFloat("Game.mScoreBoardHeight");
-	mScoreBrdScreenFactorX = ResourceManager::GetPropFloat("Game.mScoreBrdScreenFactorX");
-	mScoreBrdScreenFactorY = ResourceManager::GetPropFloat("Game.mScoreBrdScreenFactorY");
 	mGameOverX = ResourceManager::GetPropFloat("Game.mGameOverX");
 	mGameOverY = ResourceManager::GetPropFloat("Game.mGameOverY");
 	mGameOverWidth = ResourceManager::GetPropFloat("Game.mGameOverWidth");

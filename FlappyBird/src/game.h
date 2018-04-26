@@ -101,12 +101,6 @@ private:
 	int mPlayButtonHeight = 29;
 	float mPlayBtnScreenFactorX = 0.5f;
 	float mPlayBtnScreenFactorY = 0.25f;
-	int mScoreBoardX = 3;
-	int mScoreBoardY = 259;
-	int	mScoreBoardWidth = 113;
-	int	mScoreBoardHeight = 57;
-	float mScoreBrdScreenFactorX = 0.5f;
-	float mScoreBrdScreenFactorY = 0.5f;
 	int mGameOverX = 395;
 	int	mGameOverY = 59;
 	int mGameOverWidth = 96;
