@@ -48,13 +48,16 @@ void SpriteRenderer::DrawSpriteShifted(const Sprite *sprite, const glm::vec2 &po
 	DrawSprite(sprite, position, 0.0f);
 }
 
-void SpriteRenderer::DrawSpriteFade(const Sprite *sprite, const glm::vec2 &position, bool IsFadingIn, float dt)
+bool SpriteRenderer::DrawSpriteFade(const Sprite *sprite, const glm::vec2 &position, bool IsFadingIn, float dt)
 {
+	bool ret = false;
+
 	if (IsFadingIn)
 	{
 		mAlpha += mFadeSpeed * dt;
 		if (mAlpha > 1.0f)
 		{
+			ret = true;
 			mAlpha = 1.0f;
 		}
 	}
@@ -63,10 +66,17 @@ void SpriteRenderer::DrawSpriteFade(const Sprite *sprite, const glm::vec2 &posit
 		mAlpha -= mFadeSpeed * dt;
 		if (mAlpha < 0.0f)
 		{
+			ret = true;
 			mAlpha = 0.0f;
 		}
 	}
 	DrawSprite(sprite, position, 0.0f, mAlpha);
+	return ret;
+}
+
+void SpriteRenderer::ResetAlpha()
+{
+	mAlpha = 0.0f;
 }
 
 void SpriteRenderer::Init()

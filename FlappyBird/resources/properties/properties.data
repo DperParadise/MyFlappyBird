@@ -79,7 +79,6 @@ Game.GameOverHeight:21
 Game.FactorGameOverScreenX:0.5
 Game.FactorGameOverScreenY:0.66
 Game.MaxDeadTimer: 1.0
-Game.MaxScoreTimer: 2.0
 Game.FactorShakeTime: 0.2
 GameLevel.FactorHorizSeparation:3
 GameLevel.SpriteWidth:26
@@ -130,3 +129,4 @@ GUIScore.ScoreBoardHeight:57
 GUIScore.SBFactorScreenWidth:0.5
 GUIScore.SBFactorScreenHeight:0.6
 GUIScore.DataPath:resources/data/data.data
+GUIScore.AscendSpeed:300.0

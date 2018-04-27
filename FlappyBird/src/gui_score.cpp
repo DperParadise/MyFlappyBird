@@ -35,15 +35,47 @@ void GUIScore::DrawBigScoreNumbers(unsigned int score, const SpriteRenderer *ren
 	}
 }
 
-void GUIScore::DrawScoreBoard(unsigned int score, const SpriteRenderer *renderer) const
+bool GUIScore::DrawScoreBoard(unsigned int score, const SpriteRenderer *renderer, float dt)
 {
-	float posX = mScreenWidth * mSBFactorScreenWidth - mScoreBoard->GetWidth() * mSBFactorScreenWidth * mScreenScaling;
-	float posY = mScreenHeight - mSBFactorScreenHeight * mScreenHeight;
-	renderer->DrawSprite(mScoreBoard, glm::vec2(posX, posY), 0.0f);
+	bool ret = false;
+	mSBPosY += mAscendSpeed * mScreenScaling * dt;
+	if (mSBPosY > mSBPosYFinal)
+	{
+		ret = true;
+		mSBPosY = mSBPosYFinal;
+	}
 
-	DrawSmallScoreNumbers(mScoreBoard, glm::vec2(posX, posY), score, renderer, false);
-	DrawSmallScoreNumbers(mScoreBoard, glm::vec2(posX, posY), mBestScore, renderer, true);
+	renderer->DrawSprite(mScoreBoard, glm::vec2(mSBPosXFinal, mSBPosY), 0.0f);
 
+	DrawSmallScoreNumbers(mScoreBoard, glm::vec2(mSBPosXFinal, mSBPosY), score, renderer, false);
+	DrawSmallScoreNumbers(mScoreBoard, glm::vec2(mSBPosXFinal, mSBPosY), mBestScore, renderer, true);
+
+	return ret;
+}
+
+void GUIScore::SaveMaxScore(unsigned int maxScore)
+{
+	mBestScore = maxScore;
+	std::string dataPath = ResourceManager::GetPropString("GUIScore.DataPath");
+	std::ofstream ofs(dataPath, std::ios::trunc);
+	if (!ofs.is_open())
+	{
+		char buffer[100];
+		strerror_s(buffer, 100, errno);
+		std::cout << "Error opening " << dataPath << ":" << buffer << std::endl;
+		return;
+	}
+	ofs << "BestScore:" << mBestScore << std::endl;
+}
+
+unsigned int GUIScore::GetBestScore() const
+{
+	return mBestScore;
+}
+
+void GUIScore::ResetSBHeightPos()
+{
+	mSBPosY = mSBInitialPosY;
 }
 
 void GUIScore::Init()
@@ -112,6 +144,12 @@ void GUIScore::Init()
 	int scoreBoardWidth = ResourceManager::GetPropInt("GUIScore.ScoreBoardWidth");
 	int scoreBoardHeight = ResourceManager::GetPropInt("GUIScore.ScoreBoardHeight");
 	mScoreBoard = new Sprite(texture, scoreBoardOriginX, scoreBoardOriginY, scoreBoardWidth, scoreBoardHeight);
+
+	mSBPosXFinal = mScreenWidth * mSBFactorScreenWidth - mScoreBoard->GetWidth() * mSBFactorScreenWidth * mScreenScaling;
+	mSBPosYFinal = mScreenHeight - mSBFactorScreenHeight * mScreenHeight;
+	mSBInitialPosY = -scoreBoardHeight * mScreenScaling;
+	ResetSBHeightPos();
+	mAscendSpeed = ResourceManager::GetPropFloat("GUIScore.AscendSpeed");
 }
 
 void GUIScore::DrawSmallScoreNumbers(const Sprite *scoreBoard, const glm::vec2 &scoreBoardPos, int score, const SpriteRenderer *renderer, bool isBestScore) const
@@ -162,26 +200,6 @@ void GUIScore::LoadBestScore()
 	std::getline(ifs, bestScore);
 	mBestScore = atoi(bestScore.c_str());
 	ifs.close();
-}
-
-void GUIScore::SaveMaxScore(unsigned int maxScore)
-{
-	mBestScore = maxScore;
-	std::string dataPath = ResourceManager::GetPropString("GUIScore.DataPath");
-	std::ofstream ofs(dataPath, std::ios::trunc);
-	if (!ofs.is_open())
-	{
-		char buffer[100];
-		strerror_s(buffer, 100, errno);
-		std::cout << "Error opening " << dataPath << ":" << buffer << std::endl;
-		return;
-	}
-	ofs << "BestScore:" << mBestScore << std::endl;
-}
-
-unsigned int GUIScore::GetBestScore() const
-{
-	return mBestScore;
 }
 
 void GUIScore::Clear()

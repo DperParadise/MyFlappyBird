@@ -71,9 +71,7 @@ private:
 	float mDeadTimer = 0.0f;
 	float mMaxDeadTimer = 1.0f;
 	bool mHasDeadTimerExpired = false;
-	float mShowScoreTimer = 0.0f;
-	float mMaxScoreTimer = 2.0f;
-	bool mHasScoreTimerExpired = false;
+	bool mIsSBShowed = false;
 
 	void LoadProperties();
 	void DoCollissions();

@@ -14,9 +14,10 @@ public:
 	GUIScore(int screenWidth, int screenHeight, float screenScaling);
 	~GUIScore();
 	void DrawBigScoreNumbers(unsigned int score, const SpriteRenderer *renderer) const;
-	void DrawScoreBoard(unsigned int score, const SpriteRenderer *renderer) const;
+	bool DrawScoreBoard(unsigned int score, const SpriteRenderer *renderer, float dt);
 	void SaveMaxScore(unsigned int maxScore);
 	unsigned int GetBestScore() const;
+	void ResetSBHeightPos();
 
 private:
 	unsigned int mBestScore;
@@ -38,12 +39,18 @@ private:
 	float mSBFactorScreenWidth;
 	float mSBFactorScreenHeight;
 
+	float mSBPosXFinal;
+	float mSBPosYFinal;
+	float mSBInitialPosY;
+
+	float mAscendSpeed = 300.0f;
+	float mSBPosY;
+
 	Sprite *mScoreBoard = nullptr;
 
 	void Init();
 	void DrawSmallScoreNumbers(const Sprite *scoreBoard, const glm::vec2 &scoreBoardPos, int score, const SpriteRenderer *renderer, bool isBestScore) const;
 	void LoadBestScore();
-	
 	void Clear();
 };
 

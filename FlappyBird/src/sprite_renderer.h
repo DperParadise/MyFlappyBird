@@ -14,7 +14,8 @@ public:
 	~SpriteRenderer();
 	void DrawSprite(const Sprite *sprite, const glm::vec2 &position, float rotInDegrees, float alpha = 1.0f) const;
 	void DrawSpriteShifted(const Sprite *sprite, const glm::vec2 &position, float deltaShift) const;
-	void DrawSpriteFade(const Sprite *sprite, const glm::vec2 &position, bool IsFadingIn, float dt);
+	bool DrawSpriteFade(const Sprite *sprite, const glm::vec2 &position, bool IsFadingIn, float dt);
+	void ResetAlpha();
 
 private:
 	Shader mShader;
