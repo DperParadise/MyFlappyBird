@@ -11,7 +11,7 @@ SpriteRenderer::~SpriteRenderer()
 	glDeleteVertexArrays(1, &mQuadVAO);
 }
 
-void SpriteRenderer::DrawSprite(const Sprite *sprite, const glm::vec2 &position, float rotInDegrees) const
+void SpriteRenderer::DrawSprite(const Sprite *sprite, const glm::vec2 &position, float rotInDegrees, float alpha) const
 {
 	glm::mat4 model;
 	model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
@@ -25,6 +25,7 @@ void SpriteRenderer::DrawSprite(const Sprite *sprite, const glm::vec2 &position,
 
 	mShader.Use();
 	mShader.SetMatrix4("model", model);
+	mShader.SetFloat("alpha", alpha);
 
 	glActiveTexture(GL_TEXTURE0);
 	sprite->mTexture.Bind();
@@ -45,6 +46,27 @@ void SpriteRenderer::DrawSpriteShifted(const Sprite *sprite, const glm::vec2 &po
 	}
 	
 	DrawSprite(sprite, position, 0.0f);
+}
+
+void SpriteRenderer::DrawSpriteFade(const Sprite *sprite, const glm::vec2 &position, bool IsFadingIn, float dt)
+{
+	if (IsFadingIn)
+	{
+		mAlpha += mFadeSpeed * dt;
+		if (mAlpha > 1.0f)
+		{
+			mAlpha = 1.0f;
+		}
+	}
+	else
+	{
+		mAlpha -= mFadeSpeed * dt;
+		if (mAlpha < 0.0f)
+		{
+			mAlpha = 0.0f;
+		}
+	}
+	DrawSprite(sprite, position, 0.0f, mAlpha);
 }
 
 void SpriteRenderer::Init()

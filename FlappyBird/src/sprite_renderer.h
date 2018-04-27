@@ -12,16 +12,19 @@ class SpriteRenderer final
 public:
 	SpriteRenderer(const Shader &shader, float screenScaling);
 	~SpriteRenderer();
-	void DrawSprite(const Sprite *sprite, const glm::vec2 &position, float rotInDegrees) const;
+	void DrawSprite(const Sprite *sprite, const glm::vec2 &position, float rotInDegrees, float alpha = 1.0f) const;
 	void DrawSpriteShifted(const Sprite *sprite, const glm::vec2 &position, float deltaShift) const;
+	void DrawSpriteFade(const Sprite *sprite, const glm::vec2 &position, bool IsFadingIn, float dt);
 
 private:
 	Shader mShader;
 	GLuint mQuadVAO;
 	GLuint mQuadVBO;
 	float mScreenScaling;
-
 	const int mNumTexCoords = 6;
+	float mFadeSpeed = 5.0f;
+	float mAlpha = 0.0f;
+
 	void Init();
 };
 

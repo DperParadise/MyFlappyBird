@@ -270,7 +270,7 @@ void Game::Render(float dt)
 
 			float instrucPosX = (mScreenWidth - mInstructions->GetWidth() * mScreenScaling) * mFactorInstrucScreenX;
 			float instrucPosY = mScreenHeight * mFactorInstrucScreenY;
-			mRenderer->DrawSprite(mInstructions, glm::vec2(instrucPosX, instrucPosY), 0.0f);
+			mRenderer->DrawSpriteFade(mInstructions, glm::vec2(instrucPosX, instrucPosY), true, dt);
 			mRenderer->DrawSpriteShifted(mForeground->mAnimation->mSprites[0], glm::vec2(0.0f), -mShiftSpeed * dt);
 
 			float pressSpaceX = (mScreenWidth - mPressSpace->GetWidth() * mScreenScaling) * mFactorPressSpaceX;
@@ -284,6 +284,9 @@ void Game::Render(float dt)
 			mLevel->DrawLevel(dt);
 			mFlappyBird->Draw(mRenderer, dt);
 			mGUIScore->DrawBigScoreNumbers(mScore, mRenderer);
+			float instrucPosX = (mScreenWidth - mInstructions->GetWidth() * mScreenScaling) * mFactorInstrucScreenX;
+			float instrucPosY = mScreenHeight * mFactorInstrucScreenY;
+			mRenderer->DrawSpriteFade(mInstructions, glm::vec2(instrucPosX, instrucPosY), false, dt);
 			mRenderer->DrawSpriteShifted(mForeground->mAnimation->mSprites[0], glm::vec2(0.0f), -mShiftSpeed * dt);
 
 			break;
