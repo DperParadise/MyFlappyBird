@@ -193,6 +193,33 @@ void GameLevel::Reset()
 	}
 }
 
+void GameLevel::PrepareShake()
+{
+	for (int i = 0; i < mColumns.size(); i++)
+	{
+		mColumns[i].first->PrepareShake();
+		mColumns[i].second->PrepareShake();
+	}
+}
+
+void GameLevel::BeginShake()
+{
+	for (int i = 0; i < mColumns.size(); i++)
+	{
+		mColumns[i].first->BeginShake();
+		mColumns[i].second->BeginShake();
+	}
+}
+
+void GameLevel::EndShake()
+{
+	for (int i = 0; i < mColumns.size(); i++)
+	{
+		mColumns[i].first->EndShake();
+		mColumns[i].second->EndShake();
+	}
+}
+
 void GameLevel::Clear()
 {
 	ColumnPair &pair = mColumns.front();

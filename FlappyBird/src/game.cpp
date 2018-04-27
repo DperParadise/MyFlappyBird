@@ -76,15 +76,18 @@ void Game::Init()
 	int passThreshold = ResourceManager::GetPropInt("Game.PassThreshold");
 	mLevel = new GameLevel(mScreenWidth, mScreenHeight, mScreenScaling, columnVerticalSeparation, minVerticalPos, maxVerticalPos, passThreshold, mShiftSpeed, mRenderer, flappyBirdSpriteAtlasName, this, mFlappyBird);
 
+	std::vector<Sprite*> foregroundSprite;
+	int fgroundSpriteOrigin = ResourceManager::GetPropInt("Game.FGroundSpriteOrigin");
+	int fgroundSpriteWidth = ResourceManager::GetPropInt("Game.FGroundSpriteWidth");
+	int fgroundSpriteHeight = ResourceManager::GetPropInt("Game.FGroundSpriteHeight");
+	foregroundSprite.push_back(new Sprite(ResourceManager::GetTexture(foregroundTexName), fgroundSpriteOrigin, fgroundSpriteOrigin, fgroundSpriteWidth, fgroundSpriteHeight));
+	Animation *foregroundAnim = new Animation(foregroundSprite, 0.0f);
+	mForeground = new GameObject(glm::vec2(0.0f), 0.0f, glm::vec2(0.0f), foregroundAnim);
+
 	int bgroundSpriteOrigin = ResourceManager::GetPropInt("Game.BGroundSpriteOrigin");
 	int bgroundSpriteWidth = ResourceManager::GetPropInt("Game.BGroundSpriteWidth");
 	int bgroundSpriteHeight = ResourceManager::GetPropInt("Game.BGroundSpriteHeight");
 	mBackground = new Sprite(ResourceManager::GetTexture(flappyBirdSpriteAtlasName), bgroundSpriteOrigin, bgroundSpriteOrigin, bgroundSpriteWidth, bgroundSpriteHeight);
-	
-	int fgroundSpriteOrigin = ResourceManager::GetPropInt("Game.FGroundSpriteOrigin");
-	int fgroundSpriteWidth = ResourceManager::GetPropInt("Game.FGroundSpriteWidth");
-	int fgroundSpriteHeight = ResourceManager::GetPropInt("Game.FGroundSpriteHeight");
-	mForeground = new Sprite(ResourceManager::GetTexture(foregroundTexName), fgroundSpriteOrigin, fgroundSpriteOrigin, fgroundSpriteWidth, fgroundSpriteHeight);
 	
 	int getReadyX = ResourceManager::GetPropInt("Game.GetReadyX");
 	int getReadyY = ResourceManager::GetPropInt("Game.GetReadyY");
@@ -194,6 +197,17 @@ void Game::Update(float dt)
 
 	case GameState::DEAD:
 		mDeadTimer += dt;
+		mLevel->BeginShake();
+		mFlappyBird->BeginShake();
+		mForeground->BeginShake();
+
+		if (mDeadTimer > mFactorShakeTime * mMaxDeadTimer)
+		{
+			mLevel->EndShake();
+			mFlappyBird->EndShake();
+			mForeground->EndShake();
+		}
+
 		if (mDeadTimer > mMaxDeadTimer)
 		{
 			mDeadTimer = 0.0f;
@@ -205,6 +219,7 @@ void Game::Update(float dt)
 			}
 
 			mGameState = GameState::SHOW_SCORE;
+
 			break;
 		}
 	case GameState::SHOW_SCORE:
@@ -235,7 +250,7 @@ void Game::Render(float dt)
 			float playBtnPosX = (mScreenWidth - mPlayButton->GetWidth() * mScreenScaling) * mFactorPlayBtnScreenX;
 			float playBtnPosY = mScreenHeight * mFactorPlayBtnScreenY;
 			mRenderer->DrawSprite(mPlayButton, glm::vec2(playBtnPosX, playBtnPosY), 0.0f);
-			mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, -mShiftSpeed * dt);
+			mRenderer->DrawSpriteShifted(mForeground->mAnimation->mSprites[0], glm::vec2(0.0f), -mShiftSpeed * dt);
 
 			float pressSpaceX = (mScreenWidth - mPressSpace->GetWidth() * mScreenScaling) * mFactorPressSpaceX;
 			float pressSpaceY = mScreenHeight * mFactorPressSpaceY;
@@ -256,7 +271,7 @@ void Game::Render(float dt)
 			float instrucPosX = (mScreenWidth - mInstructions->GetWidth() * mScreenScaling) * mFactorInstrucScreenX;
 			float instrucPosY = mScreenHeight * mFactorInstrucScreenY;
 			mRenderer->DrawSprite(mInstructions, glm::vec2(instrucPosX, instrucPosY), 0.0f);
-			mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, -mShiftSpeed * dt);
+			mRenderer->DrawSpriteShifted(mForeground->mAnimation->mSprites[0], glm::vec2(0.0f), -mShiftSpeed * dt);
 
 			float pressSpaceX = (mScreenWidth - mPressSpace->GetWidth() * mScreenScaling) * mFactorPressSpaceX;
 			float pressSpaceY = mScreenHeight * mFactorPressSpaceY;
@@ -269,7 +284,7 @@ void Game::Render(float dt)
 			mLevel->DrawLevel(dt);
 			mFlappyBird->Draw(mRenderer, dt);
 			mGUIScore->DrawBigScoreNumbers(mScore, mRenderer);
-			mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, -mShiftSpeed * dt);
+			mRenderer->DrawSpriteShifted(mForeground->mAnimation->mSprites[0], glm::vec2(0.0f), -mShiftSpeed * dt);
 
 			break;
 		}
@@ -277,7 +292,7 @@ void Game::Render(float dt)
 		{
 			mLevel->DrawLevel(0.0f);
 			mFlappyBird->Draw(mRenderer, 0.0f);
-			mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, 0.0f);
+			mRenderer->DrawSpriteShifted(mForeground->mAnimation->mSprites[0], mForeground->mPosition, 0.0f);
 			break;
 		}
 		case GameState::SHOW_SCORE:
@@ -288,7 +303,7 @@ void Game::Render(float dt)
 			float gameOverPosY = mScreenHeight * mFactorGameOverScreenY;
 			mRenderer->DrawSprite(mGameOver, glm::vec2(gameOverPosX, gameOverPosY), 0.0f);
 			
-			mRenderer->DrawSpriteShifted(mForeground, glm::vec2(0.0f), 0.0f, 0.0f);
+			mRenderer->DrawSpriteShifted(mForeground->mAnimation->mSprites[0], glm::vec2(0.0f), 0.0f);
 			
 			mGUIScore->DrawScoreBoard(mScore, mRenderer);
 
@@ -328,11 +343,12 @@ void Game::LoadProperties()
 	mFactorGameOverScreenY = ResourceManager::GetPropFloat("Game.FactorGameOverScreenY");
 	mMaxDeadTimer = ResourceManager::GetPropFloat("Game.MaxDeadTimer");
 	mMaxScoreTimer = ResourceManager::GetPropFloat("Game.MaxScoreTimer");
+	mFactorShakeTime = ResourceManager::GetPropFloat("Game.FactorShakeTime");
 }
 
 void Game::DoCollissions()
 {
-	CheckCollissions(mFlappyBird, mForeground->GetHeight());
+	CheckCollissions(mFlappyBird, mForeground->mAnimation->mSprites[0]->GetHeight());
 
 	for (int i = 0; i < mLevel->mNumColumnPairs; i++)
 	{
@@ -361,7 +377,12 @@ void Game::CheckCollissions(BirdGameObject *bird, ColumnGameObject *column)
 	
 	if (glm::length(birdCentre - closestPoint) < birdSprite->GetHeight() * 0.5f * mScreenScaling)
 	{
+		mLevel->PrepareShake();
+		mFlappyBird->PrepareShake();
+		mForeground->PrepareShake();
+
 		mGameState = GameState::DEAD;
+
 	}
 }
 
@@ -369,6 +390,9 @@ void Game::CheckCollissions(BirdGameObject *bird, int groundHeight)
 {
 	if (bird->mPosition.y < groundHeight * mScreenScaling)
 	{
+		mLevel->PrepareShake();
+		mFlappyBird->PrepareShake();
+		mForeground->PrepareShake();
 		mGameState = GameState::DEAD;
 	}
 }
@@ -387,5 +411,6 @@ void Game::Clear()
 	DELETE_PTR(mGameOver);
 	DELETE_PTR(mPressSpace);
 	DELETE_PTR(mGUIScore);
+	DELETE_PTR(mForeground);
 
 }

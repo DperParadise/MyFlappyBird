@@ -4,6 +4,8 @@
 #include <deque>
 #include <utility>
 #include <string>
+#include <glm/glm.hpp>
+#include <vector>
 
 class ColumnGameObject;
 class SpriteRenderer;
@@ -26,6 +28,9 @@ public:
 	void DrawLevel(float dt) const;
 	float GetSpriteWidth() const;
 	void Reset();
+	void PrepareShake();
+	void BeginShake();
+	void EndShake();
 
 private:
 	
@@ -40,12 +45,11 @@ private:
 	const SpriteRenderer *mSpriteRenderer = nullptr;
 	float mSpriteHeight;
 	float mSpriteWidth;
-
 	const std::string &mFlappyBirdSpriteAtlasName;
 	Game *mGame = nullptr;
 	const BirdGameObject *mBird = nullptr;
 	int mFactorHorizSeparation = 3;
-
+	
 	
 	void Init();
 	void ResetColumnPairPosition();

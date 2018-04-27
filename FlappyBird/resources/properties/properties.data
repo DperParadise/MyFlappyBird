@@ -80,6 +80,7 @@ Game.FactorGameOverScreenX:0.5
 Game.FactorGameOverScreenY:0.66
 Game.MaxDeadTimer: 1.0
 Game.MaxScoreTimer: 2.0
+Game.FactorShakeTime: 0.2
 GameLevel.FactorHorizSeparation:3
 GameLevel.SpriteWidth:26
 GameLevel.SpriteHeight:160

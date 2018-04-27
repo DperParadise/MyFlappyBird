@@ -12,6 +12,7 @@ enum class GameState
 	DEAD,
 	SHOW_SCORE
 };
+class GameObject;
 class BirdGameObject;
 class ColumnGameObject;
 class GameLevel;
@@ -40,7 +41,7 @@ private:
 	SpriteRenderer * mRenderer = nullptr;
 	BirdGameObject *mFlappyBird = nullptr;
 	Sprite *mBackground = nullptr;
-	Sprite *mForeground = nullptr;
+	GameObject *mForeground = nullptr;
 	Sprite *mGetReady = nullptr;
 	Sprite *mInstructions = nullptr;
 	Sprite *mTitle = nullptr;
@@ -66,6 +67,7 @@ private:
 	float mFactorPlayBtnScreenY = 0.25f;
 	float mFactorGameOverScreenX = 0.5f;
 	float mFactorGameOverScreenY = 0.7f;
+	float mFactorShakeTime = 0.2f;
 	float mDeadTimer = 0.0f;
 	float mMaxDeadTimer = 1.0f;
 	bool mHasDeadTimerExpired = false;

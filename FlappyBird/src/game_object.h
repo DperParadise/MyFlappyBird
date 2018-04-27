@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include "animation.h"
 #include "sprite_renderer.h"
+#include <vector>
 
 class GameObject
 {
@@ -17,8 +18,14 @@ public:
 	virtual ~GameObject();
 	virtual void UpdatePosition(float dt);
 	void Draw(const SpriteRenderer *spriteRenderer, float dt) const;
+	void PrepareShake();
+	void BeginShake();
+	void EndShake();
 
 private:
+	int mShakeValue = 3;
+	glm::vec2 mPosBeforeShake;
+
 	void Clear();
 };
 
