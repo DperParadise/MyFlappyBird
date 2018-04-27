@@ -3,6 +3,7 @@
 
 #include "game_level.h"
 #include <glm/glm.hpp>
+#include <irrklang/irrKlang.h>
 
 enum class GameState
 {
@@ -72,6 +73,14 @@ private:
 	float mMaxDeadTimer = 1.0f;
 	bool mHasDeadTimerExpired = false;
 	bool mIsSBShowed = false;
+	irrklang::ISoundEngine *mSoundEngine = nullptr;
+	std::string mFlyAudioPath;
+	std::string mCollissionAudioPath;
+	std::string mDieAudioPath;
+	std::string mGUIMovementAudioPath;
+	std::string mScorePointAudioPath;
+	bool mGUIMovAudioPlayed = false;
+	bool mDieAudioPlayed = false;
 
 	void LoadProperties();
 	void DoCollissions();

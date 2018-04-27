@@ -13,7 +13,6 @@
 #include "gui_score.h"
 #include <string>
 
-#include <iostream>
 
 Game::Game(int screenWidth, int screenHeight, float screenScaling) : mScreenWidth(screenWidth), mScreenHeight(screenHeight), mScreenScaling(screenScaling) {}
 
@@ -29,6 +28,8 @@ void Game::Init()
 
 	ResourceManager::LoadProperties(PROPERTIES_PATH);
 	LoadProperties();
+
+	mSoundEngine = irrklang::createIrrKlangDevice();
 
 	std::string flappyBirdSpriteAtlasName = ResourceManager::GetPropString("Game.FlappyBirdSpriteAtlasName");
 	std::string flappyBirdSpriteAtlasPath = ResourceManager::GetPropString("Game.FlappyBirdSpriteAtlasPath");
@@ -130,7 +131,6 @@ void Game::Init()
 
 	mGUIScore = new GUIScore(mScreenWidth, mScreenHeight, mScreenScaling);
 
-	mMaxDeadTimer = ResourceManager::GetPropFloat("Game.MaxDeadTimer");
 }
 
 void Game::ProcessInput()
@@ -151,6 +151,7 @@ void Game::ProcessInput()
 		{
 			mKeysProcessed[GLFW_KEY_SPACE] = true;
 			mFlappyBird->mJumpPressed = true;
+			mSoundEngine->play2D(mFlyAudioPath.c_str());
 			mGameState = GameState::ACTIVE;
 		}
 		break;
@@ -159,6 +160,7 @@ void Game::ProcessInput()
 		{
 			mKeysProcessed[GLFW_KEY_SPACE] = true;
 			mFlappyBird->mJumpPressed = true;
+			mSoundEngine->play2D(mFlyAudioPath.c_str());
 		}
 		break;
 	case GameState::SHOW_SCORE:
@@ -173,6 +175,7 @@ void Game::ProcessInput()
 			mLevel->Reset();
 			mRenderer->ResetAlpha();
 			mGUIScore->ResetSBHeightPos();
+			mGUIMovAudioPlayed = false;
 			mGameState = GameState::INSTRUCTIONS;
 		}
 		break;
@@ -205,6 +208,11 @@ void Game::Update(float dt)
 
 		if (mDeadTimer > mFactorShakeTime * mMaxDeadTimer)
 		{
+			if (!mDieAudioPlayed)
+			{
+				mSoundEngine->play2D(mDieAudioPath.c_str());
+				mDieAudioPlayed = true;
+			}
 			mLevel->EndShake();
 			mFlappyBird->EndShake();
 			mForeground->EndShake();
@@ -214,14 +222,14 @@ void Game::Update(float dt)
 		{
 			mDeadTimer = 0.0f;
 			mHasDeadTimerExpired = true;
-
+			mDieAudioPlayed = false;
+				 
 			if (mScore > mGUIScore->GetBestScore())
 			{
 				mGUIScore->SaveMaxScore(mScore);
 			}
 
 			mGameState = GameState::SHOW_SCORE;
-
 			break;
 		}
 	}
@@ -304,6 +312,11 @@ void Game::Render(float dt)
 			
 			if (fadeFinished)
 			{
+				if (!mGUIMovAudioPlayed)
+				{
+					mSoundEngine->play2D(mGUIMovementAudioPath.c_str());
+					mGUIMovAudioPlayed = true;
+				}			
 				bool drawFinished = mGUIScore->DrawScoreBoard(mScore, mRenderer, dt);
 				if (drawFinished)
 				{
@@ -326,6 +339,7 @@ void Game::Render(float dt)
 
 void Game::ComputeScore()
 {
+	mSoundEngine->play2D(mScorePointAudioPath.c_str());
 	mScore++;
 }
 
@@ -346,6 +360,11 @@ void Game::LoadProperties()
 	mFactorGameOverScreenY = ResourceManager::GetPropFloat("Game.FactorGameOverScreenY");
 	mMaxDeadTimer = ResourceManager::GetPropFloat("Game.MaxDeadTimer");
 	mFactorShakeTime = ResourceManager::GetPropFloat("Game.FactorShakeTime");
+	mFlyAudioPath = ResourceManager::GetPropString("Game.FlyAudioPath");
+	mCollissionAudioPath = ResourceManager::GetPropString("Game.CollissionAudioPath");
+	mGUIMovementAudioPath = ResourceManager::GetPropString("Game.GUIMovementAudioPath");
+	mScorePointAudioPath = ResourceManager::GetPropString("Game.ScorePointAudioPath");
+	mDieAudioPath = ResourceManager::GetPropString("Game.DieAudioPath");
 }
 
 void Game::DoCollissions()
@@ -379,10 +398,10 @@ void Game::CheckCollissions(BirdGameObject *bird, ColumnGameObject *column)
 	
 	if (glm::length(birdCentre - closestPoint) < birdSprite->GetHeight() * 0.5f * mScreenScaling)
 	{
+		mSoundEngine->play2D(mCollissionAudioPath.c_str());
 		mLevel->PrepareShake();
 		mFlappyBird->PrepareShake();
 		mForeground->PrepareShake();
-
 		mGameState = GameState::DEAD;
 
 	}
@@ -392,6 +411,7 @@ void Game::CheckCollissions(BirdGameObject *bird, int groundHeight)
 {
 	if (bird->mPosition.y < groundHeight * mScreenScaling)
 	{
+		mSoundEngine->play2D(mCollissionAudioPath.c_str());
 		mLevel->PrepareShake();
 		mFlappyBird->PrepareShake();
 		mForeground->PrepareShake();
@@ -414,5 +434,6 @@ void Game::Clear()
 	DELETE_PTR(mPressSpace);
 	DELETE_PTR(mGUIScore);
 	DELETE_PTR(mForeground);
+	mSoundEngine->drop();
 
 }
