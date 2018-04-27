@@ -37,14 +37,14 @@ void SpriteRenderer::DrawSprite(const Sprite *sprite, const glm::vec2 &position,
 
 }
 
-void SpriteRenderer::DrawSpriteShifted(const Sprite *sprite, const glm::vec2 &position, float rotInDegrees, float deltaShift) const
+void SpriteRenderer::DrawSpriteShifted(const Sprite *sprite, const glm::vec2 &position, float deltaShift) const
 {
 	for (int i = 0; i < 2 * mNumTexCoords; i += 2)
 	{
 		sprite->mTexCoords[i] += deltaShift / (mScreenScaling * sprite->mTexture.GetWidth());
 	}
 	
-	DrawSprite(sprite, position, rotInDegrees);
+	DrawSprite(sprite, position, 0.0f);
 }
 
 void SpriteRenderer::Init()
