@@ -30,6 +30,7 @@ void Game::Init()
 	LoadProperties();
 
 	mSoundEngine = irrklang::createIrrKlangDevice();
+	mSoundEngine->setSoundVolume(0.5f);
 
 	std::string flappyBirdSpriteAtlasName = ResourceManager::GetPropString("Game.FlappyBirdSpriteAtlasName");
 	std::string flappyBirdSpriteAtlasPath = ResourceManager::GetPropString("Game.FlappyBirdSpriteAtlasPath");

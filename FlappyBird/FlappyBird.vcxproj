@@ -99,9 +99,8 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>NotSet</SubSystem>
-      <EntryPointSymbol>
-      </EntryPointSymbol>
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
