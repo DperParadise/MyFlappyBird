@@ -98,5 +98,8 @@
     <ClInclude Include="src\gui_score.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\mem_leaks.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

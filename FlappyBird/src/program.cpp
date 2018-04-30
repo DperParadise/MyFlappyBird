@@ -3,6 +3,8 @@
 #include <iostream>
 #include "game.h"
 #include "globals.h"
+#include "mem_leaks.h"
+#include "resource_manager.h"
 
 //GLFW function declarations
 void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode);
@@ -11,6 +13,8 @@ Game FlappyBirdGame(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_SCALING);
 
 int main()
 {
+	ReportMemoryLeaks();
+
 	//GLFW configuration
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -59,6 +63,8 @@ int main()
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+
+	ResourceManager::Clear();
 
 	glfwTerminate();
 	return 0;

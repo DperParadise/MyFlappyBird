@@ -204,13 +204,13 @@ void GUIScore::LoadBestScore()
 
 void GUIScore::Clear()
 {
-	for (auto pair : mBigNumbers)
+	for (auto &pair : mBigNumbers)
 	{
 		DELETE_PTR(pair.second);
 	}
 	mBigNumbers.clear();
 
-	for (auto pair : mSmallNumbers)
+	for (auto &pair : mSmallNumbers)
 	{
 		DELETE_PTR(pair.second);
 	}

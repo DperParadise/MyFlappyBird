@@ -109,14 +109,21 @@ float ResourceManager::GetPropFloat(const std::string &propKeyFloat)
 
 void ResourceManager::Clear()
 {
-	for (auto iter : mShaders)
+	for (auto &shader : mShaders)
 	{
-		iter.second.Clear();
+		shader.second.Clear();
 	}
 
-	for (auto iter : mTextures)
+	mShaders.clear();
+
+
+	for (auto &tex : mTextures)
 	{
-		iter.second.Clear();
+		tex.second.Clear();
 	}
+
+	mTextures.clear();
+
+	mProperties.clear();
 }
 

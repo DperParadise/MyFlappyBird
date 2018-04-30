@@ -2,7 +2,7 @@
 #include <iostream>
 #include "globals.h"
 
-Animation::Animation(std::vector<Sprite*> &sprites, float animSpeed) : mSprites(sprites), mAnimSpeed(animSpeed) 
+Animation::Animation(std::vector<Sprite*> sprites, float animSpeed) : mSprites(sprites), mAnimSpeed(animSpeed) 
 {
 	mAnimTime = 1.0f / mAnimSpeed;
 }
@@ -36,9 +36,9 @@ void Animation::Reset()
 
 void Animation::Clear()
 {
-	for (Sprite *sprite : mSprites)
+	for (std::vector<Sprite*>::iterator it = mSprites.begin(); it != mSprites.end(); it++)
 	{
-		DELETE_PTR(sprite);
+		DELETE_PTR(*it);
 	}
 	mSprites.clear();
 }

@@ -85,6 +85,7 @@ Game.CollissionAudioPath:resources/audio/sfx_hit.wav
 Game.DieAudioPath:resources/audio/sfx_die.wav
 Game.GUIMovementAudioPath:resources/audio/sfx_swooshing.wav
 Game.ScorePointAudioPath:resources/audio/sfx_point.wav
+GameLevel.NumColumnPairs:10
 GameLevel.FactorHorizSeparation:3
 GameLevel.SpriteWidth:26
 GameLevel.SpriteHeight:160

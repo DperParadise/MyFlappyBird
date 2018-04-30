@@ -8,7 +8,7 @@ class Animation final
 {
 public:
 	std::vector<Sprite*> mSprites;
-	Animation(std::vector<Sprite*> &sprites, float animSpeed);
+	Animation(std::vector<Sprite*> sprites, float animSpeed);
 	~Animation();
 
 	const Sprite *GetSprite(float dt);

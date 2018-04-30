@@ -36,6 +36,7 @@ GameLevel::~GameLevel()
 
 void GameLevel::Init()
 {
+	mNumColumnPairs = ResourceManager::GetPropInt("GameLevel.NumColumnPairs");
 	mFactorHorizSeparation = ResourceManager::GetPropInt("GameLevel.FactorHorizSeparation");
 
 	mSpriteWidth = ResourceManager::GetPropInt("GameLevel.SpriteWidth");// 26;
@@ -43,18 +44,10 @@ void GameLevel::Init()
 
 	int lowerColX = ResourceManager::GetPropInt("GameLevel.LowerColX"); //84
 	int lowerColY = ResourceManager::GetPropInt("GameLevel.LowerColY"); //323
-	Sprite *lowerColumnSprite = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), lowerColX, lowerColY, mSpriteWidth, mSpriteHeight);
-
+	
 	int upperColX = ResourceManager::GetPropInt("GameLevel.UpperColX"); //56
 	int upperColY = ResourceManager::GetPropInt("GameLevel.UpperColY"); //323
-	Sprite *upperColumnSprite = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), upperColX, upperColY, mSpriteWidth, mSpriteHeight);
-	
-	std::vector<Sprite*> lowerColumnSpriteVector = { lowerColumnSprite };
-	std::vector<Sprite*> upperColumnSpriteVector = { upperColumnSprite };
-	
-	Animation *lowerColumnAnim = new Animation(lowerColumnSpriteVector, 0.0f);
-	Animation *upperColumnAnim = new Animation(upperColumnSpriteVector, 0.0f);
-
+		
 	float posX;
 	float posYLower;
 	float separationDistanceY;
@@ -86,6 +79,15 @@ void GameLevel::Init()
 		posLowerCol.y = posYLower;
 		posUpperCol.x = posX;
 		posUpperCol.y = posYLower + mSpriteHeight * mScreenScaling + separationDistanceY;
+
+		Sprite *lowerColumnSprite = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), lowerColX, lowerColY, mSpriteWidth, mSpriteHeight);
+		std::vector<Sprite*> lowerColumnSpriteVector = { lowerColumnSprite };
+
+		Sprite *upperColumnSprite = new Sprite(ResourceManager::GetTexture(mFlappyBirdSpriteAtlasName), upperColX, upperColY, mSpriteWidth, mSpriteHeight);
+		std::vector<Sprite*> upperColumnSpriteVector = { upperColumnSprite };
+
+		Animation *lowerColumnAnim = new Animation(lowerColumnSpriteVector, 0.0f);
+		Animation *upperColumnAnim = new Animation(upperColumnSpriteVector, 0.0f);
 
 		ColumnGameObject *lowerColumnGO = new ColumnGameObject(posLowerCol, 0.0f, glm::vec2(mShiftSpeedX, 0.0f), lowerColumnAnim, mBird, mGame, mScreenScaling, true);
 		ColumnGameObject *upperColumnGO = new ColumnGameObject(posUpperCol, 0.0f, glm::vec2(mShiftSpeedX, 0.0f), upperColumnAnim, mBird, mGame, mScreenScaling, false);
@@ -222,10 +224,12 @@ void GameLevel::EndShake()
 
 void GameLevel::Clear()
 {
-	ColumnPair &pair = mColumns.front();
-	DELETE_PTR(pair.first->mAnimation);
-	DELETE_PTR(pair.second->mAnimation);
-
+	for (int i = 0; i < mNumColumnPairs; i++)
+	{
+		ColumnPair &pair = mColumns[i];
+		DELETE_PTR(pair.first);
+		DELETE_PTR(pair.second);	
+	}
 	mColumns.clear();
 }
 

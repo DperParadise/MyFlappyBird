@@ -17,7 +17,7 @@ class GameLevel final
 {
 public:
 	std::deque<ColumnPair> mColumns;
-	int mNumColumnPairs = 20;
+	 int mNumColumnPairs = 10;
 
 	GameLevel(int screenWidth, int screenHeight, float screenScaling, int verticalSeparation, 
 		int minVerticalPos, int maxVerticalPos, int passThreshold, 
@@ -49,7 +49,7 @@ private:
 	Game *mGame = nullptr;
 	const BirdGameObject *mBird = nullptr;
 	int mFactorHorizSeparation = 3;
-	
+
 	
 	void Init();
 	void ResetColumnPairPosition();

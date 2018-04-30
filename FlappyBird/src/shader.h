@@ -43,7 +43,7 @@ public:
 	void Clear();
 
 private:
-	int id;
+	int mId;
 	
 	std::string ReadShaderFromFile(const std::string &filePath) const;
 	void Compile(const char *vertexShaderCode, const char * fragmentShaderCode);

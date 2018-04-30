@@ -423,6 +423,7 @@ void Game::Clear()
 {
 	DELETE_PTR(mRenderer);
 	DELETE_PTR(mFlappyBird);
+	DELETE_PTR(mLevel);
 	DELETE_PTR(mBackground);
 	DELETE_PTR(mForeground);
 	DELETE_PTR(mGetReady);
@@ -433,7 +434,7 @@ void Game::Clear()
 	DELETE_PTR(mGameOver);
 	DELETE_PTR(mPressSpace);
 	DELETE_PTR(mGUIScore);
-	DELETE_PTR(mForeground);
+	
 	mSoundEngine->drop();
 
 }
